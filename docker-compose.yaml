@@ -8,7 +8,7 @@ services:
     volumes:
       - "${ENV_SPRING_BOOT_APPDIR}:/home/gradle"
     environment:
-      SPRING_BOOT_ENVIRONMENT: ${ENV_SPRING_BOOT_ENVIRONMENT}
+      SPRING_BOOT_ENVIRONMENT: ${ENV_DOCKER_ENVIRONMENT}
     networks:
       local:
         aliases:
@@ -28,14 +28,16 @@ services:
         aliases:
           - mysql
 
-  # npm:
-  #   image: node:carbon
-  #   working_dir: /home/node
-  #   volumes:
-  #     - "${ENV_NPM_PROJECT_DIR}:/home/node"
-  #   command: ["npm", "start"]
-  #   networks:
-  #     local:
+  node:
+    image: kpmp/orion-node
+    ports:
+      - "${ENV_REACT_DEV_SERVER_PORT:-3000}:3000"
+    volumes:
+      - "${ENV_REACT_APPDIR}:/usr/src/app"
+    environment:
+      NODE_ENV: ${ENV_DOCKER_ENVIRONMENT}
+    networks:
+      local:
 
 volumes:
   mysqldb:
