@@ -23,6 +23,8 @@ class CreateFileSubmissions extends Migration
                 ->unsigned();
             $table->integer('submitter_id')
                 ->unsigned();
+            $table->integer('file_meta_entry_id')
+                ->unsigned();
             $table->integer('file_format_id')
                 ->unsigned();
             $table->integer('device_vendor_id')
@@ -55,6 +57,7 @@ class CreateFileSubmissions extends Migration
             $table->foreign('case_id')->references('id')->on('case_demographics');
             $table->foreign('institution_id')->references('id')->on('institution_demographics');
             $table->foreign('submitter_id')->references('id')->on('submitter_demographics');
+            $table->foreign('file_meta_entry_id')->references('id')->on('file_meta_entries');
             $table->foreign('file_format_id')->references('id')->on('file_formats');
             $table->foreign('device_vendor_id')->references('id')->on('device_vendors');
             $table->foreign('post_process_protocol_id')->references('id')->on('post_process_protocols');

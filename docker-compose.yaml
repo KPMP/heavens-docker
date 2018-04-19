@@ -1,6 +1,19 @@
 version: "3"
 services:
 
+  spring:
+    image: kpmp/orion-gradle
+    ports:
+      - "${ENV_APACHE_TOMCAT_PORT:-3030}:3030"
+    volumes:
+      - "${ENV_SPRING_BOOT_APPDIR}:/home/gradle"
+    environment:
+      SPRING_BOOT_ENVIRONMENT: ${ENV_SPRING_BOOT_ENVIRONMENT}
+    networks:
+      local:
+        aliases:
+          - spring
+
   mysql:
     image: mariadb
     ports: 
