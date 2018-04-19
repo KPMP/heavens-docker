@@ -5,7 +5,7 @@ set -e
 npm install
 
 if [[ $NODE_ENV == "test" ]]; then
-	npm test
+	CI=true npm test
 
 	exit $?
 fi
