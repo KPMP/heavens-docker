@@ -2,7 +2,7 @@
 
 set -e
 
-if [[ $SPRING_BOOT_ENVIRONMENT == "test" ]]; then
+if [[ "$SPRING_BOOT_ENVIRONMENT" == "test" ]]; then
 	gradle test
 
 	exit $?
