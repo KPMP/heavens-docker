@@ -1,0 +1,9 @@
+server {
+    listen ${ENV_APP_PORT} default_server;
+    server_name ${ENV_APP_HOSTNAME};
+    index index.html index.htm;
+    location / {
+        root /usr/share/nginx/html/build;
+        try_files $uri /index.html;
+    }
+}
