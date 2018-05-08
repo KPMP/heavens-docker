@@ -53,8 +53,7 @@ services:
   node:
     build: ./node
     working_dir: /home/node
-    entrypoint: ["sh", "-c", "sleep infinity"]
-    # entrypoint: ["/home/node/scripts/init.sh"]
+    entrypoint: ["/home/node/scripts/init.sh"]
     volumes:
       - ${ENV_REACT_APPDIR}:/home/node
     command: ["npm", "run-script"]

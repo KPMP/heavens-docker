@@ -1,1 +1,1 @@
-FROM node:6.9.4
+FROM node:8.11.1
