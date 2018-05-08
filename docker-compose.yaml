@@ -49,6 +49,22 @@ services:
       local:
         aliases:
           - nginx
+  
+  node:
+    build: ./node
+    working_dir: /home/node
+    entrypoint: ["sh", "-c", "sleep infinity"]
+    # entrypoint: ["/home/node/scripts/init.sh"]
+    volumes:
+      - ${ENV_REACT_APPDIR}:/home/node
+    command: ["npm", "run-script"]
+    restart: always
+    environment:
+      NODE_ENV: ${ENV_DOCKER_ENVIRONMENT:-dev}
+    networks:
+      local:
+        aliases:
+          - node
 
 volumes:
   mysqldb:
