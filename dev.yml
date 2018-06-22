@@ -2,9 +2,7 @@ version: "3"
 services:
 
   spring:
-    image: shipyard.path.med.umich.edu/kpmp/orion-gradle
-    build:
-      context: ./spring
+    build: ./spring
     ports:
       - "${ENV_APACHE_TOMCAT_PORT:-3030}:3030"
     volumes:
@@ -42,7 +40,7 @@ services:
     command: ["npm", "run-script"]
     restart: always
     environment:
-      NODE_ENV: ${ENV_DOCKER_ENVIRONMENT:-dev}
+      NODE_ENV: ${ENV_DOCKER_ENVIRONMENT:-local}
     networks:
       local:
         aliases:
