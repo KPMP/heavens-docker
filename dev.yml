@@ -46,6 +46,30 @@ services:
         aliases:
           - node
 
+  kibana:
+    image: docker.elastic.co/kibana/kibana:6.2.4
+    ports: 
+      - "5601:5601"
+    environment:
+      SERVER_NAME: elasticsearch
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+    networks:
+      local:
+        aliases:
+          - kibana
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.2.4
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      discovery.type: "single-node"
+    networks:
+      local:
+        aliases:
+          - elasticsearch
+
+
 volumes:
   mysqldb:
 
