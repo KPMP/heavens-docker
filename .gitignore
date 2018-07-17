@@ -1,2 +1,4 @@
 .env
 logs
+env-local
+env-vagrant
