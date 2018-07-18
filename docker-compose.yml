@@ -2,9 +2,8 @@ version: "3"
 services:
 
   spring:
-    image: shipyard.path.med.umich.edu/kpmp/orion-gradle
-    build:
-      context: ./spring
+    container_name: spring
+    build: ./spring
     ports:
       - "${ENV_APACHE_TOMCAT_PORT:-3030}:3030"
     volumes:
@@ -18,6 +17,7 @@ services:
           - spring
 
   mysql:
+    container_name: mysql
     image: mariadb
     ports: 
       - "${ENV_MYSQL_PORT:-3306}:3306"
@@ -32,6 +32,7 @@ services:
           - mysql
 
   nginx:
+    container_name: nginx
     build: ./nginx
     volumes:
       - ./logs:/var/logs
@@ -52,6 +53,7 @@ services:
           - nginx
 
   kibana:
+    container_name: kibana
     image: docker.elastic.co/kibana/kibana:6.2.4
     ports: 
       - "5601:5601"
@@ -62,7 +64,9 @@ services:
       local:
         aliases:
           - kibana
+
   elasticsearch:
+    container_name: elasticsearch 
     image: docker.elastic.co/elasticsearch/elasticsearch:6.2.4
     ports:
       - "9200:9200"

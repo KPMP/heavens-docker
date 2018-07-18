@@ -1,9 +1,14 @@
 server {
-    listen ${ENV_APP_PORT} default_server;
+    listen ${ENV_APP_PORT};
     server_name ${ENV_APP_HOSTNAME};
     index index.html index.htm;
+    location /api/uploader {
+        proxy_pass http://docker-spring/uploader;
+
+    }
     location / {
         root /usr/share/nginx/html/build;
         try_files $uri /index.html;
     }
 }
+
