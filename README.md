@@ -25,3 +25,18 @@
   - `ENV_APP_HOSTNAME="localhost"`
   - `ENV_APP_PORT=80`
 - `docker-compose up -d`
+- Copy the sql scripts from orion-data into the mysql container (you need to do them one at a time)
+  - `docker cp ../orion-data/migrations/{name of sql script} mysql:.`
+- Shell into the mysql container
+  - `docker exec -it mysql bash`
+- Apply the sql scripts to the orion schema
+  - `mysql -uroot -p<password> orion < {script.sql}`
+- Exit the mysql container
+  - `exit`
+- Restart the spring container
+  - `docker-compose up -d --no-deps spring`
+- Go to orion-web and install and build the react project
+  - `cd ../orion-web`
+  - `npm install`
+  - `npm run build`
+- Direct your browser to localhost
