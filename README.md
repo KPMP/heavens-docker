@@ -20,6 +20,6 @@
   - `ENV_MYSQL_ROOT_PASSWORD=`
   - `ENV_MYSQL_DATABASE=`
   - `ENV_REACT_DEV_SERVER_PORT=3000`
-  - `ENV_APP_HOSTNAME="141.214.4.23"`
+  - `ENV_APP_HOSTNAME="localhost"`
   - `ENV_APP_PORT=80`
-- `docker-compose -f dev.yml up -d`
+- `docker-compose up -d`
