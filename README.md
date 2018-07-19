@@ -1,6 +1,8 @@
 # KPMP - Orion Docker Onboarding
 
 - Install docker for your OS and register if needed.
+- Launch Docker
+- Go to Advanced tab and change your memory to 4GB (Apply & restart)
 - Open your terminal of choice.
 - `cd {kpmp_directory}`
 - `mkdir data`
