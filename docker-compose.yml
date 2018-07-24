@@ -16,6 +16,20 @@ services:
         aliases:
           - spring
 
+  metadata:
+    container_name: metadata
+    build: ./metadata
+    ports:
+      - "${ENV_METADATA_PORT:-3031}:3031"
+    volumes:
+      - "${ENV_METADATA_APPDIR}:/home/gradle"
+    environment:
+      SPRING_BOOT_ENVIRONMENT: ${ENV_DOCKER_ENVIRONMENT}
+    networks:
+      local:
+        aliases:
+          - metadata
+
   mysql:
     container_name: mysql
     image: mariadb

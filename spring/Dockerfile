@@ -1,4 +1,4 @@
-FROM gradle:4.6-jdk8-alpine
+FROM gradle:4.9-jdk8-alpine
 
 USER gradle
 
