@@ -68,6 +68,8 @@ services:
   elasticsearch:
     container_name: elasticsearch 
     image: docker.elastic.co/elasticsearch/elasticsearch:6.2.4
+    volumes: 
+     - "esdata:/usr/share/elasticsearch/data"
     ports:
       - "9200:9200"
       - "9300:9300"
@@ -81,6 +83,7 @@ services:
 
 volumes:
   mysqldb:
+  esdata:
 
 networks:
   local:
