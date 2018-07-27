@@ -12,6 +12,10 @@ services:
     ports:
       - "${ENV_MONGO_PORT:-27017}:27017"
     command: mongod --smallfiles --logpath=/dev/null # --quiet
+    networks:
+      local:
+        aliases:
+          - mongodb
 
   spring:
     container_name: spring
