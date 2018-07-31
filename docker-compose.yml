@@ -27,6 +27,7 @@ services:
       - "${ENV_DATALAKE_FILE_DIR}:/data"
     environment:
       SPRING_BOOT_ENVIRONMENT: ${ENV_DOCKER_ENVIRONMENT}
+    privileged: true
     networks:
       local:
         aliases:
