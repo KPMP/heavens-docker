@@ -70,9 +70,9 @@ services:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.2.4
     volumes: 
      - "esdata:/usr/share/elasticsearch/data"
-    ports:
-      - "9200:9200"
-      - "9300:9300"
+    expose:
+      - "9200"
+      - "9300"
     environment:
       discovery.type: "single-node"
     networks:
