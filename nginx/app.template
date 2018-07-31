@@ -2,8 +2,8 @@ server {
     listen ${ENV_APP_PORT};
     server_name ${ENV_APP_HOSTNAME};
     index index.html index.htm;
-    location /api/uploader {
-        proxy_pass http://docker-spring/uploader;
+    location /api {
+        proxy_pass http://docker-spring/;
 
     }
     location / {
