@@ -10,7 +10,7 @@ services:
     volumes:
        - "${ENV_DATALAKE_MONGO_DIR}:/data"
     ports:
-      - "${ENV_MONGO_PORT:-27017}:27017"
+      - "127.0.0.1:${ENV_MONGO_PORT:-27017}:27017"
     command: mongod --smallfiles --logpath=/dev/null # --quiet
     networks:
       local:
@@ -37,7 +37,7 @@ services:
     container_name: mysql
     image: mariadb
     ports: 
-      - "${ENV_MYSQL_PORT:-3306}:3306"
+      - "127.0.0.1:${ENV_MYSQL_PORT:-3306}:3306"
     volumes:
       - "mysqldb:/var/lib/mysql"
     environment:
@@ -73,7 +73,7 @@ services:
     container_name: kibana
     image: docker.elastic.co/kibana/kibana:6.2.4
     ports: 
-      - "5601:5601"
+      - "127.0.0.1:5601:5601"
     environment:
       SERVER_NAME: elasticsearch
       ELASTICSEARCH_URL: http://elasticsearch:9200
