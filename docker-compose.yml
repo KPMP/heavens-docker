@@ -8,10 +8,10 @@ services:
        - MONGO_DATA_DIR=/data/db
        - MONGO_LOG_DIR=/dev/null
     volumes:
-       - "${ENV_DATALAKE_MONGO_DIR}:/data"
+       - "${ENV_DATALAKE_MONGO_DIR}:/data/db"
     ports:
       - "127.0.0.1:${ENV_MONGO_PORT:-27017}:27017"
-    command: mongod --smallfiles --logpath=/dev/null # --quiet
+    command: mongod 
     networks:
       local:
         aliases:
@@ -24,7 +24,7 @@ services:
       - "${ENV_APACHE_TOMCAT_PORT:-3030}:3030"
     volumes:
       - "${ENV_SPRING_BOOT_APPDIR}:/home/gradle"
-      - "${ENV_DATALAKE_FILE_DIR}:/data"
+      - "mongodbdata:/data"
     environment:
       SPRING_BOOT_ENVIRONMENT: ${ENV_DOCKER_ENVIRONMENT}
     privileged: true
@@ -101,6 +101,7 @@ services:
 volumes:
   mysqldb:
   esdata:
+  mongodbdata:
 
 networks:
   local:
