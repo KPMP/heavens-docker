@@ -1,6 +1,18 @@
 version: "3"
 services:
   
+    apache:
+    container_name: apache
+    build: ./apache
+    ports: 
+      - "80:80"
+    volumes:
+      - ${ENV_REACT_APPDIR}/build:/var/www/html
+    networks:
+      local:
+        aliases:
+          - apache
+  
   mongodb:
     container_name: mongodb
     image: mongo:latest
