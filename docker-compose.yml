@@ -12,7 +12,7 @@ services:
       local:
         aliases:
           - apache
-  
+
   mongodb:
     container_name: mongodb
     image: mongo:latest
