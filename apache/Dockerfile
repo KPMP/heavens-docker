@@ -41,8 +41,8 @@ RUN export LD_LIBRARY_PATH
 RUN ln -s /opt/bin/httpd-shib-foreground  /usr/local/bin && ln -s /opt/etc/httpd/conf.d/ssl.conf /etc/httpd/conf.d/ssl.conf && ln -s /opt/etc/httpd/conf.d/virt.conf /etc/httpd/conf.d/virt.conf && ln -s /opt/etc/httpd/conf.modules.d/00-shib.conf /etc/httpd/conf.modules.d/00-shib.conf && ln -s /usr/lib64/shibboleth/mod_shib_24.so /etc/httpd/modules/mod_shib_24.so
 
 # KPMP Specific Configuration - MAKE EDITS HERE
-COPY  ./certs/dev-upload.kpmp.org.crt	/etc/pki/tls/certs/kpmp.crt
-COPY ./certs/dev-upload.kpmp.org.key	/etc/pki/tls/private/kpmp.key
+COPY  ./certs/upload.kpmp.org.crt	/etc/pki/tls/certs/kpmp.crt
+COPY ./certs/upload.kpmp.org.key	/etc/pki/tls/private/kpmp.key
 COPY ./certs/sp-cert.pem	/etc/pki/tls/certs/kpmp-shib.cert
 COPY ./certs/sp-key.pem	/etc/pki/tls/private/kpmp-shib.key
 
