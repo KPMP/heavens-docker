@@ -1,0 +1,105 @@
+version: "3"
+services:
+
+  apache:
+    container_name: apache
+    build: ./apache
+    ports: 
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ${ENV_REACT_APPDIR}/build:/var/www/html
+    networks:
+      local:
+        aliases:
+          - apache
+
+  mongodb:
+    container_name: mongodb
+    image: mongo:latest
+    environment:
+       - MONGO_DATA_DIR=/data/db
+       - MONGO_LOG_DIR=/dev/null
+    volumes:
+       - mongodbdata:/data/db 
+    ports:
+      - "127.0.0.1:${ENV_MONGO_PORT:-27017}:27017"
+    command: mongod 
+    networks:
+      local:
+        aliases:
+          - mongodb
+
+  spring:
+    container_name: spring
+    build: ./spring
+    ports:
+      - "${ENV_APACHE_TOMCAT_PORT:-3030}:3030"
+    volumes:
+      - "${ENV_SPRING_BOOT_APPDIR}:/home/gradle"
+      - "${ENV_DATALAKE_FILE_DIR}:/data"
+    environment:
+      SPRING_BOOT_ENVIRONMENT: ${ENV_DOCKER_ENVIRONMENT}
+    privileged: true
+    networks:
+      local:
+        aliases:
+          - spring
+
+  mysql:
+    container_name: mysql
+    image: mariadb
+    ports: 
+      - "127.0.0.1:${ENV_MYSQL_PORT:-3306}:3306"
+    volumes:
+      - "mysqldb:/var/lib/mysql"
+    environment:
+      - MYSQL_ROOT_PASSWORD=N32R2sWW2bsbMG75
+      - MYSQL_DATABASE=orion
+    networks:
+      local:
+        aliases:
+          - mysql
+
+  kibana:
+    container_name: kibana
+    image: docker.elastic.co/kibana/kibana:6.2.4
+    ports: 
+      - "127.0.0.1:5601:5601"
+    environment:
+      SERVER_NAME: elasticsearch
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+    networks:
+      local:
+        aliases:
+          - kibana
+
+  elasticsearch:
+    container_name: elasticsearch 
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.2.4
+    volumes: 
+     - "esdata:/usr/share/elasticsearch/data"
+    expose:
+      - "9200"
+      - "9300"
+    environment:
+      discovery.type: "single-node"
+    networks:
+      local:
+        aliases:
+          - elasticsearch
+
+
+volumes:
+  mysqldb:
+  esdata:
+  mongodbdata:
+
+networks:
+  local:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - 
+          subnet: 10.252.0.0/16
