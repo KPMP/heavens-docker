@@ -53,4 +53,4 @@ RUN chown shibd:root /etc/pki/tls/private/kpmp-shib.key
 RUN chmod 600 /etc/pki/tls/private/kpmp.key /etc/pki/tls/private/kpmp-shib.key
 
 EXPOSE 80 443
-CMD ["httpd-shib-foreground"]
+CMD ["httpd-shib-foreground", "-f"]
