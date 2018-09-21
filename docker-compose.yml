@@ -10,6 +10,7 @@ services:
         - USERPASS={ENV_APACHE_USERPASS}
     ports: 
       - "80:80"
+      - "443:443"
     volumes:
       - ${ENV_REACT_APPDIR}/build:/var/www/html
     networks:
