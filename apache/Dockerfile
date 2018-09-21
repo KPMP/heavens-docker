@@ -43,15 +43,15 @@ RUN ln -s /opt/bin/httpd-shib-foreground  /usr/local/bin && ln -s /opt/etc/httpd
 # KPMP Specific Configuration - MAKE EDITS HERE
 COPY  ./certs/upload.kpmp.org.crt	/etc/pki/tls/certs/kpmp.crt
 COPY ./certs/upload.kpmp.org.key	/etc/pki/tls/private/kpmp.key
-COPY ./certs/sp-cert.pem	/etc/pki/tls/certs/kpmp-shib.cert
-COPY ./certs/sp-key.pem	/etc/pki/tls/private/kpmp-shib.key
+COPY ./certs/kpmp.crt	/etc/pki/tls/certs/welcome.kpmp.org-shibd-self.cert
+COPY ./certs/kpmp.key	/etc/pki/tls/private/welcome.kpmp.org-shibd-self.key
 COPY ./container_files/etc/shibboleth/shibboleth2.xml	/etc/shibboleth/shibboleth2.xml
 
 # KPMP Specific Configuration
 
 # Hardening Key Security
-RUN chown shibd:root /etc/pki/tls/private/kpmp-shib.key
-RUN chmod 600 /etc/pki/tls/private/kpmp.key /etc/pki/tls/private/kpmp-shib.key
+RUN chown shibd:root /etc/pki/tls/private/welcome.kpmp.org-shibd-self.key
+RUN chmod 600 /etc/pki/tls/private/kpmp.key /etc/pki/tls/private/welcome.kpmp.org-shibd-self.key
 
 EXPOSE 80 443
 CMD ["httpd-shib-foreground", "-f"]
