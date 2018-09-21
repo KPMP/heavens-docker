@@ -45,6 +45,7 @@ COPY  ./certs/upload.kpmp.org.crt	/etc/pki/tls/certs/kpmp.crt
 COPY ./certs/upload.kpmp.org.key	/etc/pki/tls/private/kpmp.key
 COPY ./certs/sp-cert.pem	/etc/pki/tls/certs/kpmp-shib.cert
 COPY ./certs/sp-key.pem	/etc/pki/tls/private/kpmp-shib.key
+COPY ./container_files/etc/shibboleth/shibboleth2.xml	/etc/shibboleth/shibboleth2.xml
 
 # KPMP Specific Configuration
 
