@@ -2,3 +2,4 @@
 logs
 env-local
 env-vagrant
+apache/certs
