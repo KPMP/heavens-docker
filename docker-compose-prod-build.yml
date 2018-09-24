@@ -3,7 +3,7 @@ services:
 
   apache:
     container_name: apache
-    build: ./apache
+    build: ./apache-prod
     ports: 
       - "80:80"
     volumes:
