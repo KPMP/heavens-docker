@@ -4,7 +4,7 @@ services:
   apache:
     container_name: apache
     build:
-      context: ./apache
+      context: ./apache-local
       args:
         - USERNAME={ENV_APACHE_USERNAME}
         - USERPASS={ENV_APACHE_USERPASS}
@@ -20,7 +20,7 @@ services:
   
   mongodb:
     container_name: mongodb
-    image: mongo:latest
+    image: mongo:4.0
     environment:
        - MONGO_DATA_DIR=/data/db
        - MONGO_LOG_DIR=/dev/null
