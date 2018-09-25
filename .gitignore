@@ -3,3 +3,6 @@ logs
 env-local
 env-vagrant
 apache-local/certs
+apache/certs
+apache-prod/certs
+apache-qa/certs
