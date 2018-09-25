@@ -34,6 +34,21 @@ services:
         aliases:
           - mongodb
 
+  mysql:  
+    container_name: mysql  
+    image: mariadb  
+    ports:   
+      - "127.0.0.1:${ENV_MYSQL_PORT:-3306}:3306"  
+    volumes:  
+      - "mysqldb:/var/lib/mysql"  
+    environment:  
+      - MYSQL_ROOT_PASSWORD=N32R2sWW2bsbMG75  
+      - MYSQL_DATABASE=orion  
+    networks:  
+      local:  
+        aliases:  
+          - mysql  
+
   spring:
     container_name: spring
     build: ./spring
