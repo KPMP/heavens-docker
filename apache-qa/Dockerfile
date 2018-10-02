@@ -47,7 +47,7 @@ COPY ./certs/kpmp.crt	/etc/pki/tls/certs/welcome.kpmp.org-shibd-self.cert
 COPY ./certs/kpmp.key	/etc/pki/tls/private/welcome.kpmp.org-shibd-self.key
 COPY ./certs/shibboleth2.xml	/etc/shibboleth/shibboleth2.xml
 COPY ./certs/inc-md-cert.pem /etc/pki/tls/certs/inc-md-cert.pem
-
+COPY ./container-files/etc/shibboleth/attribute-map.xml /etc/shibboleth/attribute-map.xml
 # KPMP Specific Configuration
 
 # Hardening Key Security
