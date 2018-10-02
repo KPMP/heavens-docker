@@ -6,6 +6,7 @@ services:
     image: kingstonduo/apache-images:uploader-dev-welcome
     ports: 
       - "80:80"
+      - "443:443"
     volumes:
       - ${ENV_REACT_APPDIR}/build:/var/www/html
     networks:
