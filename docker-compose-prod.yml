@@ -46,21 +46,6 @@ services:
         aliases:
           - spring
 
-  mysql:
-    container_name: mysql
-    image: mariadb
-    ports: 
-      - "127.0.0.1:${ENV_MYSQL_PORT:-3306}:3306"
-    volumes:
-      - "mysqldb:/var/lib/mysql"
-    environment:
-      - MYSQL_ROOT_PASSWORD=N32R2sWW2bsbMG75
-      - MYSQL_DATABASE=orion
-    networks:
-      local:
-        aliases:
-          - mysql
-
   kibana:
     container_name: kibana
     image: docker.elastic.co/kibana/kibana:6.2.4
@@ -91,7 +76,6 @@ services:
 
 
 volumes:
-  mysqldb:
   esdata:
   mongodbdata:
 
