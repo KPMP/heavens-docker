@@ -1,0 +1,59 @@
+FROM tier/centos7base
+
+# Define args and set a default value
+ARG maintainer=tier
+ARG imagename=shibboleth_sp
+ARG version=2.6.1
+
+LABEL Maintainer=$maintainer
+LABEL Vendor="Internet2"
+LABEL ImageType="Base"
+LABEL ImageName=$imagename
+LABEL ImageOS=centos7
+LABEL Version=$version
+
+LABEL Build docker build --rm --tag $maintainer/$imagename .
+
+# Add starters and installers
+ADD ./container_files /opt
+
+RUN curl -o /etc/yum.repos.d/security:shibboleth.repo \
+      http://download.opensuse.org/repositories/security://shibboleth/CentOS_7/security:shibboleth.repo \
+      && yum -y update \
+      && yum -y install \
+        httpd \
+        mod_ssl \
+        shibboleth.x86_64 \
+        dos2unix \
+      && yum clean all \
+      && rm /etc/httpd/conf.d/autoindex.conf \
+      && rm /etc/httpd/conf.d/ssl.conf \
+      && rm /etc/httpd/conf.d/userdir.conf \
+      && rm /etc/httpd/conf.d/welcome.conf \
+      && chmod +x /opt/bin/httpd-shib-foreground \
+      && chmod +x /opt/bin/shibboleth_keygen.sh
+      
+# Export this variable so that shibd can find its CURL library
+RUN LD_LIBRARY_PATH="/opt/shibboleth/lib64"
+RUN export LD_LIBRARY_PATH
+
+#Script to start service, Added ssl default conf, Added shib module apache
+RUN ln -s /opt/bin/httpd-shib-foreground  /usr/local/bin && ln -s /opt/etc/httpd/conf.d/ssl.conf /etc/httpd/conf.d/ssl.conf && ln -s /opt/etc/httpd/conf.d/virt.conf /etc/httpd/conf.d/virt.conf && ln -s /opt/etc/httpd/conf.modules.d/00-shib.conf /etc/httpd/conf.modules.d/00-shib.conf && ln -s /usr/lib64/shibboleth/mod_shib_24.so /etc/httpd/modules/mod_shib_24.so
+
+# KPMP Specific Configuration - MAKE EDITS HERE
+COPY  ./certs/upload.kpmp.org.crt	/etc/pki/tls/certs/kpmp.crt
+COPY ./certs/upload.kpmp.org.key	/etc/pki/tls/private/kpmp.key
+COPY ./certs/kpmp.crt	/etc/pki/tls/certs/welcome.kpmp.org-shibd-self.cert
+COPY ./certs/kpmp.key	/etc/pki/tls/private/welcome.kpmp.org-shibd-self.key
+COPY ./certs/shibboleth2.xml	/etc/shibboleth/shibboleth2.xml
+COPY ./certs/inc-md-cert.pem /etc/pki/tls/certs/inc-md-cert.pem
+COPY ./container_files/etc/shibboleth/attribute-map.xml /etc/shibboleth/attribute-map.xml
+
+# KPMP Specific Configuration
+
+# Hardening Key Security
+RUN chown shibd:root /etc/pki/tls/private/welcome.kpmp.org-shibd-self.key
+RUN chmod 600 /etc/pki/tls/private/kpmp.key /etc/pki/tls/private/welcome.kpmp.org-shibd-self.key
+
+EXPOSE 80 443
+CMD ["httpd-shib-foreground", "-f"]
