@@ -3,7 +3,7 @@ services:
 
   apache:
     container_name: apache
-    image: kingstonduo/apache-images:uploader-prod
+    image: kingstonduo/apache-images:uploader-prod-welcome
     ports: 
       - "80:80"
       - "443:443"
