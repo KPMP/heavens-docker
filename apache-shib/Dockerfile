@@ -5,6 +5,8 @@ ARG maintainer=tier
 ARG imagename=shibboleth_sp
 ARG version=2.6.1
 ARG ENV_APACHE_SERVER_NAME
+ARG ENV_SSL_CERT_FILE
+ARG ENV_SSL_KEY_FILE
 
 LABEL Maintainer=$maintainer
 LABEL Vendor="Internet2"
@@ -44,8 +46,8 @@ RUN export LD_LIBRARY_PATH
 RUN ln -s /opt/bin/httpd-shib-foreground  /usr/local/bin && ln -s /opt/etc/httpd/conf.d/ssl.conf /etc/httpd/conf.d/ssl.conf && ln -s /opt/etc/httpd/conf.d/virt.conf /etc/httpd/conf.d/virt.conf && ln -s /opt/etc/httpd/conf.modules.d/00-shib.conf /etc/httpd/conf.modules.d/00-shib.conf && ln -s /usr/lib64/shibboleth/mod_shib_24.so /etc/httpd/modules/mod_shib_24.so
 
 # KPMP Specific Configuration - MAKE EDITS HERE
-COPY  ./certs/upload.kpmp.org.crt	/etc/pki/tls/certs/kpmp.crt
-COPY ./certs/upload.kpmp.org.key	/etc/pki/tls/private/kpmp.key
+COPY  "$ENV_SSL_CERT_FILE" "/etc/pki/tls/certs/kpmp.crt"
+COPY  "$ENV_SSL_KEY_FILE"  "/etc/pki/tls/private/kpmp.key"
 COPY ./certs/kpmp.crt	/etc/pki/tls/certs/welcome.kpmp.org-shibd-self.cert
 COPY ./certs/kpmp.key	/etc/pki/tls/private/welcome.kpmp.org-shibd-self.key
 COPY ./certs/shibboleth2.xml	/etc/shibboleth/shibboleth2.xml
