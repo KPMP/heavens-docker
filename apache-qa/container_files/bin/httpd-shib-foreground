@@ -1,7 +1,0 @@
-#!/bin/sh
-set -e
-
-# Apache gets grumpy about PID files pre-existing
-rm -f /etc/httpd/logs/httpd.pid
-
-(/usr/sbin/shibd) & httpd -DFOREGROUND
