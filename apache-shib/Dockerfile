@@ -46,17 +46,10 @@ RUN export LD_LIBRARY_PATH
 RUN ln -s /opt/bin/httpd-shib-foreground  /usr/local/bin && ln -s /opt/etc/httpd/conf.d/ssl.conf /etc/httpd/conf.d/ssl.conf && ln -s /opt/etc/httpd/conf.d/virt.conf /etc/httpd/conf.d/virt.conf && ln -s /opt/etc/httpd/conf.modules.d/00-shib.conf /etc/httpd/conf.modules.d/00-shib.conf && ln -s /usr/lib64/shibboleth/mod_shib_24.so /etc/httpd/modules/mod_shib_24.so
 
 # KPMP Specific Configuration - MAKE EDITS HERE
-COPY ./certs/kpmp.crt	/etc/pki/tls/certs/welcome.kpmp.org-shibd-self.cert
-COPY ./certs/kpmp.key	/etc/pki/tls/private/welcome.kpmp.org-shibd-self.key
 COPY ./certs/shibboleth2.xml	/etc/shibboleth/shibboleth2.xml
 COPY ./certs/inc-md-cert.pem /etc/pki/tls/certs/inc-md-cert.pem
 COPY ./container_files/etc/shibboleth/attribute-map.xml /etc/shibboleth/attribute-map.xml
 
-# KPMP Specific Configuration
-
-# Hardening Key Security
-RUN chown shibd:root /etc/pki/tls/private/welcome.kpmp.org-shibd-self.key
-RUN chmod 600 /etc/pki/tls/private/welcome.kpmp.org-shibd-self.key
 
 EXPOSE 80 443
 CMD ["httpd-shib-foreground", "-f"]
