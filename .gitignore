@@ -2,6 +2,6 @@
 logs
 env-local
 env-vagrant
-apache-local/certs
+apache-basic/certs
 apache-shib/certs
 

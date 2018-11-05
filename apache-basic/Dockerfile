@@ -18,11 +18,8 @@ RUN   yum -y update \
 #Script to start service, Added ssl default conf, Added shib module apache
 RUN ln -s /opt/etc/httpd/conf.d/ssl.conf /etc/httpd/conf.d/ssl.conf && ln -s /opt/etc/httpd/conf.d/virt.conf /etc/httpd/conf.d/virt.conf
 
-#Optional - HTTPS not required on dev
-# COPY { ApacheSSLCert } /etc/pki/tls/certs/kpmp.crt
-# COPY { ApacheSSLCertKey } /etc/pki/tls/private/kpmp.key
-# RUN chmod 600 /etc/pki/tls/private/kpmp.key
-#Optional
+RUN echo "************** Built Apache WITHOUT Shibboleth **************"
+
 
 EXPOSE 80 443
 

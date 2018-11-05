@@ -46,6 +46,7 @@ COPY ./certs/shibboleth2.xml	/etc/shibboleth/shibboleth2.xml
 COPY ./certs/inc-md-cert.pem /etc/pki/tls/certs/inc-md-cert.pem
 COPY ./container_files/etc/shibboleth/attribute-map.xml /etc/shibboleth/attribute-map.xml
 
+RUN echo "************** Built Apache WITH Shibboleth **************"
 
 EXPOSE 80 443
 ENTRYPOINT ["sh", "-c", "httpd-shib-foreground $ENV_APACHE_SERVER_NAME"]
