@@ -4,5 +4,4 @@ env-local
 env-vagrant
 apache-local/certs
 apache-shib/certs
-docker-compose.yml
 

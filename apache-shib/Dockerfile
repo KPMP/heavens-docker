@@ -20,8 +20,6 @@ LABEL Build docker build --rm --tag $maintainer/$imagename .
 # Add starters and installers
 ADD ./container_files /opt
 
-RUN sed -i "s/ENV_APACHE_SERVER_NAME/$ENV_APACHE_SERVER_NAME/g" /opt/etc/httpd/conf.d/virt.conf 
-
 RUN curl -o /etc/yum.repos.d/security:shibboleth.repo \
       http://download.opensuse.org/repositories/security://shibboleth/CentOS_7/security:shibboleth.repo \
       && yum -y update \
@@ -52,4 +50,4 @@ COPY ./container_files/etc/shibboleth/attribute-map.xml /etc/shibboleth/attribut
 
 
 EXPOSE 80 443
-CMD ["httpd-shib-foreground", "-f"]
+ENTRYPOINT ["sh", "-c", "httpd-shib-foreground $ENV_APACHE_SERVER_NAME"]
