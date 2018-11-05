@@ -5,8 +5,6 @@ ARG maintainer=tier
 ARG imagename=shibboleth_sp
 ARG version=2.6.1
 ARG ENV_APACHE_SERVER_NAME
-ARG ENV_SSL_CERT_FILE
-ARG ENV_SSL_KEY_FILE
 
 LABEL Maintainer=$maintainer
 LABEL Vendor="Internet2"

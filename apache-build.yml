@@ -7,8 +7,6 @@ services:
       context: ${ENV_APACHE_TARGET}
       args:
         - ENV_APACHE_SERVER_NAME=${ENV_APACHE_SERVER_NAME}
-        - ENV_SSL_CERT_FILE=${ENV_SSL_CERT_FILE}
-        - ENV_SSL_KEY_FILE=${ENV_SSL_KEY_FILE}
     ports: 
       - "80:80"
       - "443:443"
