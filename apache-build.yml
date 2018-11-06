@@ -1,0 +1,27 @@
+version: "3"
+services:
+
+  apache:
+    container_name: apache
+    build:  
+      context: ${ENV_APACHE_TARGET}
+      args:
+        - ENV_APACHE_SERVER_NAME=${ENV_APACHE_SERVER_NAME}
+    ports: 
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ${ENV_REACT_APPDIR}/build:/var/www/html
+    networks:
+      local:
+        aliases:
+          - apache
+
+networks:
+  local:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - 
+          subnet: 10.252.0.0/16
