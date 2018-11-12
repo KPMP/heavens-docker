@@ -12,16 +12,3 @@ services:
       - "443:443"
     volumes:
       - ${ENV_REACT_APPDIR}/build:/var/www/html
-    networks:
-      local:
-        aliases:
-          - apache
-
-networks:
-  local:
-    driver: bridge
-    ipam:
-      driver: default
-      config:
-        - 
-          subnet: 10.252.0.0/16
