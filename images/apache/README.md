@@ -1,17 +1,15 @@
 # Apache image builds
-==============
 
 ## Introduction
---------------
 
 This directory is a set of Dockerfiles and a build script for creating our apache images.
 
 There are two directories:
 
 * apache-shib
-** Contains apache configuration using mod-shib and https.  All of the certificates are stored on the host machine.
+  * Contains apache configuration using mod-shib and https.  All of the certificates are stored on the host machine.
 * apache-basic
-** Contains apache configuration with no mod-shib and no https.  This is used for local workstations
+  * Contains apache configuration with no mod-shib and no https.  This is used for local workstations
 
 In order to build an image:
 
@@ -23,7 +21,7 @@ In order to build an image:
     kingstonduo/apache                              apache-basic            615e894067ef        6 days ago          548MB
     ...    
 
-Capture the Image Id of the most recent image in the list.
+    ## Capture the Image Id of the most recent image in the list.
 
     $ docker tag cb7c4dc7573f kingstonduo/apache:apache-shib
         OR
