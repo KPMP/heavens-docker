@@ -5,8 +5,6 @@ services:
     container_name: apache
     build:  
       context: ${ENV_APACHE_TARGET}
-      args:
-        - ENV_APACHE_SERVER_NAME=${ENV_APACHE_SERVER_NAME}
     ports: 
       - "80:80"
       - "443:443"
