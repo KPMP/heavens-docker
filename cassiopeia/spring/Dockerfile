@@ -50,4 +50,4 @@ RUN set -o errexit -o nounset \
 
 EXPOSE 8080 3030
 
-CMD ["tail", "-f", "/dev/null"]
+CMD ["gradle", "bootRun"]
