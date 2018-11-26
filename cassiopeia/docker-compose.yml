@@ -40,6 +40,7 @@ services:
       - "${ENV_APACHE_TOMCAT_PORT:-3030}:3030"
     volumes:
       - "${ENV_SPRING_BOOT_APPDIR}:/home/gradle"
+      - "${ENV_WSI_FILES_DIR}:/data/deepZoomImages"
     environment:
       SPRING_BOOT_ENVIRONMENT: ${ENV_DOCKER_ENVIRONMENT}
     privileged: true
