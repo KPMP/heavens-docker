@@ -12,8 +12,8 @@ services:
     volumes:
       - ${ENV_REACT_APPDIR}/build:/var/www/html
       - ${ENV_SSL_CERT_DIR}:/certs
-      - ${ENV_WSI_FILES_DIR}:/var/www/html/deepZoomImages
-      - ${ENV_WSI_ORIG_FILES_DIR}:/var/www/html/knowledgeEnvironment/deepZoom
+      - ${ENV_WSI_FILES_DIR}:/data/deepZoomImages
+      - ${ENV_WSI_ORIG_FILES_DIR}:/data/knowledgeEnvironment/deepZoom
       - ./apache/cassiopeia.conf:/etc/httpd/conf.d/cassiopeia.conf
     networks:
       local:
