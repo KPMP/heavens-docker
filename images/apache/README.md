@@ -8,9 +8,10 @@ There are two directories:
 
 * apache-shib
   * Contains apache configuration using mod-shib and https.  All of the certificates are stored on the host machine.
+* apache-ssl
+  * Contains apache configuration using just https. All certificates are stored on the host machine. 
 * apache-basic
   * Contains apache configuration with no mod-shib and no https.  This is used for local workstations
-
 In order to build an image:
 
     $ docker-compose build
