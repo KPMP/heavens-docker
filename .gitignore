@@ -4,3 +4,4 @@ env-local
 env-vagrant
 images/**/certs
 images/**/.env
+*.swp
