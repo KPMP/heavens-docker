@@ -12,8 +12,11 @@ There are two directories:
   * Contains apache configuration using just https. All certificates are stored on the host machine. 
 * apache-basic
   * Contains apache configuration with no mod-shib and no https.  This is used for local workstations
-In order to build an image:
 
+In order to build an image:
+  
+    ## Edit the .env file and set ENV_APACHE_TARGET to point at the directory containing the image you want to build.  
+    $ vi .env
     $ docker-compose build
     $ docker images
     REPOSITORY                                      TAG                     IMAGE ID            CREATED             SIZE
