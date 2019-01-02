@@ -12,7 +12,7 @@ services:
     volumes:
       - ${ENV_REACT_BASE_APPDIR}/build:/var/www/html
       - ${ENV_REACT_DEMO_APPDIR_ONE}/build:/var/www/html/dpr
-      - ${ENV_REACT_DEMO_APPDIR_TWO}:/var/www/html/atlas
+      - ${ENV_REACT_DEMO_APPDIR_TWO}/build:/var/www/html/atlas
       - ${ENV_SSL_CERT_DIR}:/certs
       - ${ENV_WSI_FILES_DIR}:/data/deepZoomImages
       - ${ENV_WSI_ORIG_FILES_DIR}:/data/knowledgeEnvironment/deepZoom
