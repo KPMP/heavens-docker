@@ -2,7 +2,7 @@ version: "3"
 services:
 
   apache:
-    container_name: apache
+    container_name: delphinus-apache
     image: ${ENV_APACHE_CONTAINER} 
     ports:
       - "80:80"
@@ -10,16 +10,21 @@ services:
     environment:
       - ENV_APACHE_SERVER_NAME=${ENV_APACHE_SERVER_NAME}
     volumes:
-      - ${ENV_REACT_APPDIR}/build:/var/www/html
+      - ${ENV_REACT_BASE_APPDIR}/build:/var/www/html
+      - ${ENV_REACT_DEMO_APPDIR_ONE}/build:/var/www/html/dpr
+      - ${ENV_REACT_DEMO_APPDIR_TWO}/build:/var/www/html/atlas
       - ${ENV_SSL_CERT_DIR}:/certs
       - ${ENV_SHIB_CONF_DIR}/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
+      - ${ENV_WSI_FILES_DIR}:/data/deepZoomImages
+      - ${ENV_WSI_ORIG_FILES_DIR}:/data/knowledgeEnvironment/deepZoom
+      - ${ENV_APACHE_CONF_DIR}/delphinus.conf:/etc/httpd/conf.d/delphinus.conf
     networks:
       local:
         aliases:
-          - apache
+          - delphinus-apache
 
   mongodb:
-    container_name: mongodb
+    container_name: delphinus-mongodb
     image: mongo:4.0
     environment:
        - MONGO_DATA_DIR=/data/db
@@ -32,55 +37,24 @@ services:
     networks:
       local:
         aliases:
-          - mongodb
+          - delphinus-mongodb
 
   spring:
-    container_name: spring
+    container_name: delphinus-spring
     build: ./spring
     ports:
       - "${ENV_APACHE_TOMCAT_PORT:-3030}:3030"
     volumes:
       - "${ENV_SPRING_BOOT_APPDIR}:/home/gradle"
-      - "${ENV_DATALAKE_FILE_DIR}:/data"
     environment:
       SPRING_BOOT_ENVIRONMENT: ${ENV_DOCKER_ENVIRONMENT}
     privileged: true
     networks:
       local:
         aliases:
-          - spring
-
-  kibana:
-    container_name: kibana
-    image: docker.elastic.co/kibana/kibana:6.2.4
-    ports: 
-      - "127.0.0.1:5601:5601"
-    environment:
-      SERVER_NAME: elasticsearch
-      ELASTICSEARCH_URL: http://elasticsearch:9200
-    networks:
-      local:
-        aliases:
-          - kibana
-
-  elasticsearch:
-    container_name: elasticsearch 
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.2.4
-    volumes: 
-     - "esdata:/usr/share/elasticsearch/data"
-    expose:
-      - "9200"
-      - "9300"
-    environment:
-      discovery.type: "single-node"
-    networks:
-      local:
-        aliases:
-          - elasticsearch
-
+          - delphinus-spring
 
 volumes:
-  esdata:
   mongodbdata:
 
 networks:
@@ -90,4 +64,4 @@ networks:
       driver: default
       config:
         - 
-          subnet: 10.252.0.0/16
+          subnet: 10.3.0.0/16
