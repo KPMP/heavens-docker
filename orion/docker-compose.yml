@@ -12,6 +12,7 @@ services:
     volumes:
       - ${ENV_REACT_APPDIR}/build:/var/www/html
       - ${ENV_SSL_CERT_DIR}:/certs
+      - ${ENV_SHIB_CONF_DIR}/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
     networks:
       local:
         aliases:
