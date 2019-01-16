@@ -38,7 +38,7 @@ services:
 
   spring:
     container_name: cassie-spring
-    build: ./spring
+    image: kingstonduo/kpmp-spring
     ports:
       - "${ENV_APACHE_TOMCAT_PORT:-3030}:3030"
     volumes:

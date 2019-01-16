@@ -4,7 +4,7 @@
 
 This directory is a set of Dockerfiles and a build script for creating our apache images.
 
-There are two directories:
+There are three directories:
 
 * apache-shib
   * Contains apache configuration using mod-shib and https.  All of the certificates are stored on the host machine.
