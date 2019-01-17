@@ -11,7 +11,7 @@ Some useful Docker commands:
 - `docker container prune`  //remove unused containers
 - `docker exec -it [container_name] bash`  //login to container
 - `docker cp [local_file] [container_name]:[container_file]`  //copy file into container
-- `docker images` list images
+- `docker images` //list images
 - `docker run --rm --volumes-from [container_name] -v [local_dir]:/backup ubuntu tar cvf /backup/backup.tar /[volume_name]`  //backup Docker volume
 - `docker run --rm --volumes-from [container_name] -v [local_dir]:/backup ubuntu bash -c "cd /[volume_name] && tar xvf /backup/backup.tar --strip 1"`  //restore volume backup
 
