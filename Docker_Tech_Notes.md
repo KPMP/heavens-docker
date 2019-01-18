@@ -17,4 +17,17 @@ Some useful Docker commands:
 - `docker run --rm --volumes-from [container_name] -v [local_dir]:/backup ubuntu tar cvf /backup/backup.tar /[volume_name]`  //backup Docker volume
 - `docker run --rm --volumes-from [container_name] -v [local_dir]:/backup ubuntu bash -c "cd /[volume_name] && tar xvf /backup/backup.tar --strip 1"`  //restore volume backup
 
+# Production Mongo Considerations
 
+Most of these notes are from here: https://docs.mongodb.com/manual/administration/production-notes/
+
+- Make sure httpd interface is disabled - https://docs.mongodb.com/manual/administration/production-notes/#disable-http-interface
+- Add access control 
+- Use XFS filesystem - https://docs.mongodb.com/manual/administration/production-notes/#kernel-and-file-systems
+- Adjust cache. Looks like Mongo on upload has 1.5 for cache. - https://docs.mongodb.com/manual/administration/production-notes/#id3
+  - If you run mongod in a container (e.g. lxc, cgroups, Docker, etc.) that does not have access to all of the RAM available in a system, you must set storage.wiredTiger.engineConfig.cacheSizeGB to a value less than the amount of RAM available in the container. The exact amount depends on the other processes running in the container.
+- Add montoring - https://docs.mongodb.com/manual/administration/free-monitoring/, https://www.mongodb.com/blog/post/introducing-free-cloud-monitoring-for-mongodb
+- Noop scheduler when using VM - https://docs.mongodb.com/manual/administration/production-notes/#scheduling
+- Use Enhanced Networking for EC2 - https://docs.mongodb.com/manual/administration/production-notes/#aws-ec2
+- Adjust VMWare settings for Pathology-hosted - https://docs.mongodb.com/manual/administration/production-notes/#vmware
+- Make backups - https://docs.mongodb.com/manual/core/backups/
