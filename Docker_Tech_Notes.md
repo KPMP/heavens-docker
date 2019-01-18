@@ -21,6 +21,8 @@ i.e. DIRNAME_VOLUMENAME. Volumes are never deleted unless you explicitly tell Do
 
 Most of these notes are from here: https://docs.mongodb.com/manual/administration/production-notes/
 
+To get Mongo configurationin Mongo console (`mongo`): `db.runCommand( { serverStatus: 1 } )` 
+
 - Make sure httpd interface is disabled - https://docs.mongodb.com/manual/administration/production-notes/#disable-http-interface
 - Add access control 
 - Use XFS filesystem - https://docs.mongodb.com/manual/administration/production-notes/#kernel-and-file-systems
