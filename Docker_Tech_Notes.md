@@ -13,6 +13,7 @@ Some useful Docker commands:
 - `docker exec -it [container_name] bash`  //login to container
 - `docker cp [local_file] [container_name]:[container_file]`  //copy file into container
 - `docker images` //list images
+-  `docker exec [container_name] sh -c 'exec mongodump -d [database_name] --archive' > /some/path/on/your/host/all-collections.archive` //backup Mongo data
 - `docker run --rm --volumes-from [container_name] -v [local_dir]:/backup ubuntu tar cvf /backup/backup.tar /[volume_name]`  //backup Docker volume
 - `docker run --rm --volumes-from [container_name] -v [local_dir]:/backup ubuntu bash -c "cd /[volume_name] && tar xvf /backup/backup.tar --strip 1"`  //restore volume backup
 
