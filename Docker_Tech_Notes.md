@@ -5,7 +5,7 @@ We are using a Docker-managed volume for storing Mongo data (see https://docs.do
 The Docker volumes are named using the parent directory of the docker-compose file and the volume name used in the docker-compose file,
 i.e. DIRNAME_VOLUMENAME. Volumes are never deleted unless you explicitly tell Docker to do so. 
 
-Some useful Docker commands:
+# Useful Docker Commands
 - `docker volume ls`  //list all volumes
 - `docker volume prune`  //remove unused volumes
 - `docker image prune`  //remove unused images
