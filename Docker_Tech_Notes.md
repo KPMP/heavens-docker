@@ -1,6 +1,7 @@
 # Volumes and Mongo Data in Docker
 
-We are using a Docker-managed volume for storing Mongo data (see https://docs.docker.com/storage/volumes/).
+We are using a Docker-managed volume for storing Mongo data (see https://docs.docker.com/storage/volumes/) to avoid issues with mounting external file directories, especially in Windows and OSX, see https://docs.docker.com/samples/library/mongo/#where-to-store-data.
+
 The Docker volumes are named using the parent directory of the docker-compose file and the volume name used in the docker-compose file,
 i.e. DIRNAME_VOLUMENAME. Volumes are never deleted unless you explicitly tell Docker to do so. 
 
