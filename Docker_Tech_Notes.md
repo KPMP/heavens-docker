@@ -23,6 +23,8 @@ Most of these notes are from here: https://docs.mongodb.com/manual/administratio
 
 To get Mongo configuration in Mongo console (`mongo`): `db.runCommand( { serverStatus: 1 } )` 
 
+How to configure Mongo in Docker: https://docs.docker.com/samples/library/mongo/#configuration
+
 - Make sure httpd interface is disabled - https://docs.mongodb.com/manual/administration/production-notes/#disable-http-interface
 - Add access control 
 - Use XFS filesystem - https://docs.mongodb.com/manual/administration/production-notes/#kernel-and-file-systems
