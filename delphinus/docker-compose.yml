@@ -10,7 +10,7 @@ services:
     environment:
       - ENV_APACHE_SERVER_NAME=${ENV_APACHE_SERVER_NAME}
     volumes:
-      - ${ENV_REACT_BASE_APPDIR}/build:/var/www/html
+      - ${ENV_REACT_BASE_APPDIR}/build:/var/www/html/landing
       - ${ENV_REACT_DEMO_APPDIR_ONE}/build:/var/www/html/dpr
       - ${ENV_REACT_DEMO_APPDIR_TWO}/build:/var/www/html/atlas
       - ${ENV_SSL_CERT_DIR}:/certs
