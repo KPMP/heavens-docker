@@ -1,0 +1,8 @@
+{"_id":{"$oid":"5c45d31dcb5e7100489e9e2c"},"firstName":"Michael","lastName":"Rose","displayName":"Michael Rose","email":"rosemi@umich.edu","_class":"org.kpmp.users.User"}
+{"_id":{"$oid":"5c49b80acb5e71004965b0f9"},"firstName":"Becky","lastName":"Steck","displayName":"Becky Steck","email":"roesch@umich.edu","_class":"org.kpmp.users.User"}
+{"_id":{"$oid":"5c5b9192cb5e71004821dc7e"},"firstName":"Ho Jung","lastName":"Choi","displayName":"Ho Jung Choi","email":"hojungc@umich.edu","_class":"org.kpmp.users.User"}
+{"_id":{"$oid":"5c66d5decb5e710048509e77"},"firstName":"Rebecca","lastName":"Reamy","displayName":"Rebecca Reamy","email":"rlreamy@umich.edu","_class":"org.kpmp.users.User"}
+{"_id":{"$oid":"5c7575605471f40049a3341a"},"firstName":"Zachary","lastName":"Wright","displayName":"Zachary Charles Wright","email":"zwright@umich.edu","_class":"org.kpmp.users.User"}
+{"_id":{"$oid":"5c92a4c97610e120102aa5dd"},"firstName":"Invisible","lastName":"Man","displayName":"You can't see me","email":"invisible@nothere.com","_class":"org.kpmp.users.User"}
+{"_id":{"$oid":"5c991df6cb5e710049c73519"},"firstName":"Ross","lastName":"Smith","email":"rossmith@umich.edu","_class":"org.kpmp.users.User"}
+{"_id":{"$oid":"5c9bb5f94857f00048852d46"},"firstName":"Rachel","lastName":"Dull","email":"roram@umich.edu","_class":"org.kpmp.users.User"}
