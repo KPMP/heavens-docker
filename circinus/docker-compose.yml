@@ -2,7 +2,7 @@ version: "3"
 services:
 
   apache:
-    container_name: delphinus-apache
+    container_name: circinus-apache
     image: ${ENV_APACHE_CONTAINER} 
     ports:
       - "80:80"
@@ -10,16 +10,20 @@ services:
     environment:
       - ENV_APACHE_SERVER_NAME=${ENV_APACHE_SERVER_NAME}
     volumes:
-      - ${ENV_REACT_APPDIR}/build:/var/www/html/dpr
+      - ${ENV_REACT_BASE_APPDIR}/build:/var/www/html/landing
+      - ${ENV_REACT_DEMO_APPDIR_ONE}/build:/var/www/html/dpr
+      - ${ENV_REACT_DEMO_APPDIR_TWO}/build:/var/www/html/atlas
+      - ${ENV_REACT_DEMO_APPDIR_THREE}/build:/var/www/html/gene-search
+      - ${ENV_GENE_EXPR_DATA_DIR}:/var/www/html/data/gene-expression
       - ${ENV_SSL_CERT_DIR}:/certs
-      - ${ENV_SHIB_CONF_DIR}/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
       - ${ENV_WSI_FILES_DIR}:/data/deepZoomImages
       - ${ENV_WSI_ORIG_FILES_DIR}:/data/knowledgeEnvironment/deepZoom
+      - ${ENV_APACHE_CONF_DIR}/circinus.conf:/etc/httpd/conf.d/circinus.conf
+      - ${ENV_SHIB_CONF_DIR}/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
     networks:
       local:
         aliases:
-          - delphinus-apache
-
+          - circinus-apache
   mongodb:
     container_name: delphinus-mongodb
     image: mongo:4.0
@@ -53,7 +57,6 @@ services:
 
 volumes:
   mongodbdata:
-
 networks:
   local:
     driver: bridge
@@ -61,4 +64,4 @@ networks:
       driver: default
       config:
         - 
-          subnet: 10.3.0.0/16
+          subnet: 10.4.0.0/16

@@ -12,6 +12,10 @@ There are three directories:
   * Contains apache configuration using just https. All certificates are stored on the host machine. 
 * apache-basic
   * Contains apache configuration with no mod-shib and no https.  This is used for local workstations
+* apache-shib-demo
+  * Contains the apache configuration using mod-shib, https, and rewrites specifically for `demo.kpmp.org` and its environments.
+* apache-demo
+  * Contains the apache configuration with no mod-shib and no https.  This is used for local workstations for the demo site.
 
 In order to build an image:
   
