@@ -8,6 +8,8 @@ services:
       - elasticsearch
     ports: 
       - "127.0.0.1:5601:5601"
+    volumes:
+      - ./kibana/config/kibana.yml:/usr/share/kibana/kibana.yml
     environment:
       SERVER_NAME: elasticsearch
       ELASTICSEARCH_URL: http://elasticsearch:9200
@@ -21,6 +23,7 @@ services:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.0.1
     volumes: 
      - "esdata:/usr/share/elasticsearch/data"
+     - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
     expose:
       - "9200"
     environment:
