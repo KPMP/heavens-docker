@@ -45,39 +45,15 @@ services:
     environment:
       SPRING_BOOT_ENVIRONMENT: ${ENV_DOCKER_ENVIRONMENT}
     privileged: true
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: "localhost:24224"
+        tag: "orion-data"
     networks:
       local:
         aliases:
           - spring
-
-  kibana:
-    container_name: kibana
-    image: docker.elastic.co/kibana/kibana:6.2.4
-    ports: 
-      - "127.0.0.1:5601:5601"
-    environment:
-      SERVER_NAME: elasticsearch
-      ELASTICSEARCH_URL: http://elasticsearch:9200
-    networks:
-      local:
-        aliases:
-          - kibana
-
-  elasticsearch:
-    container_name: elasticsearch 
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.2.4
-    volumes: 
-     - "esdata:/usr/share/elasticsearch/data"
-    expose:
-      - "9200"
-      - "9300"
-    environment:
-      discovery.type: "single-node"
-    networks:
-      local:
-        aliases:
-          - elasticsearch
-
 
 volumes:
   esdata:
