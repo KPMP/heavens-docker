@@ -9,7 +9,7 @@ services:
     ports: 
       - "127.0.0.1:5601:5601"
     volumes:
-      - ./kibana/config/kibana.yml:/usr/share/kibana/kibana.yml
+      - ${ENV_KIBANA_CONF_DIR}/kibana.yml:/usr/share/kibana/kibana.yml
     environment:
       SERVER_NAME: elasticsearch
       ELASTICSEARCH_URL: http://elasticsearch:9200
@@ -23,7 +23,7 @@ services:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.0.1
     volumes: 
      - "esdata:/usr/share/elasticsearch/data"
-     - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+     - ${ENV_ES_CONF_DIR}/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
     expose:
       - "9200"
     environment:
@@ -37,8 +37,8 @@ services:
     container_name: fluentd
     build: ./fluentd
     volumes:
-      - ./fluentd/conf:/fluentd/etc
-      - ./logs:/logs
+      - ${ENV_FLUENTD_CONF_DIR}:/fluentd/etc
+      - ${ENV_FLUENTD_LOG_DIR}:/logs
     ports:
       - "24224:24224"
     networks:
