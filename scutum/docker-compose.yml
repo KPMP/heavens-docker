@@ -1,0 +1,42 @@
+version: "3"
+services:
+
+  apache:
+    container_name: apache
+    image: ${ENV_APACHE_CONTAINER} 
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - ENV_APACHE_SERVER_NAME=${ENV_APACHE_SERVER_NAME}
+    volumes:
+      - ${ENV_SSL_CERT_DIR}:/certs
+      - ${ENV_SHIB_CONF_DIR}/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
+    networks:
+      local:
+        aliases:
+          - apache
+
+  spring:
+    container_name: spring
+    image: kingstonduo/kpmp-spring
+    ports:
+      - "${ENV_APACHE_TOMCAT_PORT:-3030}:3030"
+    volumes:
+      - "${ENV_SPRING_BOOT_APPDIR}:/home/gradle"
+    environment:
+      SPRING_BOOT_ENVIRONMENT: ${ENV_DOCKER_ENVIRONMENT}
+    privileged: true
+    networks:
+      local:
+        aliases:
+          - spring
+
+networks:
+  local:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - 
+          subnet: 10.252.0.0/16
