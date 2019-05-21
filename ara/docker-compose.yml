@@ -35,7 +35,7 @@ services:
 
   fluentd:
     container_name: fluentd
-    build: ./fluentd
+    image: kingstonduo/fluentd:1.0
     volumes:
       - ${ENV_FLUENTD_CONF_DIR}:/fluentd/etc
       - ${ENV_FLUENTD_LOG_DIR}:/logs
