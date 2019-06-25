@@ -21,9 +21,23 @@ services:
         aliases:
           - spring
 
+  postfix:
+    container_name: postfix_relay
+    image: juanluisbaptiste/postfix:latest
+    expose:
+      - 25
+    environment:
+      SMTP_SERVER: smtp.gmail.com
+      SMTP_USERNAME: kpmpNotifications@gmail.com 
+      SMTP_PASSWORD: lcbzgrkijgtmaiqn 
+      SERVER_HOSTNAME: fqdn.example.com 
+    networks:
+      orion_local:
+        aliases:
+          - postfix
+
 volumes:
   esdata:
-  mongodbdata:
 
 networks:
   orion_local:
