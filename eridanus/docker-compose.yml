@@ -2,7 +2,7 @@ version: "3"
 services:
 
   spring:
-    container_name: libra_spring
+    container_name: eridanus_spring
     image: kingstonduo/kpmp-spring
     ports:
       - "${ENV_APACHE_TOMCAT_PORT:-3040}:3040"
@@ -15,11 +15,11 @@ services:
       driver: "fluentd"
       options:
         fluentd-address: "localhost:24224"
-        tag: "libra-data"
+        tag: "eridanus-data"
     networks:
       orion_local:
         aliases:
-          - spring
+          - eridanus_spring
 
   postfix:
     container_name: postfix_relay
