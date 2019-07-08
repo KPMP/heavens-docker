@@ -1,4 +1,4 @@
-version: "3"
+version: "3.5"
 services:
 
   apache:
@@ -61,6 +61,7 @@ volumes:
 
 networks:
   local:
+    name: dataLake
     driver: bridge
     ipam:
       driver: default

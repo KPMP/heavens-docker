@@ -1,0 +1,29 @@
+version: "3.5"
+services:
+
+  apache:
+    container_name: apache-proxy
+    image: kingstonduo/apache:apache-basic 
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ${ENV_SSL_CERT_DIR}:/certs
+      - ${ENV_SHIB_CONF_DIR}/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
+      - ${ENV_APACHE_CONF_DIR}/proxy.conf:/etc/httpd/conf.d/proxy.conf
+    networks:
+      local:
+        aliases:
+          - apache
+
+volumes:
+  esdata:
+
+networks:
+  local:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - 
+          subnet: 10.10.0.0/16

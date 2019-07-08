@@ -38,5 +38,5 @@ volumes:
   esdata:
 
 networks:
-  orion_local:
+  dataLake:
     external: true
