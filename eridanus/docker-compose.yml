@@ -4,8 +4,6 @@ services:
   spring:
     container_name: eridanus_spring
     image: kingstonduo/kpmp-spring
-    ports:
-      - "${ENV_APACHE_TOMCAT_PORT:-3040}:3040"
     volumes:
       - "${ENV_SPRING_BOOT_APPDIR}:/home/gradle"
     environment:
