@@ -6,6 +6,7 @@ This repository holds all of the docker-compose.yml files and Dockerfiles needed
 | ------------ | ------------ |
 | ara  | Ara is the log aggregator.  It is intended to be a central repository for logs from the various apps hosted at UMich  |
 | cassiopeia  | Cassiopeia is the code name for the Participant Whole Slide Image Viewer (mydata.kpmp.org)  |
+| circinus | Circinus is the code name for the KPMP Demo site (demo.kpmp.org) |
 | delphinus  |  Delphinus is the code name for the Digital Pathology Repository (or DPR) (currently at demo.kpmp.org/dpr)  |
 | eridanus  | Eridanus is the code name for the notification service. It is intended to notify individuals when particular events happen (no UI)  |
 | libra  | Libra is the code name for the curation tools (curation.kpmp.org)  |
@@ -21,6 +22,8 @@ The images directory contains a set of shared docker images that we use across m
 ### Ara
 
 ### Cassiopeia
+
+### Circinus
 
 ### Delphinus
 

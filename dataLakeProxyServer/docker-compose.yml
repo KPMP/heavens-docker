@@ -8,6 +8,8 @@ services:
       - "80:80"
       - "443:443"
     volumes:
+      - ${ENV_UPLOADER_BASE_DIR}/build:/var/www/html/upload
+      - ${ENV_CURATION_BASE_DIR}/build:/var/www/html/curation
       - ${ENV_SSL_CERT_DIR}:/certs
       - ${ENV_SHIB_CONF_DIR}/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
     networks:
@@ -20,6 +22,7 @@ volumes:
 
 networks:
   local:
+    name: dataLake
     driver: bridge
     ipam:
       driver: default
