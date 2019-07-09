@@ -2,7 +2,7 @@ version: "3"
 services:
 
   spring:
-    container_name: eridanus_spring
+    container_name: eridanus-spring
     image: kingstonduo/kpmp-spring
     volumes:
       - "${ENV_SPRING_BOOT_APPDIR}:/home/gradle"
@@ -17,10 +17,10 @@ services:
     networks:
       orion_local:
         aliases:
-          - eridanus_spring
+          - eridanus-spring
 
   postfix:
-    container_name: postfix_relay
+    container_name: postfix-relay
     image: juanluisbaptiste/postfix:latest
     expose:
       - 25
