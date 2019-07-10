@@ -1,6 +1,23 @@
 version: "3"
 services:
 
+  apache:
+    container_name: libra-apache
+    image: ${ENV_APACHE_CONTAINER} 
+    ports:
+      - "8080:8080"
+      - "8443:8443"
+    environment:
+      - ENV_APACHE_SERVER_NAME=${ENV_APACHE_SERVER_NAME}
+    volumes:
+      - ${ENV_REACT_APPDIR}/build:/var/www/html
+      - ${ENV_SSL_CERT_DIR}:/certs
+      - ${ENV_SHIB_CONF_DIR}/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
+    networks:
+      orion_local:
+        aliases:
+          - libra-apache
+
   spring:
     container_name: libra-spring
     image: kingstonduo/kpmp-spring
