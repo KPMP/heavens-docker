@@ -1,0 +1,42 @@
+version: "3"
+services:
+
+  spring:
+    container_name: eridanus-spring
+    image: kingstonduo/kpmp-spring
+    volumes:
+      - "${ENV_SPRING_BOOT_APPDIR}:/home/gradle"
+    environment:
+      SPRING_BOOT_ENVIRONMENT: ${ENV_DOCKER_ENVIRONMENT}
+    privileged: true
+#    logging:
+#      driver: "fluentd"
+#      options:
+#        fluentd-address: "localhost:24224"
+#        tag: "eridanus-data"
+    networks:
+      orion_local:
+        aliases:
+          - eridanus-spring
+
+  postfix:
+    container_name: postfix-relay
+    image: juanluisbaptiste/postfix:latest
+    expose:
+      - 25
+    environment:
+      SMTP_SERVER: smtp.gmail.com
+      SMTP_USERNAME: kpmpNotifications@gmail.com 
+      SMTP_PASSWORD: lcbzgrkijgtmaiqn 
+      SERVER_HOSTNAME: fqdn.example.com 
+    networks:
+      orion_local:
+        aliases:
+          - postfix
+
+volumes:
+  esdata:
+
+networks:
+  orion_local:
+    external: true

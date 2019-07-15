@@ -2,7 +2,7 @@ version: "3"
 services:
 
   apache:
-    container_name: apache
+    container_name: scutum-apache
     image: ${ENV_APACHE_CONTAINER} 
     ports:
       - "80:80"
@@ -10,54 +10,27 @@ services:
     environment:
       - ENV_APACHE_SERVER_NAME=${ENV_APACHE_SERVER_NAME}
     volumes:
-      - ${ENV_REACT_APPDIR}/build:/var/www/html
       - ${ENV_SSL_CERT_DIR}:/certs
       - ${ENV_SHIB_CONF_DIR}/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
     networks:
       local:
         aliases:
-          - apache
-
-  mongodb:
-    container_name: mongodb
-    image: mongo:4.0
-    environment:
-       - MONGO_DATA_DIR=/data/db
-       - MONGO_LOG_DIR=/dev/null
-    volumes:
-       - mongodbdata:/data/db 
-    ports:
-      - "127.0.0.1:${ENV_MONGO_PORT:-27017}:27017"
-    command: mongod 
-    networks:
-      local:
-        aliases:
-          - mongodb
+          - scutum-apache
 
   spring:
-    container_name: spring
+    container_name: scutum-spring
     image: kingstonduo/kpmp-spring
     ports:
       - "${ENV_APACHE_TOMCAT_PORT:-3030}:3030"
     volumes:
       - "${ENV_SPRING_BOOT_APPDIR}:/home/gradle"
-      - "${ENV_DATALAKE_FILE_DIR}:/data"
     environment:
       SPRING_BOOT_ENVIRONMENT: ${ENV_DOCKER_ENVIRONMENT}
     privileged: true
-#    logging:
-#      driver: "fluentd"
-#      options:
-#        fluentd-address: "localhost:24224"
-#        tag: "orion-data"
     networks:
       local:
         aliases:
-          - spring
-
-volumes:
-  esdata:
-  mongodbdata:
+          - scutum-spring
 
 networks:
   local:
