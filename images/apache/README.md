@@ -16,6 +16,8 @@ There are three directories:
   * Contains the apache configuration using mod-shib, https, and rewrites specifically for `demo.kpmp.org` and its environments.
 * apache-demo
   * Contains the apache configuration with no mod-shib and no https.  This is used for local workstations for the demo site.
+* apache-dl-proxy
+  * Contains an apache configuration with mod-shib and https used for upload.kpmp.org and curation.kpmp.org (and the dev versions)
 
 In order to build an image:
   
