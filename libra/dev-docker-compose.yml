@@ -14,7 +14,7 @@ services:
       - ${ENV_SSL_CERT_DIR}:/certs
       - ${ENV_SHIB_CONF_DIR}/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
     networks:
-      orion_local:
+      dataLake:
         aliases:
           - libra-apache
 
@@ -34,7 +34,7 @@ services:
 #        fluentd-address: "localhost:24224"
 #        tag: "orion-data"
     networks:
-      orion_local:
+      dataLake:
         aliases:
           - libra-spring
 
