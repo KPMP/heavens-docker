@@ -15,7 +15,7 @@ services:
 #        fluentd-address: "localhost:24224"
 #        tag: "eridanus-data"
     networks:
-      orion_local:
+      dataLake:
         aliases:
           - eridanus-spring
 
@@ -30,7 +30,7 @@ services:
       SMTP_PASSWORD: lcbzgrkijgtmaiqn 
       SERVER_HOSTNAME: fqdn.example.com 
     networks:
-      orion_local:
+      dataLake:
         aliases:
           - postfix
 
