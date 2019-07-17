@@ -60,9 +60,9 @@ volumes:
   mongodbdata:
 
 networks:
-  name: dataLake
-  ipam:
-    driver: default
-    config:
-      - 
-        subnet: 10.252.0.0/16
+  dataLake:
+    ipam:
+      driver: default
+      config:
+        - 
+          subnet: 10.252.0.0/16
