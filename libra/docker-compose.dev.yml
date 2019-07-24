@@ -1,12 +1,12 @@
-version: "3.5"
+version: "3"
 services:
 
   apache:
-    container_name: apache
+    container_name: libra-apache
     image: ${ENV_APACHE_CONTAINER} 
     ports:
-      - "80:80"
-      - "443:443"
+      - "8080:8080"
+      - "8443:8443"
     environment:
       - ENV_APACHE_SERVER_NAME=${ENV_APACHE_SERVER_NAME}
     volumes:
@@ -16,32 +16,15 @@ services:
     networks:
       dataLake:
         aliases:
-          - apache
-
-  mongodb:
-    container_name: mongodb
-    image: mongo:4.0
-    environment:
-       - MONGO_DATA_DIR=/data/db
-       - MONGO_LOG_DIR=/dev/null
-    volumes:
-       - mongodbdata:/data/db 
-    ports:
-      - "127.0.0.1:${ENV_MONGO_PORT:-27017}:27017"
-    command: mongod 
-    networks:
-      dataLake:
-        aliases:
-          - mongodb
+          - libra-apache
 
   spring:
-    container_name: spring
+    container_name: libra-spring
     image: kingstonduo/kpmp-spring
     ports:
-      - "${ENV_APACHE_TOMCAT_PORT:-3030}:3030"
+      - "${ENV_APACHE_TOMCAT_PORT:-3050}:3050"
     volumes:
       - "${ENV_SPRING_BOOT_APPDIR}:/home/gradle"
-      - "${ENV_DATALAKE_FILE_DIR}:/data"
     environment:
       SPRING_BOOT_ENVIRONMENT: ${ENV_DOCKER_ENVIRONMENT}
     privileged: true
@@ -53,16 +36,11 @@ services:
     networks:
       dataLake:
         aliases:
-          - spring
+          - libra-spring
 
 volumes:
   esdata:
-  mongodbdata:
 
 networks:
-  name: dataLake
-  ipam:
-    driver: default
-    config:
-      - 
-        subnet: 10.252.0.0/16
+  dataLake:
+    external: true
