@@ -14,7 +14,7 @@ services:
       - ${ENV_SSL_CERT_DIR}:/certs
       - ${ENV_SHIB_CONF_DIR}/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
     networks:
-      dataLake:
+      local:
         aliases:
           - apache
 
@@ -30,7 +30,7 @@ services:
       - "127.0.0.1:${ENV_MONGO_PORT:-27017}:27017"
     command: mongod 
     networks:
-      dataLake:
+      local:
         aliases:
           - mongodb
 
@@ -51,7 +51,7 @@ services:
 #        fluentd-address: "localhost:24224"
 #        tag: "orion-data"
     networks:
-      dataLake:
+      local:
         aliases:
           - spring
 
@@ -60,7 +60,8 @@ volumes:
   mongodbdata:
 
 networks:
-  dataLake:
+  local:
+    name: dataLake
     ipam:
       driver: default
       config:
