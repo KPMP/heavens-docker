@@ -1,7 +1,7 @@
 version: "3"
 services:
 
-  spring:
+  libra-spring:
     container_name: libra-spring
     image: kingstonduo/kpmp-spring
     ports:
@@ -17,7 +17,7 @@ services:
 #        fluentd-address: "localhost:24224"
 #        tag: "orion-data"
     networks:
-      orion_local:
+      dataLake:
         aliases:
           - libra-spring
 
