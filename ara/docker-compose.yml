@@ -5,7 +5,9 @@ services:
     container_name: kibana
     image: docker.elastic.co/kibana/kibana:7.0.1
     depends_on: 
-      - elasticsearch
+      - es01
+      - es02
+      - es03
     ports: 
       - "5601:5601"
     volumes:
@@ -18,20 +20,77 @@ services:
         aliases:
           - kibana
 
-  elasticsearch:
-    container_name: elasticsearch 
+  es01:
+    container_name: es01
     image: docker.elastic.co/elasticsearch/elasticsearch:7.0.1
-    volumes: 
-     - "esdata:/usr/share/elasticsearch/data"
-     - ${ENV_ES_CONF_DIR}/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
     expose:
       - "9200"
     environment:
-      discovery.type: "single-node"
+      - node.name=es01
+      - discovery.seed_hosts=es02,es03
+      - cluster.initial_master_nodes=es01,es02,es03
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes: 
+      - esdata01:/usr/share/elasticsearch/data
+      - ${ENV_ES_CONF_DIR}/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
     networks:
       local:
         aliases:
           - elasticsearch
+          
+  es02:
+    container_name: es02
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.0.1
+    expose:
+      - "9200"
+    environment:
+      - node.name=es02
+      - discovery.seed_hosts=es01,es03
+      - cluster.initial_master_nodes=es01,es02,es03
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes: 
+      - esdata02:/usr/share/elasticsearch/data
+      - ${ENV_ES_CONF_DIR}/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    networks:
+      local:
+        aliases:
+          - elasticsearch
+
+  es03:
+    container_name: es03
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.0.1
+    expose:
+      - "9200"
+    environment:
+      - node.name=es03
+      - discovery.seed_hosts=es02,es01
+      - cluster.initial_master_nodes=es01,es02,es03
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes: 
+      - esdata03:/usr/share/elasticsearch/data
+      - ${ENV_ES_CONF_DIR}/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    networks:
+      local:
+        aliases:
+          - elasticsearch          
 
   fluentd:
     container_name: fluentd
@@ -47,7 +106,12 @@ services:
           - fluentd
 
 volumes:
-  esdata:
+  esdata01:
+    driver: local
+  esdata02:
+    driver: local
+  esdata03:
+    driver: local
   mongodbdata:
 
 networks:
