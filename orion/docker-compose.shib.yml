@@ -1,23 +1,6 @@
 version: "3.5"
 services:
 
-#  apache:
-#    container_name: apache
-#    image: ${ENV_APACHE_CONTAINER} 
-#    ports:
-#      - "80:80"
-#      - "443:443"
-#    environment:
-#      - ENV_APACHE_SERVER_NAME=${ENV_APACHE_SERVER_NAME}
-#    volumes:
-#      - ${ENV_REACT_APPDIR}/build:/var/www/html
-#      - ${ENV_SSL_CERT_DIR}:/certs
-#      - ${ENV_SHIB_CONF_DIR}/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
-#    networks:
-#      local:
-#        aliases:
-#          - apache
-
   mongodb:
     container_name: mongodb
     image: mongo:4.0
@@ -42,6 +25,7 @@ services:
     volumes:
       - "${ENV_SPRING_BOOT_APPDIR}:/home/gradle"
       - "${ENV_DATALAKE_FILE_DIR}:/data"
+      - "${ENV_WORKER_LOCATION}:/home/gradle/zipWorker"
     environment:
       SPRING_BOOT_ENVIRONMENT: ${ENV_DOCKER_ENVIRONMENT}
     privileged: true
