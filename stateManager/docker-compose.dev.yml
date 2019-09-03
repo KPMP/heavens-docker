@@ -1,7 +1,7 @@
 version: "3"
 services:
 
-  stateSpring:
+  state-spring:
     container_name: state-spring
     image: kingstonduo/kpmp-spring
     ports:
