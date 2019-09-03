@@ -1,0 +1,24 @@
+version: "3"
+services:
+
+  stateSpring:
+    container_name: state-spring
+    image: kingstonduo/kpmp-spring
+    ports:
+      - "${ENV_APACHE_TOMCAT_PORT:-3050}:3050"
+    volumes:
+      - "${ENV_SPRING_BOOT_APPDIR}:/home/gradle"
+    environment:
+      SPRING_BOOT_ENVIRONMENT: ${ENV_DOCKER_ENVIRONMENT}
+    privileged: true
+    networks:
+      dataLake:
+        aliases:
+          - state-spring
+
+volumes:
+  esdata:
+
+networks:
+  dataLake:
+    external: true
