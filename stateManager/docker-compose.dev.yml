@@ -3,9 +3,9 @@ services:
 
   state-spring:
     container_name: state-spring
-    image: kingstonduo/kpmp-spring
+    image: kingstonduo/state-manager-service
     ports:
-      - "${ENV_APACHE_TOMCAT_PORT:-3050}:3050"
+      - "${ENV_APACHE_TOMCAT_PORT:-3060}:3060"
     volumes:
       - "${ENV_SPRING_BOOT_APPDIR}:/home/gradle"
     environment:
