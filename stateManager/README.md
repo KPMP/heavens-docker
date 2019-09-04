@@ -6,15 +6,24 @@ It will run inside the dataLake network which is created by orion when running o
 
 ## Set up on your local machine
 
-- Pull down the stateManagerService project at http://github.com/KPMP
 - Change directory to heavens-docker/orion
 - docker-compose -f docker-compose.dev.yml up -d
 - Change directory to heavens-docker/stateManager
-- Copy the .env.example to .env
-- Change the values in .env to point at your local statManager code
 - docker-compose -f docker-compose.dev.yml up -d
 
 At this point you should be able to interact with the service by hitting endpoints at http://localhost:3060
+
+As you are working on changes, you should make sure to run ./gradlew build docker in order to create new docker images locally to be used inside docker.  After rebuilding the image, you will need to restart the docker container in order to pick up your changes.
+
+When you are done with your local changes, you will need to push the latest image to cloud.docker.com
+
+1) docker login
+2) Provide username/password (see another developer for these values)
+3) docker push kingstonduo/state-manager-service  // This will push to the 'latest' tag which we are using on our local development machines
+4) docker image ls
+5) Find the image you just built (should be at the top of the list) and grab the hash
+6) docker tag <hash> kingstonduo/state-manager-service:<x.x>  // Where hash is the value you just grabbed, and x.x is the release version you are working on
+7) docker push kingstonduo/state-manager-service:<x.x>
 
 ## Set up in dev, qa or prod
 
@@ -26,6 +35,4 @@ At this point you should be able to interact with the service by hitting endpoin
 - Change directory to heavens-docker/orion
 - docker-compose -f docker-compose.shib.yml up -d
 - Change directory to heavens-docker/stateManager
-- Copy .env.example to .env
-- Edit the values in .env to point at your local stateManager code
 - docker-compose -f docker-compose.prod.yml up -d
