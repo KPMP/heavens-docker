@@ -1,0 +1,29 @@
+version: "3"
+services:
+
+  state-spring:
+    container_name: state-spring
+    image: kingstonduo/state-manager-service:1.0
+    ports:
+      - "${ENV_APACHE_TOMCAT_PORT:-3060}:3060"
+    volumes:
+      - "${ENV_SPRING_BOOT_APPDIR}:/home/gradle"
+    environment:
+      SPRING_BOOT_ENVIRONMENT: ${ENV_DOCKER_ENVIRONMENT}
+    privileged: true
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: "localhost:24224"
+        tag: "state-manager-data"
+    networks:
+      dataLake:
+        aliases:
+          - state-spring
+
+volumes:
+  esdata:
+
+networks:
+  dataLake:
+    external: true

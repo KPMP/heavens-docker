@@ -10,11 +10,12 @@ services:
     environment:
       - ENV_APACHE_SERVER_NAME=${ENV_APACHE_SERVER_NAME}
     volumes:
-      - ${ENV_REACT_APPDIR}/build:/var/www/html/dpr
+      - ${ENV_REACT_APPDIR}/build:/var/www/html
       - ${ENV_SSL_CERT_DIR}:/certs
       - ${ENV_SHIB_CONF_DIR}/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
       - ${ENV_WSI_FILES_DIR}:/data/deepZoomImages
       - ${ENV_WSI_ORIG_FILES_DIR}:/data/knowledgeEnvironment/deepZoom
+      - ${ENV_APACHE_CONF_DIR}/delphinus.conf:/etc/httpd/conf.d/delphinus.conf        
     networks:
       local:
         aliases:
