@@ -36,6 +36,8 @@ Instructions on how to get your machine set up to run Docker for these projects
 -- (on a PC) run 'set COMPOSE_CONVERT_WINDOWS_PATHS=1'
 - Apply & restart docker
 
+WARNING: Docker containers running in Windows 10 can have a wonky date. It is a known issue. 
+
 ### Relationships between projects
 
 Many of the projects are stand-alone, however there are increasingly more projects that are run in conjunction with one another.
