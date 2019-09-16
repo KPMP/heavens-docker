@@ -29,11 +29,11 @@ services:
     environment:
       SPRING_BOOT_ENVIRONMENT: ${ENV_DOCKER_ENVIRONMENT}
     privileged: true
-#    logging:
-#      driver: "fluentd"
-#      options:
-#        fluentd-address: "localhost:24224"
-#        tag: "orion-data"
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: "localhost:24224"
+        tag: "orion-data"
     networks:
       dataLake:
         aliases:
