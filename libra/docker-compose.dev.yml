@@ -5,8 +5,8 @@ services:
     container_name: libra-apache
     image: ${ENV_APACHE_CONTAINER} 
     ports:
-      - "8080:8080"
-      - "8443:8443"
+      - "80:80"
+      - "443:443"
     environment:
       - ENV_APACHE_SERVER_NAME=${ENV_APACHE_SERVER_NAME}
     volumes:
@@ -17,26 +17,6 @@ services:
       dataLake:
         aliases:
           - libra-apache
-
-  spring:
-    container_name: libra-spring
-    image: kingstonduo/kpmp-spring
-    ports:
-      - "${ENV_APACHE_TOMCAT_PORT:-3050}:3050"
-    volumes:
-      - "${ENV_SPRING_BOOT_APPDIR}:/home/gradle"
-    environment:
-      SPRING_BOOT_ENVIRONMENT: ${ENV_DOCKER_ENVIRONMENT}
-    privileged: true
-#    logging:
-#      driver: "fluentd"
-#      options:
-#        fluentd-address: "localhost:24224"
-#        tag: "orion-data"
-    networks:
-      dataLake:
-        aliases:
-          - libra-spring
 
 volumes:
   esdata:
