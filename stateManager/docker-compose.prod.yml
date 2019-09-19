@@ -6,8 +6,6 @@ services:
     image: kingstonduo/state-manager-service:1.0
     ports:
       - "${ENV_APACHE_TOMCAT_PORT:-3060}:3060"
-    volumes:
-      - "${ENV_SPRING_BOOT_APPDIR}:/home/gradle"
     environment:
       SPRING_BOOT_ENVIRONMENT: ${ENV_DOCKER_ENVIRONMENT}
     privileged: true
