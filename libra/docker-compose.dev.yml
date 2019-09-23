@@ -6,7 +6,6 @@ services:
     image: ${ENV_APACHE_CONTAINER} 
     ports:
       - "80:80"
-      - "443:443"
     environment:
       - ENV_APACHE_SERVER_NAME=${ENV_APACHE_SERVER_NAME}
     volumes:
