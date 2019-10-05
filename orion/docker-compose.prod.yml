@@ -28,6 +28,7 @@ services:
       - "${ENV_WORKER_LOCATION}:/home/gradle/zipWorker"
     environment:
       SPRING_BOOT_ENVIRONMENT: ${ENV_DOCKER_ENVIRONMENT}
+      GOOGLE_DRIVE_FOLDER_ID: ${ENV_GOOGLE_DRIVE_FOLDER_ID}
     privileged: true
     logging:
       driver: "fluentd"
