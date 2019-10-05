@@ -46,15 +46,21 @@ services:
     environment:
       SPRING_BOOT_ENVIRONMENT: ${ENV_DOCKER_ENVIRONMENT}
     privileged: true
-#    logging:
-#      driver: "fluentd"
-#      options:
-#        fluentd-address: "localhost:24224"
-#        tag: "orion-data"
     networks:
       local:
         aliases:
           - spring
+
+  user-auth:
+    container_name: user-auth
+    image: kingstonduo/user-auth
+    environment:
+      DEFAULT_CLIENT_ID: ${ENV_DEFAULT_CLIENT_ID}
+    privileged: true
+    networks:
+      local:
+        aliases:
+          - user-auth
 
 volumes:
   esdata:

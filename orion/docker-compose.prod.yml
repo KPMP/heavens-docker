@@ -39,6 +39,17 @@ services:
         aliases:
           - spring
 
+  user-auth:
+    container_name: user-auth
+    image: kingstonduo/user-auth:1.0
+    environment:
+      DEFAULT_CLIENT_ID: ${ENV_DEFAULT_CLIENT_ID}
+    privileged: true
+    networks:
+      local:
+        aliases:
+          - user-auth
+
 volumes:
   esdata:
   mongodbdata:
