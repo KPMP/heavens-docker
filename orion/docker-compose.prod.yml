@@ -47,7 +47,7 @@ services:
       DEFAULT_CLIENT_ID: ${ENV_DEFAULT_CLIENT_ID}
     privileged: true
     networks:
-      local:
+      dataLake:
         aliases:
           - user-auth
 
