@@ -29,6 +29,7 @@ services:
     environment:
       SPRING_BOOT_ENVIRONMENT: ${ENV_DOCKER_ENVIRONMENT}
       GOOGLE_DRIVE_FOLDER_ID: ${ENV_GOOGLE_DRIVE_FOLDER_ID}
+      CLIENT_ID: ${ENV_CLIENT_ID}
     privileged: true
     logging:
       driver: "fluentd"
