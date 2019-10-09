@@ -1,4 +1,4 @@
-version: "3"
+version: "3.5"
 services:
 
   kibana:
@@ -113,9 +113,11 @@ volumes:
 
 networks:
   local:
+    name: logAggregator
     driver: bridge
     ipam:
       driver: default
       config:
         - 
           subnet: 10.3.0.0/16
+
