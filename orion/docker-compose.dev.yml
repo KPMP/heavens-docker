@@ -48,11 +48,6 @@ services:
       GOOGLE_DRIVE_FOLDER_ID: ${ENV_GOOGLE_DRIVE_FOLDER_ID}
       CLIENT_ID: ${ENV_CLIENT_ID}
     privileged: true
-    logging:
-      driver: "fluentd"
-      options:
-        fluentd-address: "localhost:24224"
-        tag: "orion-data"
     networks:
       local:
         aliases:
