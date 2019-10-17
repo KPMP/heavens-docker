@@ -34,7 +34,7 @@ services:
     logging:
       driver: "fluentd"
       options:
-        fluentd-address: "localhost:24224"
+        fluentd-address: "${ENV_FLUENTD_ADDRESS}"
         tag: "orion-data"
     networks:
       dataLake:
