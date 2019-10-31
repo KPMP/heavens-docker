@@ -4,7 +4,7 @@ This repository holds all of the docker-compose.yml files and Dockerfiles needed
 
 |  **Directory Name** | **Description**   |
 | ------------ | ------------ |
-| ara  | Ara is the log aggregator.  It is intended to be a central repository for logs from the various apps hosted at UMich  |
+| ara  | Ara is the log aggregator.  It is intended to be a central repository for logs from the various apps hosted at UMich.  See ara's README for security details  |
 | cassiopeia  | Cassiopeia is the code name for the Participant Whole Slide Image Viewer (mydata.kpmp.org)  |
 | circinus | Circinus is the code name for the KPMP Demo site (demo.kpmp.org) |
 | dataLakeProxyServer | Since we are running the datamanager tools and the DLU on the same machine, we needed a proxy server running to handle the requests.  This is that |

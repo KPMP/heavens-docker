@@ -1,4 +1,4 @@
-version: "3"
+version: "3.5"
 services:
 
   kibana:
@@ -8,8 +8,8 @@ services:
       - es01
       - es02
       - es03
-    ports: 
-      - "5601:5601"
+    expose:
+      - "5601"
     volumes:
       - ${ENV_KIBANA_CONF_DIR}/kibana.yml:/usr/share/kibana/kibana.yml
     environment:
@@ -19,6 +19,18 @@ services:
       local:
         aliases:
           - kibana
+
+  kibana-proxy:
+    container_name: kibana-proxy
+    build: ./kibana-proxy
+    ports:
+      - "80:80"
+    volumes:
+      - ${ENV_KIBANA_PASSWORD_FILE}:/usr/local/apache2/conf/.htpasswd
+    networks:
+      local:
+        aliases:
+          - kibana-proxy
 
   es01:
     container_name: es01
@@ -113,9 +125,11 @@ volumes:
 
 networks:
   local:
+    name: logAggregator
     driver: bridge
     ipam:
       driver: default
       config:
         - 
           subnet: 10.3.0.0/16
+
