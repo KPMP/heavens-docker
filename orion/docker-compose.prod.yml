@@ -28,7 +28,8 @@ services:
       - "${ENV_WORKER_LOCATION}:/home/gradle/zipWorker"
     environment:
       SPRING_BOOT_ENVIRONMENT: ${ENV_DOCKER_ENVIRONMENT}
-      GOOGLE_DRIVE_FOLDER_ID: ${ENV_GOOGLE_DRIVE_FOLDER_ID}
+      GLOBUS_API_KEY: ${ENV_GLOBUS_API_KEY}
+      GLOBUS_API_SECRET: ${ENV_GLOBUS_API_SECRET}      
       CLIENT_ID: ${ENV_CLIENT_ID}
     privileged: true
     logging:
