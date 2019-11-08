@@ -39,7 +39,7 @@ services:
 
   spring:
     container_name: delphinus-spring
-    image: kingstonduo/kpmp-spring
+    image: ${ENV_IMAGE}
     ports:
       - "${ENV_APACHE_TOMCAT_PORT:-3030}:3030"
     volumes:
