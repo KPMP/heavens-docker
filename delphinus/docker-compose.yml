@@ -1,6 +1,17 @@
 version: "3"
 services:
 
+  user-auth:
+    container_name: user-auth
+    image: ${ENV_AUTH_IMAGE} 
+    environment:
+      DEFAULT_CLIENT_ID: ${ENV_DEFAULT_CLIENT_ID}
+    privileged: true
+    networks:
+      local:
+        aliases:
+          - user-auth
+
   apache:
     container_name: delphinus-apache
     image: ${ENV_APACHE_CONTAINER} 
