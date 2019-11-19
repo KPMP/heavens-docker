@@ -1,8 +1,19 @@
-version: "3.5"
+version: "3"
 services:
 
+  user-auth:
+    container_name: user-auth
+    image: ${ENV_AUTH_IMAGE} 
+    environment:
+      DEFAULT_CLIENT_ID: ${ENV_DEFAULT_CLIENT_ID}
+    privileged: true
+    networks:
+      local:
+        aliases:
+          - user-auth
+
   apache:
-    container_name: apache
+    container_name: delphinus-apache
     image: ${ENV_APACHE_CONTAINER} 
     ports:
       - "80:80"
@@ -13,13 +24,16 @@ services:
       - ${ENV_REACT_APPDIR}/build:/var/www/html
       - ${ENV_SSL_CERT_DIR}:/certs
       - ${ENV_SHIB_CONF_DIR}/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
+      - ${ENV_WSI_FILES_DIR}:/data/deepZoomImages
+      - ${ENV_WSI_ORIG_FILES_DIR}:/data/knowledgeEnvironment/deepZoom
+      - ${ENV_APACHE_CONF_DIR}/delphinus.conf:/etc/httpd/conf.d/delphinus.conf        
     networks:
       local:
         aliases:
-          - apache
+          - delphinus-apache
 
   mongodb:
-    container_name: mongodb
+    container_name: delphinus-mongodb
     image: mongo:4.0
     environment:
        - MONGO_DATA_DIR=/data/db
@@ -32,48 +46,32 @@ services:
     networks:
       local:
         aliases:
-          - mongodb
+          - delphinus-mongodb
 
   spring:
-    container_name: spring
-    image: kingstonduo/kpmp-spring
+    container_name: delphinus-spring
+    image: ${ENV_IMAGE}
     ports:
       - "${ENV_APACHE_TOMCAT_PORT:-3030}:3030"
     volumes:
       - "${ENV_SPRING_BOOT_APPDIR}:/home/gradle"
-      - "${ENV_DATALAKE_FILE_DIR}:/data"
-      - "${ENV_WORKER_LOCATION}:/home/gradle/zipWorker"
     environment:
       SPRING_BOOT_ENVIRONMENT: ${ENV_DOCKER_ENVIRONMENT}
-      GLOBUS_API_KEY: ${ENV_GLOBUS_API_KEY}
-      GLOBUS_API_SECRET: ${ENV_GLOBUS_API_SECRET}
       CLIENT_ID: ${ENV_CLIENT_ID}
     privileged: true
     networks:
       local:
         aliases:
-          - spring
-
-  user-auth:
-    container_name: user-auth
-    image: kingstonduo/user-auth
-    environment:
-      DEFAULT_CLIENT_ID: ${ENV_DEFAULT_CLIENT_ID}
-    privileged: true
-    networks:
-      local:
-        aliases:
-          - user-auth
+          - delphinus-spring
 
 volumes:
-  esdata:
   mongodbdata:
 
 networks:
   local:
-    name: dataLake
+    driver: bridge
     ipam:
       driver: default
       config:
         - 
-          subnet: 10.252.0.0/16
+          subnet: 10.3.0.0/16
