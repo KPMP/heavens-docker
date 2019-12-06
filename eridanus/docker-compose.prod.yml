@@ -8,6 +8,8 @@ services:
       - "${ENV_SPRING_BOOT_APPDIR}:/home/gradle"
     environment:
       SPRING_BOOT_ENVIRONMENT: ${ENV_DOCKER_ENVIRONMENT}
+    ports:
+      - "${ENV_APACHE_TOMCAT_PORT:-3040}:3040"
     privileged: true
     logging:
       driver: "fluentd"
