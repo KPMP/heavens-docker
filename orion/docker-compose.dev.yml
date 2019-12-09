@@ -48,6 +48,7 @@ services:
       GLOBUS_API_KEY: ${ENV_GLOBUS_API_KEY}
       GLOBUS_API_SECRET: ${ENV_GLOBUS_API_SECRET}
       CLIENT_ID: ${ENV_CLIENT_ID}
+      GLOBUS_DIR: ${ENV_GLOBUS_DIR}
     privileged: true
     networks:
       local:
