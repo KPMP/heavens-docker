@@ -3,7 +3,7 @@ services:
 
   state-spring:
     container_name: state-spring
-    image: kingstonduo/state-manager-service:1.0
+    image: "${ENV_SPRING_CONTAINER}" 
     ports:
       - "${ENV_APACHE_TOMCAT_PORT:-3060}:3060"
     volumes:
