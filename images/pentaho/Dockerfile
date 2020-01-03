@@ -1,3 +1,5 @@
+# Docker image based on https://github.com/aloysius-lim/docker-pentaho-di
+
 FROM java:jre
 
 ENV PDI_RELEASE=8.3 \
