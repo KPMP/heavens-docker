@@ -17,6 +17,8 @@ elif [ "$environment" == "dev" ] && [ "$2" == "down" ]; then
 	docker-compose -f docker-compose.dev.yml $cmd
 	cd ../orion
 	docker-compose -f docker-compose.dev.yml $cmd
+	cd ../metadataValidator
+	docker-compose $cmd
 elif [ "$environment" == "dev" ] && [ "$2" == "up" ]; then
 	cd orion
 	docker-compose -f docker-compose.dev.yml $cmd
@@ -24,6 +26,8 @@ elif [ "$environment" == "dev" ] && [ "$2" == "up" ]; then
 	docker-compose -f docker-compose.dev.yml $cmd
 	cd ../stateManager
 	docker-compose -f docker-compose.dev.yml $cmd
+	cd ../metadataValidator
+	docker-compose $cmd
 elif [ $environment == "prod" ] && [ "$2" == "down" ]; then
 	cd eridanus
 	docker-compose -f docker-compose.prod.yml $cmd
@@ -32,6 +36,8 @@ elif [ $environment == "prod" ] && [ "$2" == "down" ]; then
 	cd ../orion
 	docker-compose -f docker-compose.prod.yml $cmd
 	cd ../dataLakeProxyServer
+	docker-compose $cmd
+	cd ../metadataValidator
 	docker-compose $cmd
 elif [ $environment == "prod" ] && [ "$2" == "up" ]; then
 	cd dataLakeProxyServer
@@ -42,6 +48,8 @@ elif [ $environment == "prod" ] && [ "$2" == "up" ]; then
 	docker-compose -f docker-compose.prod.yml $cmd
 	cd ../orion
 	docker-compose -f docker-compose.prod.yml $cmd
+	cd ../metadataValidator
+	docker-compose $cmd
 else
 	echo $USAGE
 fi

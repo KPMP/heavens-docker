@@ -4,12 +4,11 @@ services:
   metadata-validation:
     container_name: metadata-validation
     image: kingstonduo/pentaho-validation
-    ports:
-      - "8080:8080"
+    expose:
+      - 8080
     volumes:
       - "${ENV_DATALAKE_FILE_DIR}:/data"
       - "${ENV_PENTAHO_SCRIPT_DIR}:/pentaho-di/repo"   
-      - "${ENV_CARTE_CONF_DIR}:/templates"         
     privileged: true
     networks:
       dataLake:
