@@ -1,5 +1,5 @@
 # Metadata Validation Service
-This is a Docker container running a Pentaho Carte server for remote execution of Pentaho jobs and transformations.
+This is a Docker container running a Pentaho Carte server for remote execution of Pentaho jobs and transformations. It is based on the Docker container here: https://github.com/aloysius-lim/docker-pentaho-di
 
 ## Mounted Directories in .env File
 * The ENV_DATALAKE_FILE_DIR setting should point to the location of the Data Lake files.
