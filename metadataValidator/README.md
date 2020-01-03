@@ -6,7 +6,7 @@ This is a Docker container running a Pentaho Carte server for remote execution o
 * The ENV_PENTAHO_SCRIPT_DIR setting should point the location of the Pentaho scripts. 
 
 ## Running in Dev Mode
-When you run this in dev mode it exposes the port to the host for testing. In prod mode it's only available within the Docker dataLake network. 
+When you run this in dev mode, it exposes the port to the host for testing. In prod mode it's only available within the Docker dataLake network. 
 
 ## Authentication
 Authentication uses basic HTTP authentication with the username and password "cluster".
