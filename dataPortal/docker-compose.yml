@@ -32,6 +32,20 @@ services:
         aliases:
           - mongodb
 
+  ke-spring:
+    container_name: ke-spring
+    image: kingstonduo/knowledge-environment-api 
+    ports:
+      - "${ENV_APACHE_TOMCAT_PORT:-8080}:8080"
+    environment:
+      SPRING_BOOT_ENVIRONMENT: ${ENV_DOCKER_ENVIRONMENT}
+    privileged: true
+    networks:
+      local:
+        aliases:
+          - state-spring
+
+
 volumes:
   esdata:
   mongodbdata:
