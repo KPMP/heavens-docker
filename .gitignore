@@ -6,3 +6,4 @@ images/**/certs
 images/**/.env
 *.swp
 **/certs
+**/docker/*
