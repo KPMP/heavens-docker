@@ -1,0 +1,77 @@
+version: "3.5"
+services:
+
+  apache:
+    container_name: apache
+    image: ${ENV_APACHE_CONTAINER} 
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - ENV_APACHE_SERVER_NAME=${ENV_APACHE_SERVER_NAME}
+    volumes:
+      - ${ENV_REACT_APPDIR}/build:/var/www/html
+    networks:
+      local:
+        aliases:
+          - apache
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.0
+    ports:
+      - 9200:9200
+      - 9300:9300
+    volumes:
+      - ./docker/volumes/elasticsearch/data:/usr/share/elasticsearch/data
+    environment:
+      - discovery.type=single-node
+      - cluster.name=workflow.elasticsearch
+      - "ES_JAVA_OPTS=-Xms512m -Xmx2048m"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "10"
+    healthcheck:
+      test: "curl --silent --fail localhost:9200/_cluster/health?wait_for_status=yellow&timeout=50s || exit 1"
+      interval: 1m30s
+      timeout: 50s
+      retries: 5
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.5.0
+    ports:
+      - 5601:5601
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "10"
+    depends_on:
+      - elasticsearch
+    environment:
+      LOGGING_QUIET: "true"
+
+  arranger-server:
+    image: kingstonduo/arranger
+    container_name: arranger-server.local
+    depends_on:
+      - elasticsearch
+    ports:
+      - 5050:5050
+    environment:
+      ES_HOST: http://elasticsearch:9200
+  
+volumes:
+  es:
+    driver: local
+  mongodbdata:
+
+networks:
+  local:
+    name: dataPortal
+    ipam:
+      driver: default
+      config:
+        - 
+          subnet: 10.12.0.0/16
