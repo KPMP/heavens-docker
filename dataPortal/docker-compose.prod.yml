@@ -11,6 +11,7 @@ services:
       - ENV_APACHE_SERVER_NAME=${ENV_APACHE_SERVER_NAME}
     volumes:
       - ${ENV_REACT_APPDIR}/build:/var/www/html
+      - ${ENV_SSL_CERT_DIR}:/certs
     networks:
       local:
         aliases:
