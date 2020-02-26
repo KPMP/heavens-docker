@@ -38,6 +38,10 @@ services:
       interval: 1m30s
       timeout: 50s
       retries: 5
+    networks:
+      local:
+        aliases:
+          - elasticsearch
 
   kibana:
     image: docker.elastic.co/kibana/kibana:7.5.0
@@ -52,6 +56,10 @@ services:
       - elasticsearch
     environment:
       LOGGING_QUIET: "true"
+    networks:
+      local:
+        aliases:
+          - kibana
 
   arranger-server:
     image: kingstonduo/arranger
@@ -62,6 +70,10 @@ services:
       - 5050:5050
     environment:
       ES_HOST: http://elasticsearch:9200
+    networks:
+      local:
+        aliases:
+          - arranger-server
   
 volumes:
   es:
