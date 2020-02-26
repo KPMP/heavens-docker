@@ -11,6 +11,7 @@ services:
       - ENV_APACHE_SERVER_NAME=${ENV_APACHE_SERVER_NAME}
     volumes:
       - ${ENV_REACT_APPDIR}/build:/var/www/html
+      - ${ENV_SSL_CERT_DIR}:/certs
       - ${ENV_DATA_DIR}:/var/www/data
     networks:
       local:
@@ -38,6 +39,10 @@ services:
       interval: 1m30s
       timeout: 50s
       retries: 5
+    networks:
+      local:
+        aliases:
+          - elasticsearch
 
   kibana:
     image: docker.elastic.co/kibana/kibana:7.5.0
@@ -52,6 +57,10 @@ services:
       - elasticsearch
     environment:
       LOGGING_QUIET: "true"
+    networks:
+      local:
+        aliases:
+          - kibana
 
   arranger-server:
     image: kingstonduo/arranger
@@ -62,6 +71,10 @@ services:
       - 5050:5050
     environment:
       ES_HOST: http://elasticsearch:9200
+    networks:
+      local:
+        aliases:
+          - arranger-server
   
 volumes:
   es:
