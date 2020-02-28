@@ -11,7 +11,7 @@ services:
       - ENV_APACHE_SERVER_NAME=${ENV_APACHE_SERVER_NAME}
     volumes:
       - ${ENV_REACT_APPDIR}/build:/var/www/html
-      - ${ENV_DATA_DIR}:/var/www/data
+      - ${ENV_DATA_DIR}:/var/www/html/data
     networks:
       local:
         aliases:
