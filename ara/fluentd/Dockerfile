@@ -5,6 +5,8 @@ RUN apk add --update --virtual .build-deps \
         fluent-plugin-elasticsearch \
         fluent-plugin-rewrite-tag-filter \
         fluent-plugin-grok-parser \
+ && sudo gem install fluent-plugin-grepcounter \
+        fluent-plugin-mail \
  && sudo gem sources --clear-all \
  && apk del .build-deps \
  && rm -rf /var/cache/apk/* \
