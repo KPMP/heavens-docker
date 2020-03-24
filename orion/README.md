@@ -1,5 +1,9 @@
 # Orion
 
+## Documentation
+Visit [kpmp.github.io/dlu](http://kpmp.io.github.io/dlu)
+
+## Local Setup
 On your local machine
 
 - Open your terminal of choice.
