@@ -114,6 +114,24 @@ services:
         aliases:
           - fluentd
 
+  elastalert:
+    container_name: elastalert
+    image: kingstonduo/elastalert
+    depends_on:
+      - es01
+      - es02
+      - es03
+    volumes:
+      - ${ENV_ELASTALERT_CONF}:/opt/elastalert/config.yaml
+      - ${ENV_ELASTALERT_TEST_CONF}:/opt/elastalert/config-test.yaml
+      - ${ENV_ELASTALERT_SERVER_CONF}:/opt/elastalert-server/config/config.json
+      - ${ENV_ELASTALERT_RULES_DIR}:/opt/elastalert/rules
+      - ${ENV_ELASTALERT_RULES_TEMPLATE_DIR}:/opt/elastalert/rule_templates
+    networks:
+      local:
+        aliases:
+          - elastalert
+
 volumes:
   esdata01:
     driver: local
