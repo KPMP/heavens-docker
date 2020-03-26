@@ -37,7 +37,7 @@ alert_subject_args:
   - tag 
 
 alert_text_type: alert_text_only
-alert_text: "Triggered at _{}_ on {}\n\n*Log Message:*\nIP: {} \nUsers Name: {} {}\nApp Message: {}"
+alert_text: "Triggered at _{}_ on {}\n\n*Log Message:* {} \n*User Name:* {} {}\n*App Message:* {}"
 alert_text_args:
   - time_stamp
   - tag
