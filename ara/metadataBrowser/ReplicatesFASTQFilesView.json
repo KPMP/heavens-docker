@@ -1,0 +1,67 @@
+[
+  {
+    "_id": "1e6445d0-8af5-11ea-a424-cf8ebf97d70d",
+    "_type": "search",
+    "_source": {
+      "title": "Replicates,  FASTQ Files",
+      "description": "",
+      "hits": 0,
+      "columns": [
+        "package_id",
+        "replicate_replicateId",
+        "package_packageType",
+        "package_protocol",
+        "replicate_fastq_areaDissectedProcessed",
+        "replicate_fastq_calculatedVolumeDissectedProcessed",
+        "replicate_fastq_cdnaLibraryYield",
+        "replicate_fastq_cdnaQuantityLoaded",
+        "replicate_fastq_cryosectioningDate",
+        "replicate_fastq_fastqFileName",
+        "replicate_fastq_fastqFileNamePairedEnd",
+        "replicate_fastq_libraryFragmentationMethod",
+        "replicate_fastq_libraryPrepChemistryKit",
+        "replicate_fastq_libraryPreparationDate",
+        "replicate_fastq_libraryStartingConcentration",
+        "replicate_fastq_libraryStartingConcentrationUnit",
+        "replicate_fastq_numberofCellsNucleiLoaded",
+        "replicate_fastq_numberofPcrCyclesCdna",
+        "replicate_fastq_q30Score",
+        "replicate_fastq_rnaAmplificationChemistryKit",
+        "replicate_fastq_rnaProcessingComments",
+        "replicate_fastq_sequencerModel",
+        "replicate_fastq_sequencerSoftwareVersion",
+        "replicate_fastq_sequencingCenter",
+        "replicate_fastq_sequencingComments",
+        "replicate_fastq_sequencingDate",
+        "replicate_fastq_sequencingNumberofCycles",
+        "replicate_fastq_sequencingOperator",
+        "replicate_fastq_sequencingPlatform",
+        "replicate_fastq_singleCellNucleusProcessingInstrument",
+        "replicate_fastq_singlePairedEnd",
+        "replicate_fastq_strand1ReadLength",
+        "replicate_fastq_strand2ReadLength",
+        "replicate_fastq_tissueProcessingComments",
+        "replicate_fastq_tissueSegmentionDissociationDate",
+        "replicate_fastq_totalRawReads"
+      ],
+      "sort": [
+        "package_createdAt",
+        "desc"
+      ],
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"highlightAll\":true,\"version\":true,\"query\":{\"language\":\"kuery\",\"query\":\"\"},\"filter\":[],\"indexRefName\":\"kibanaSavedObjectMeta.searchSourceJSON.index\"}"
+      }
+    },
+    "_migrationVersion": {
+      "search": "7.0.0"
+    },
+    "_references": [
+      {
+        "name": "kibanaSavedObjectMeta.searchSourceJSON.index",
+        "type": "index-pattern",
+        "id": "94b01d70-8af2-11ea-a424-cf8ebf97d70d"
+      }
+    ]
+  }
+]
