@@ -1,0 +1,44 @@
+[
+  {
+    "_id": "73ce6c30-8af5-11ea-a424-cf8ebf97d70d",
+    "_type": "dashboard",
+    "_source": {
+      "title": "Replicates Dashboard",
+      "hits": 0,
+      "description": "Shows replicate data in 3 tables, one for each file type: BAM, Expression Matrix, and FASTQ.  Review the video \"KIbana For Metadata 101\" for examples of searching, changing columns, and saving alternate versions of the dashboard.",
+      "panelsJSON": "[{\"gridData\":{\"x\":0,\"y\":0,\"w\":48,\"h\":18,\"i\":\"1\"},\"version\":\"7.0.1\",\"panelIndex\":\"1\",\"embeddableConfig\":{},\"panelRefName\":\"panel_0\"},{\"gridData\":{\"x\":0,\"y\":18,\"w\":48,\"h\":21,\"i\":\"2\"},\"version\":\"7.0.1\",\"panelIndex\":\"2\",\"embeddableConfig\":{},\"panelRefName\":\"panel_1\"},{\"gridData\":{\"x\":0,\"y\":39,\"w\":48,\"h\":22,\"i\":\"3\"},\"version\":\"7.0.1\",\"panelIndex\":\"3\",\"embeddableConfig\":{},\"panelRefName\":\"panel_2\"}]",
+      "optionsJSON": "{\"hidePanelTitles\":false,\"useMargins\":true}",
+      "version": 1,
+      "timeRestore": true,
+      "timeTo": "now",
+      "timeFrom": "now-15y",
+      "refreshInterval": {
+        "pause": true,
+        "value": 0
+      },
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"query\":{\"language\":\"kuery\",\"query\":\"\"},\"filter\":[]}"
+      }
+    },
+    "_migrationVersion": {
+      "dashboard": "7.0.0"
+    },
+    "_references": [
+      {
+        "name": "panel_0",
+        "type": "search",
+        "id": "b5e70150-8af4-11ea-a424-cf8ebf97d70d"
+      },
+      {
+        "name": "panel_1",
+        "type": "search",
+        "id": "f83a6010-8af4-11ea-a424-cf8ebf97d70d"
+      },
+      {
+        "name": "panel_2",
+        "type": "search",
+        "id": "1e6445d0-8af5-11ea-a424-cf8ebf97d70d"
+      }
+    ]
+  }
+]

@@ -1,0 +1,48 @@
+[
+  {
+    "_id": "f83a6010-8af4-11ea-a424-cf8ebf97d70d",
+    "_type": "search",
+    "_source": {
+      "title": "Replicates, Expression Matrix Files",
+      "description": "",
+      "hits": 0,
+      "columns": [
+        "package_id",
+        "replicate_replicateId",
+        "package_packageType",
+        "package_protocol",
+        "replicate_expressionMatrix_barcodesFileName",
+        "replicate_expressionMatrix_genesDetected",
+        "replicate_expressionMatrix_genesFileName",
+        "replicate_expressionMatrix_matrixFileName",
+        "replicate_expressionMatrix_medianGenesDetected",
+        "replicate_expressionMatrix_medianNumberofRawSequencingReads",
+        "replicate_expressionMatrix_medianUmidetected",
+        "replicate_expressionMatrix_numberofCellsSequencedPostQc",
+        "replicate_expressionMatrix_rnaDownstreamAnalysisPlatform",
+        "replicate_expressionMatrix_rnaDownstreamAnalysisPlatformOtherSpecify",
+        "replicate_expressionMatrix_rnaProcessingAnalysisComments",
+        "replicate_expressionMatrix_rnaDownstreamAnalysisPlatformVersion",
+        "replicate_expressionMatrix_sequencingSaturation"
+      ],
+      "sort": [
+        "package_createdAt",
+        "desc"
+      ],
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"highlightAll\":true,\"version\":true,\"query\":{\"language\":\"kuery\",\"query\":\"\"},\"filter\":[],\"indexRefName\":\"kibanaSavedObjectMeta.searchSourceJSON.index\"}"
+      }
+    },
+    "_migrationVersion": {
+      "search": "7.0.0"
+    },
+    "_references": [
+      {
+        "name": "kibanaSavedObjectMeta.searchSourceJSON.index",
+        "type": "index-pattern",
+        "id": "94b01d70-8af2-11ea-a424-cf8ebf97d70d"
+      }
+    ]
+  }
+]
