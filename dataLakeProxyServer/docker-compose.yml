@@ -3,7 +3,7 @@ services:
 
   apache:
     container_name: apache-proxy
-    image: kingstonduo/apache:apache-dl-proxy
+    image: kingstonduo/apache-dl-proxy:2.0
     ports:
       - "80:80"
       - "443:443"
