@@ -88,6 +88,19 @@ services:
       local:
         aliases:
           - arranger-ui
+          
+  minio-s3:
+    image: minio/minio
+    ports:
+      - "9000:9000"
+    environment:
+      - MINIO_ACCESS_KEY=${ENV_MINIO_ACCESS_KEY}
+      - MINIO_SECRET_KEY=${ENV_SECRET_KEY}
+    command: gateway s3
+    networks:
+      local:
+        aliases:
+          - minio    
 
 volumes:
   es:

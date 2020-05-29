@@ -75,6 +75,19 @@ services:
       local:
         aliases:
           - arranger-server
+          
+  minio-s3:
+    image: minio/minio
+    expose:
+      - "9000"
+    environment:
+      - MINIO_ACCESS_KEY=
+      - MINIO_SECRET_KEY=
+    command: gateway s3
+    networks:
+      local:
+        aliases:
+          - minio-s3    
   
 volumes:
   es:
