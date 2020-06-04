@@ -7,6 +7,7 @@ services:
     environment:
        - MONGO_DATA_DIR=/data/db
        - MONGO_LOG_DIR=/dev/null
+       - "TZ=America/Detroit"
     volumes:
        - mongodbdata:/data/db 
     ports:
@@ -20,6 +21,8 @@ services:
   spring:
     container_name: spring
     image: kingstonduo/kpmp-spring
+    depends_on: 
+      - mongodb
     ports:
       - "${ENV_APACHE_TOMCAT_PORT:-3030}:3030"
     volumes:
@@ -32,6 +35,7 @@ services:
       GLOBUS_API_SECRET: ${ENV_GLOBUS_API_SECRET}      
       CLIENT_ID: ${ENV_CLIENT_ID}
       GLOBUS_DIR: ${ENV_GLOBUS_DIR}
+      TZ: "America/Detroit"
     privileged: true
     logging:
       driver: "fluentd"
@@ -45,9 +49,10 @@ services:
 
   user-auth:
     container_name: user-auth
-    image: kingstonduo/user-auth:1.0
+    image: kingstonduo/user-auth:1.1
     environment:
       DEFAULT_CLIENT_ID: ${ENV_DEFAULT_CLIENT_ID}
+      TZ: "America/Detroit"
     privileged: true
     networks:
       dataLake:
