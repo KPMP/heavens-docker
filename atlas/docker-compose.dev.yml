@@ -88,6 +88,31 @@ services:
       local:
         aliases:
           - arranger-ui
+
+  atlas-file-service:
+    image: kingstonduo/atlas-file-service
+    ports:
+      - "5000:5000"
+    volumes:
+      - ${ENV_FLASK_HOME}:/code
+    depends_on:
+      - redis
+    environment:
+      - FLASK_ENV=development
+      - MINIO_ACCESS_KEY=${ENV_MINIO_ACCESS_KEY}
+      - MINIO_SECRET_KEY=${ENV_MINIO_SECRET_KEY}
+      - MINIO_URL=${ENV_MINIO_URL}
+      - BUCKET_NAME=${ENV_BUCKET_NAME}
+    networks:
+      local:
+        aliases:
+          - atlas-file-service
+  redis:
+    image: redis
+    networks:
+      local:
+        aliases:
+          - redis
           
   minio-s3:
     image: minio/minio
