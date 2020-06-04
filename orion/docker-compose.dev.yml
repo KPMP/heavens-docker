@@ -8,6 +8,7 @@ services:
       - "80:80"
       - "443:443"
     environment:
+      - "TZ=America/Detroit"
       - ENV_APACHE_SERVER_NAME=${ENV_APACHE_SERVER_NAME}
     volumes:
       - ${ENV_REACT_APPDIR}/build:/var/www/html
@@ -24,6 +25,7 @@ services:
     environment:
        - MONGO_DATA_DIR=/data/db
        - MONGO_LOG_DIR=/dev/null
+       - "TZ=America/Detroit"
     volumes:
        - mongodbdata:/data/db 
     ports:
@@ -44,11 +46,12 @@ services:
       - "${ENV_DATALAKE_FILE_DIR}:/data"
       - "${ENV_WORKER_LOCATION}:/home/gradle/zipWorker"
     environment:
-      SPRING_BOOT_ENVIRONMENT: ${ENV_DOCKER_ENVIRONMENT}
-      GLOBUS_API_KEY: ${ENV_GLOBUS_API_KEY}
-      GLOBUS_API_SECRET: ${ENV_GLOBUS_API_SECRET}
-      CLIENT_ID: ${ENV_CLIENT_ID}
-      GLOBUS_DIR: ${ENV_GLOBUS_DIR}
+      - SPRING_BOOT_ENVIRONMENT=${ENV_DOCKER_ENVIRONMENT}
+      - GLOBUS_API_KEY=${ENV_GLOBUS_API_KEY}
+      - GLOBUS_API_SECRET=${ENV_GLOBUS_API_SECRET}
+      - CLIENT_ID=${ENV_CLIENT_ID}
+      - GLOBUS_DIR=${ENV_GLOBUS_DIR}
+      - "TZ=America/Detroit"
     privileged: true
     networks:
       local:
@@ -60,6 +63,7 @@ services:
     image: kingstonduo/user-auth
     environment:
       DEFAULT_CLIENT_ID: ${ENV_DEFAULT_CLIENT_ID}
+      TZ: "America/Detroit"
     privileged: true
     networks:
       local:
