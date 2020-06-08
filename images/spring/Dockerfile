@@ -1,4 +1,4 @@
-FROM frolvlad/alpine-oraclejdk8
+FROM frolvlad/alpine-java
 
 CMD ["gradle"]
 
@@ -22,7 +22,6 @@ RUN set -o errexit -o nounset \
 	&& echo "Installing Gradle" \
 	&& unzip gradle.zip \
 	&& rm gradle.zip \
-	&& mkdir /opt \
 	&& mv "gradle-${GRADLE_VERSION}" "${GRADLE_HOME}/" \
 	&& ln -s "${GRADLE_HOME}/bin/gradle" /usr/bin/gradle \
 	\
@@ -35,13 +34,17 @@ RUN set -o errexit -o nounset \
 	&& chown -R gradle:gradle /home/gradle \
 	\
 	&& echo "Symlinking root Gradle cache to gradle Gradle cache" \
-	&& ln -s /home/gradle/.gradle /root/.gradle
+	&& ln -s /home/gradle/.gradle /root/.gradle \
+        && apk add --no-cache tzdata
 
 # Create Gradle volume
 VOLUME "/home/gradle/.gradle"
 WORKDIR /home/gradle
 RUN apk update &&  apk add bash && apk add libstdc++
 ENV LC_ALL=C
+RUN cp /usr/share/zoneinfo/America/Detroit /etc/localtime
+RUN echo "America/Detroit" > /etc/timezone
+
 USER gradle
 
 RUN set -o errexit -o nounset \
