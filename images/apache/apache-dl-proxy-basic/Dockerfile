@@ -30,6 +30,7 @@ RUN curl -o /etc/yum.repos.d/security:shibboleth.repo \
       && rm /etc/httpd/conf.d/ssl.conf \
       && rm /etc/httpd/conf.d/userdir.conf \
       && rm /etc/httpd/conf.d/welcome.conf \
+      && rm /etc/localtime \
       && chmod +x /opt/bin/httpd-shib-foreground \
       && chmod +x /opt/bin/shibboleth_keygen.sh
       
@@ -38,7 +39,7 @@ RUN LD_LIBRARY_PATH="/opt/shibboleth/lib64"
 RUN export LD_LIBRARY_PATH
 
 #Script to start service, Added ssl default conf, Added shib module apache
-RUN ln -s /opt/bin/httpd-shib-foreground  /usr/local/bin && ln -s /opt/etc/httpd/conf.d/ssl.conf /etc/httpd/conf.d/ssl.conf && ln -s /opt/etc/httpd/conf.d/virt.conf /etc/httpd/conf.d/virt.conf && ln -s /opt/etc/httpd/conf.modules.d/00-shib.conf /etc/httpd/conf.modules.d/00-shib.conf && ln -s /usr/lib64/shibboleth/mod_shib_24.so /etc/httpd/modules/mod_shib_24.so
+RUN ln -s /opt/bin/httpd-shib-foreground  /usr/local/bin && ln -s /opt/etc/httpd/conf.d/ssl.conf /etc/httpd/conf.d/ssl.conf && ln -s /opt/etc/httpd/conf.d/virt.conf /etc/httpd/conf.d/virt.conf && ln -s /opt/etc/httpd/conf.modules.d/00-shib.conf /etc/httpd/conf.modules.d/00-shib.conf && ln -s /usr/lib64/shibboleth/mod_shib_24.so /etc/httpd/modules/mod_shib_24.so && ln -s /usr/share/zoneinfo/America/Detroit /etc/localtime
 
 # KPMP Specific Configuration - MAKE EDITS HERE
 COPY ./certs/inc-md-cert.pem /etc/pki/tls/certs/inc-md-cert.pem
