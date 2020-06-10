@@ -3,10 +3,12 @@ services:
 
   apache:
     container_name: apache-proxy
-    image: kingstonduo/apache:apache-dl-proxy
+    image: ${ENV_APACHE_IMAGE} 
     ports:
       - "80:80"
       - "443:443"
+    environment:
+      - "TZ:America/Detroit"
     volumes:
       - ${ENV_UPLOADER_BASE_DIR}/build:/var/www/html/upload
       - ${ENV_CURATION_BASE_DIR}/build:/var/www/html/datamanager

@@ -1,0 +1,41 @@
+[
+  {
+    "_id": "b5e70150-8af4-11ea-a424-cf8ebf97d70d",
+    "_type": "search",
+    "_source": {
+      "title": "Replicates, BAM Files",
+      "description": "",
+      "hits": 0,
+      "columns": [
+        "package_id",
+        "replicate_replicateId",
+        "package_packageType",
+        "replicate_bam_bamFileName",
+        "replicate_bam_referenceGenome",
+        "replicate_bam_rnaAlignmentPlatform",
+        "replicate_bam_rnaAlignmentPlatformVersion",
+        "replicate_bam_unassignedReads",
+        "replicate_bam_uniquelyMappedRawReads",
+        "replicate_bam_uniquelyMappedReads"
+      ],
+      "sort": [
+        "package_createdAt",
+        "desc"
+      ],
+      "version": 1,
+      "kibanaSavedObjectMeta": {
+        "searchSourceJSON": "{\"highlightAll\":true,\"version\":true,\"query\":{\"query\":\"\",\"language\":\"kuery\"},\"filter\":[],\"indexRefName\":\"kibanaSavedObjectMeta.searchSourceJSON.index\"}"
+      }
+    },
+    "_migrationVersion": {
+      "search": "7.0.0"
+    },
+    "_references": [
+      {
+        "name": "kibanaSavedObjectMeta.searchSourceJSON.index",
+        "type": "index-pattern",
+        "id": "94b01d70-8af2-11ea-a424-cf8ebf97d70d"
+      }
+    ]
+  }
+]
