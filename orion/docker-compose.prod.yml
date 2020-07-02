@@ -29,6 +29,7 @@ services:
       - "${ENV_SPRING_BOOT_APPDIR}:/home/gradle"
       - "${ENV_DATALAKE_FILE_DIR}:/data"
       - "${ENV_WORKER_LOCATION}:/home/gradle/zipWorker"
+      - "${ENV_GLOBUS_FILE_MOUNT}:/globus"      
     environment:
       SPRING_BOOT_ENVIRONMENT: ${ENV_DOCKER_ENVIRONMENT}
       GLOBUS_API_KEY: ${ENV_GLOBUS_API_KEY}
