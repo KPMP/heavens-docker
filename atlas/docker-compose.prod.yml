@@ -29,6 +29,7 @@ services:
       - discovery.type=single-node
       - cluster.name=workflow.elasticsearch
       - "ES_JAVA_OPTS=-Xms512m -Xmx2048m"
+    restart: always
     logging:
       driver: "json-file"
       options:
