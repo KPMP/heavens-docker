@@ -17,17 +17,95 @@ services:
         aliases:
           - apache
 
-  elasticsearch:
+  es01:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.5.0
+    container_name: es01
     ports:
       - 9200:9200
       - 9300:9300
     volumes:
-      - ./docker/volumes/elasticsearch/data:/usr/share/elasticsearch/data
+      - ./docker/volumes/elasticsearch/data01:/usr/share/elasticsearch/data
+      - ${ENV_ES_CONF_DIR}/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
     environment:
-      - discovery.type=single-node
-      - cluster.name=workflow.elasticsearch
-      - "ES_JAVA_OPTS=-Xms512m -Xmx2048m"
+      - node.name=es01
+      - discovery.seed_hosts=es02,es03
+      - cluster.initial_master_nodes=es01,es02,es03
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "10"
+    healthcheck:
+      test: "curl --silent --fail localhost:9200/_cluster/health?wait_for_status=yellow&timeout=50s || exit 1"
+      interval: 1m30s
+      timeout: 50s
+      retries: 5
+    networks:
+      local:
+        aliases:
+          - elasticsearch
+
+  es02:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.0
+    container_name: es02
+    expose:
+      - 9200
+      - 9300
+    volumes:
+      - ./docker/volumes/elasticsearch/data02:/usr/share/elasticsearch/data
+      - ${ENV_ES_CONF_DIR}/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    environment:
+      - node.name=es02
+      - discovery.seed_hosts=es01,es03
+      - cluster.initial_master_nodes=es01,es02,es03
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "10"
+    healthcheck:
+      test: "curl --silent --fail localhost:9200/_cluster/health?wait_for_status=yellow&timeout=50s || exit 1"
+      interval: 1m30s
+      timeout: 50s
+      retries: 5
+    networks:
+      local:
+        aliases:
+          - elasticsearch
+
+  es03:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.0
+    container_name: es03
+    expose:
+      - 9200
+      - 9300
+    volumes:
+      - ./docker/volumes/elasticsearch/data03:/usr/share/elasticsearch/data
+      - ${ENV_ES_CONF_DIR}/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    environment:
+      - node.name=es03
+      - discovery.seed_hosts=es01,es02
+      - cluster.initial_master_nodes=es01,es02,es03
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
     restart: always
     logging:
       driver: "json-file"
@@ -54,9 +132,14 @@ services:
         max-size: "50m"
         max-file: "10"
     depends_on:
-      - elasticsearch
+      - es01
+      - es02
+      - es03 
     environment:
-      LOGGING_QUIET: "true"
+      SERVER_NAME: elasticsearch
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+    volumes:
+      - ${ENV_KIBANA_CONF_DIR}/kibana.yml:/usr/share/kibana/kibana.yml
     networks:
       local:
         aliases:
@@ -66,7 +149,9 @@ services:
     image: kingstonduo/arranger
     container_name: arranger-server.local
     depends_on:
-      - elasticsearch
+      - es01
+      - es02
+      - es03 
     ports:
       - 5050:5050
     environment:
@@ -108,6 +193,7 @@ services:
       local:
         aliases:
           - atlas-file-service
+
   redis:
     image: redis
     networks:
