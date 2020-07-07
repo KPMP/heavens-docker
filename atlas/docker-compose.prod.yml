@@ -148,7 +148,7 @@ services:
           - kibana
 
   arranger-server:
-    image: kingstonduo/arranger
+    image: overture/arranger-server:2.2.4 
     container_name: arranger-server.local
     depends_on:
       - es01
