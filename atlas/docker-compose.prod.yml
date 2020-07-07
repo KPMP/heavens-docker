@@ -25,7 +25,7 @@ services:
       - 9200:9200
       - 9300:9300
     volumes:
-      - ./docker/volumes/elasticsearch/data01:/usr/share/elasticsearch/data
+      - ./docker/volumes/elasticsearch/data01:/usr/share/elasticsearch/data01
       - ${ENV_ES_CONF_DIR}/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
     environment:
       - node.name=es01
@@ -60,7 +60,7 @@ services:
       - 9200
       - 9300
     volumes:
-      - ./docker/volumes/elasticsearch/data02:/usr/share/elasticsearch/data
+      - ./docker/volumes/elasticsearch/data02:/usr/share/elasticsearch/data02
       - ${ENV_ES_CONF_DIR}/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
     environment:
       - node.name=es02
@@ -95,7 +95,7 @@ services:
       - 9200
       - 9300
     volumes:
-      - ./docker/volumes/elasticsearch/data:/usr/share/elasticsearch/data
+      - ./docker/volumes/elasticsearch/data:/usr/share/elasticsearch/data03
       - ${ENV_ES_CONF_DIR}/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
     environment:
       - node.name=es03
@@ -151,7 +151,9 @@ services:
     image: kingstonduo/arranger
     container_name: arranger-server.local
     depends_on:
-      - elasticsearch
+      - es01
+      - es02
+      - es03
     ports:
       - 5050:5050
     environment:
