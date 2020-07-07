@@ -25,7 +25,7 @@ services:
       - 9200:9200
       - 9300:9300
     volumes:
-      - ./docker/volumes/elasticsearch/data01:/usr/share/elasticsearch/data01
+      - esdata01:/usr/share/elasticsearch/data
       - ${ENV_ES_CONF_DIR}/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
     environment:
       - node.name=es01
@@ -60,7 +60,7 @@ services:
       - 9200
       - 9300
     volumes:
-      - ./docker/volumes/elasticsearch/data02:/usr/share/elasticsearch/data02
+      - esdata02:/usr/share/elasticsearch/data
       - ${ENV_ES_CONF_DIR}/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
     environment:
       - node.name=es02
@@ -95,7 +95,7 @@ services:
       - 9200
       - 9300
     volumes:
-      - ./docker/volumes/elasticsearch/data:/usr/share/elasticsearch/data03
+      - esdata03:/usr/share/elasticsearch/data
       - ${ENV_ES_CONF_DIR}/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
     environment:
       - node.name=es03
@@ -202,7 +202,11 @@ services:
           - minio-s3    
   
 volumes:
-  es:
+  esdata01:
+    driver: local
+  esdata02:
+    driver: local
+  esdata03:
     driver: local
   mongodbdata:
 
