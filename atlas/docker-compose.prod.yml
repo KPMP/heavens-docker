@@ -12,7 +12,6 @@ services:
     volumes:
       - ${ENV_REACT_APPDIR}/build:/var/www/html
       - ${ENV_SSL_CERT_DIR}:/certs
-      - ${ENV_DATA_DIR}:/var/www/html/data
     networks:
       local:
         aliases:
