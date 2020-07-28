@@ -1,0 +1,7 @@
+cluster.name: "elasticsearch_atlas_production"
+network.host: 0.0.0.0
+gateway.recover_after_nodes: 3
+gateway.expected_nodes: 3
+gateway.recover_after_time: 5m
+discovery.zen.minimum_master_nodes: 2
+
