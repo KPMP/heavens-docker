@@ -17,6 +17,7 @@
         "replicate_expressionMatrix_matrixFileName",
         "replicate_expressionMatrix_medianGenesDetected",
         "replicate_expressionMatrix_medianNumberofRawSequencingReads",
+		"replicate_expressionMatrix_meanNumberofRawSequencingReads",
         "replicate_expressionMatrix_medianUmidetected",
         "replicate_expressionMatrix_numberofCellsSequencedPostQc",
         "replicate_expressionMatrix_rnaDownstreamAnalysisPlatform",
