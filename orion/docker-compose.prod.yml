@@ -28,7 +28,7 @@ services:
     ports:
       - 3306:3306
     networks:
-      local:
+      dataLake:
         aliases:
           - mariadb
 
@@ -37,6 +37,10 @@ services:
     restart: always
     ports:
       - 8080:8080
+    networks:
+      dataLake:
+        aliases:
+          - adminer        
 
   spring:
     container_name: spring
