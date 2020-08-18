@@ -1,0 +1,56 @@
+version: "3.5"
+services:
+
+  tomcat:
+    container_name: tomcat
+    image: tomcat
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "${ENV_PORTAL_CONFIG}:/data/tomcat/conf/portalConfig.prop"
+      - "${ENV_TOMCAT_CONTEXT}:/usr/local/tomcat/conf/context.xml"
+      - "${ENV_SERVER_XML}:/usr/local/tomcat/conf/server.xml"
+      - "${ENV_ACCOUNT_WAR}:/usr/local/tomcat/webapps/ROOT.war"
+      - "${ENV_ACCOUNTS_FILE}:/usr/local/tomcat/accounts.txt"
+      - "${ENV_PARTICIPANT_DATA}:/usr/local/tomcat/participant-data.txt"
+    environment:
+      - "TZ=America/Detroit"
+    networks:
+      local:
+        aliases:
+          - tomcat
+
+  mysql:
+    container_name: mysql
+    image: mysql:8.0.21
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+    networks:
+      local:
+        aliases:
+          - mysql
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      local:
+        aliases:
+          - adminer
+
+volumes:
+  mysql:
+
+networks:
+  local:
+    ipam:
+      driver: default
+      config:
+        -
+          subnet: 10.252.0.12/16
