@@ -8,11 +8,11 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - "${ENV_PORTAL_CONFIG}:/usr/local/tomcat/conf/portalConfig.prop"
+      - "${ENV_PORTAL_CONFIG}:/data/tomcat/conf/portalConfig.prop"
       - "${ENV_TOMCAT_CONTEXT}:/usr/local/tomcat/conf/context.xml"
       - "${ENV_SERVER_XML}:/usr/local/tomcat/conf/server.xml"
-      - "${ENV_ACCOUNT_WAR}:/usr/local/tomcat/webapps/ROOT.war"
-      - "${ENV_ACCOUNTS_FILE}:/usr/local/tomcat/accounts.txt"
+      - "${ENV_REGISTRATION_WAR}:/usr/local/tomcat/webapps/ROOT.war"
+      - "${ENV_ACCOUNTS_JAR}:/usr/local/tomcat/lib/accounts-1.0.jar"
       - "${ENV_PARTICIPANT_DATA}:/usr/local/tomcat/participant-data.txt"
     environment:
       - "TZ=America/Detroit"

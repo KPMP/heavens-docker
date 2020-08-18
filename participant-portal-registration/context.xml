@@ -28,7 +28,7 @@
     <!--
     <Manager pathname="" />
     -->
-    <Resource name="jdbc/participant" auth="Container" type="javax.sql.DataSource"
+    <Resource name="jdbc/accountdb" auth="Container" type="javax.sql.DataSource"
                maxActive="100" maxIdle="30" maxWait="10000"
                username="root" password="example" driverClassName="com.mysql.jdbc.Driver"
                url="jdbc:mysql://mysql:3306/participant"/>
