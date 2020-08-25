@@ -16,6 +16,30 @@ services:
         aliases:
           - apache
 
+  mariadb:
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${ENV_MARIADB_ROOT_PWD}
+    volumes:
+      - mariadbdata:/var/lib/mysql
+    ports:
+      - 3306:3306
+    networks:
+      local:
+        aliases:
+          - mariadb
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      local:
+        aliases:
+          - adminer   
+
   es01:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.5.0
     container_name: es01
