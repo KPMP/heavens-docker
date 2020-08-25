@@ -16,31 +16,7 @@ services:
     networks:
       dataLake:
         aliases:
-          - mongodb
-
-  mariadb:
-    image: mariadb
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: ${ENV_MARIADB_ROOT_PWD}
-    volumes:
-      - mariadbdata:/var/lib/mysql
-    ports:
-      - 3306:3306
-    networks:
-      dataLake:
-        aliases:
-          - mariadb
-
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - 8080:8080
-    networks:
-      dataLake:
-        aliases:
-          - adminer        
+          - mongodb    
 
   spring:
     container_name: spring
