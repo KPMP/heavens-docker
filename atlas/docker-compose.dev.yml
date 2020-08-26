@@ -230,6 +230,8 @@ volumes:
   esdata03:
     driver: local
   mongodbdata:
+  mariadbdata:
+
 
 networks:
   local:
