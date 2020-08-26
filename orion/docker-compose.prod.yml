@@ -87,7 +87,6 @@ services:
 volumes:
   esdata:
   mongodbdata:
-  mariadbdata:
 
 networks:
   dataLake:

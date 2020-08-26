@@ -98,8 +98,6 @@ services:
 volumes:
   esdata:
   mongodbdata:
-  mariadbdata:
-
 
 networks:
   local:
