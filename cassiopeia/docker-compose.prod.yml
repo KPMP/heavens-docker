@@ -10,7 +10,8 @@ services:
     environment:
       - ENV_APACHE_SERVER_NAME=${ENV_APACHE_SERVER_NAME}
     volumes:
-      - ${ENV_REACT_APPDIR}/build:/var/www/html
+      - ${ENV_REACT_APPDIR}/build:/var/www/html/secure
+      - ${ENV_LOGIN_RESOURCES}:/var/www/html
       - ${ENV_SSL_CERT_DIR}:/certs
       - ${ENV_WSI_FILES_DIR}:/data/deepZoomImages
       - ${ENV_WSI_ORIG_FILES_DIR}:/data/knowledgeEnvironment/deepZoom
