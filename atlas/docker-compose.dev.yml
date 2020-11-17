@@ -50,7 +50,7 @@ services:
     image: adminer
     restart: always
     ports:
-      - 9090:9090
+      - 9090:8080
     networks:
       local:
         aliases:
