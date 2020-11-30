@@ -30,11 +30,27 @@ services:
         aliases:
           - mariadb
 
+  index-creation-worker:
+    image: kingstonduo/atlas-index-creation-worker:latest
+    container_name: index-creation-worker
+    restart: always
+    ports:
+      - "5001:5000"
+    environment:
+      MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: ${ENV_MARIADB_ROOT_PWD}
+    depends_on:
+      - mariadb
+    networks:
+      local:
+        aliases:
+          - index-creator
+
   adminer:
     image: adminer
     restart: always
     ports:
-      - 9090:9090
+      - 9090:8080
     networks:
       local:
         aliases:
@@ -229,7 +245,6 @@ volumes:
     driver: local
   esdata03:
     driver: local
-  mongodbdata:
   mariadbdata:
 
 

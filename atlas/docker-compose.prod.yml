@@ -35,11 +35,27 @@ services:
     image: adminer
     restart: always
     ports:
-      - 9090:9090 
+      - 9090:8080 
     networks:
       local:
         aliases:
           - adminer    
+
+  index-creation-worker:
+    image: ${ENV_INDEX_CREATION_WORKER}
+    container_name: index-creation-worker
+    restart: always
+    ports:
+      - "5001:5000"
+    environment:
+      MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: ${ENV_MARIADB_ROOT_PWD}
+    depends_on:
+      - mariadb
+    networks:
+      local:
+        aliases:
+          - index-creator
 
   es01:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.5.0
