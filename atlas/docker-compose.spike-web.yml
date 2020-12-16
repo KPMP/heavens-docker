@@ -1,0 +1,69 @@
+version: "3.5"
+services:
+
+  apache:
+    container_name: apache
+    image: ${ENV_APACHE_CONTAINER} 
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - ENV_APACHE_SERVER_NAME=${ENV_APACHE_SERVER_NAME}
+    volumes:
+      - ${ENV_REACT_APPDIR}/build:/var/www/html
+      - ${ENV_SSL_CERT_DIR}:/certs
+    networks:
+      local:
+        aliases:
+          - apache
+
+  arranger-server:
+    image: overture/arranger-server:2.2.4 
+    container_name: arranger-server.local
+    ports:
+      - 5050:5050
+    environment:
+      ES_HOST: http://10.236.105.199:9200
+    networks:
+      local:
+        aliases:
+          - arranger-server
+          
+  atlas-file-service:
+    image: kingstonduo/atlas-file-service
+    ports:
+      - "5000:5000"
+    volumes:
+      - ${ENV_FLASK_HOME}:/code
+    environment:
+      - FLASK_ENV=production
+      - MINIO_ACCESS_KEY=${ENV_MINIO_ACCESS_KEY}
+      - MINIO_SECRET_KEY=${ENV_MINIO_SECRET_KEY}
+      - MINIO_URL=${ENV_MINIO_URL}
+      - BUCKET_NAME=${ENV_BUCKET_NAME}
+    networks:
+      local:
+        aliases:
+          - atlas-file-service
+          
+  minio-s3:
+    image: minio/minio
+    ports:
+      - "9000:9000"
+    environment:
+      - MINIO_ACCESS_KEY=${ENV_MINIO_ACCESS_KEY}
+      - MINIO_SECRET_KEY=${ENV_MINIO_SECRET_KEY}
+    command: gateway s3
+    networks:
+      local:
+        aliases:
+          - minio-s3    
+
+networks:
+  local:
+    name: dataPortal
+    ipam:
+      driver: default
+      config:
+        - 
+          subnet: 10.12.0.0/16
