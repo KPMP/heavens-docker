@@ -1,7 +1,7 @@
 version: "3.5"
 services:
 
-# NOTE: Depends on the Knowledge Environment services in docker-compose.ke.yml
+# NOTE: Depends on the Knowledge Environment services in docker-compose.ke.yml. Use atlas-dev.sh.
 
   apache:
     container_name: apache
