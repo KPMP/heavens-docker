@@ -1,12 +1,9 @@
 # Atlas and Knowledge Environment Docker
 
-## Docker-compose files
-* docker-compose.ke.yml -- The Knowledge Environment stack: KE Database (MariaDB, Adminer), File Service (MinIO, Flask/Python), Arranger Server, Arranger GUI, Elastic Search (ES, Kibana).
-* docker-compose.prod.yml -- The Atlas web front-end (React/Apache) and Atlas ES index creation worker (Flask/Python). Requires the KE stack. 
-* docker-compose.dev.yml -- The development version of the Atlas web front-end (React/Apache) and Atlas ES index creation worker (Flask/Python). Requires the KE stack. 
-
 ## Development
-The docker-compose.dev.yml file should not be run on its own because it requires the Knowledge Environment services. Run atlas-dev.sh to bring up the KE services along with the Atlas web front-end.
+
+The development Docker Compose versions (docker-compose.dev.yml) of the Repository and Explorer require the Knowledge Environment stack. Either start the KE stack first or use the explorer-dev.sh and repository-dev.sh files. Any arguments are passed to the docker-compose execution, so to bring up the Explorer dev stack you'd execute:
+- `./explorer-dev.sh up -d'
 
 ## Environment Configuration
 
