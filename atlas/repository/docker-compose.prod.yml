@@ -1,10 +1,10 @@
 version: "3.5"
 services:
 
-# NOTE: Depends on the Knowledge Environment services in docker-compose.ke.yml. Use atlas-dev.sh.
+# NOTE: Depends on Knowledge Environment services.
 
   apache:
-    container_name: apache
+    container_name: repository-apache
     image: ${ENV_APACHE_CONTAINER} 
     ports:
       - "80:80"
@@ -13,13 +13,14 @@ services:
       - ENV_APACHE_SERVER_NAME=${ENV_APACHE_SERVER_NAME}
     volumes:
       - ${ENV_REACT_APPDIR}/build:/var/www/html
+      - ${ENV_SSL_CERT_DIR}:/certs
     networks:
       local:
         aliases:
           - apache
 
   index-creation-worker:
-    image: kingstonduo/atlas-index-creation-worker:latest
+    image: ${ENV_INDEX_CREATION_WORKER}
     container_name: index-creation-worker
     restart: always
     ports:
@@ -27,8 +28,6 @@ services:
     environment:
       MYSQL_USER: root
       MYSQL_ROOT_PASSWORD: ${ENV_MARIADB_ROOT_PWD}
-    depends_on:
-      - mariadb
     networks:
       local:
         aliases:

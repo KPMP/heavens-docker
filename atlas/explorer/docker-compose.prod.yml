@@ -4,7 +4,7 @@ services:
 # NOTE: Depends on Knowledge Environment services.
 
   apache:
-    container_name: apache
+    container_name: explorer-apache
     image: ${ENV_APACHE_CONTAINER} 
     ports:
       - "80:80"
@@ -18,20 +18,6 @@ services:
       local:
         aliases:
           - apache
-
-  index-creation-worker:
-    image: ${ENV_INDEX_CREATION_WORKER}
-    container_name: index-creation-worker
-    restart: always
-    ports:
-      - "5001:5000"
-    environment:
-      MYSQL_USER: root
-      MYSQL_ROOT_PASSWORD: ${ENV_MARIADB_ROOT_PWD}
-    networks:
-      local:
-        aliases:
-          - index-creator
 
 networks:
   local:
