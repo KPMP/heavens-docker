@@ -1,0 +1,204 @@
+version: "3.5"
+services:
+
+  mariadb:
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${ENV_MARIADB_ROOT_PWD}
+    volumes:
+      - mariadbdata:/var/lib/mysql
+    ports:
+      - 3306:3306
+    networks:
+      local:
+        aliases:
+          - mariadb
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 9090:8080 
+    networks:
+      local:
+        aliases:
+          - adminer    
+
+  es01:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.0
+    container_name: es01
+    ports:
+      - 9200:9200
+      - 9300:9300
+    volumes:
+      - esdata01:/usr/share/elasticsearch/data
+      - ${ENV_ES_CONF_DIR}/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    environment:
+      - node.name=es01
+      - discovery.seed_hosts=es02,es03
+      - cluster.initial_master_nodes=es01,es02,es03
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "10"
+    networks:
+      local:
+        aliases:
+          - elasticsearch
+
+  es02:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.0
+    container_name: es02
+    expose:
+      - 9200
+      - 9300
+    volumes:
+      - esdata02:/usr/share/elasticsearch/data
+      - ${ENV_ES_CONF_DIR}/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    environment:
+      - node.name=es02
+      - discovery.seed_hosts=es01,es03
+      - cluster.initial_master_nodes=es01,es02,es03
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "10"
+    networks:
+      local:
+        aliases:
+          - elasticsearch
+
+  es03:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.0
+    container_name: es03
+    expose:
+      - 9200
+      - 9300
+    volumes:
+      - esdata03:/usr/share/elasticsearch/data
+      - ${ENV_ES_CONF_DIR}/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    environment:
+      - node.name=es03
+      - discovery.seed_hosts=es01,es02
+      - cluster.initial_master_nodes=es01,es02,es03
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "10"
+    networks:
+      local:
+        aliases:
+          - elasticsearch
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.5.0
+    ports:
+      - 5601:5601
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "10"
+    depends_on:
+      - es01
+      - es02
+      - es03
+    environment:
+      SERVER_NAME: elasticsearch
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+      LOGGING_QUIET: "true"
+    volumes:
+      - ${ENV_KIBANA_CONF_DIR}/kibana.yml:/usr/share/kibana/kibana.yml
+    networks:
+      local:
+        aliases:
+          - kibana
+
+  arranger-server:
+    image: overture/arranger-server:2.2.4 
+    container_name: arranger-server.local
+    depends_on:
+      - es01
+      - es02
+      - es03
+    ports:
+      - 5050:5050
+    environment:
+      ES_HOST: http://elasticsearch:9200
+    networks:
+      local:
+        aliases:
+          - arranger-server
+          
+  atlas-file-service:
+    image: kingstonduo/atlas-file-service
+    ports:
+      - "5000:5000"
+    volumes:
+      - ${ENV_FLASK_HOME}:/code
+    environment:
+      - FLASK_ENV=production
+      - MINIO_ACCESS_KEY=${ENV_MINIO_ACCESS_KEY}
+      - MINIO_SECRET_KEY=${ENV_MINIO_SECRET_KEY}
+      - MINIO_URL=${ENV_MINIO_URL}
+      - BUCKET_NAME=${ENV_BUCKET_NAME}
+    networks:
+      local:
+        aliases:
+          - atlas-file-service   
+          
+  minio-s3:
+    image: minio/minio
+    ports:
+      - "9000:9000"
+    environment:
+      - MINIO_ACCESS_KEY=${ENV_MINIO_ACCESS_KEY}
+      - MINIO_SECRET_KEY=${ENV_MINIO_SECRET_KEY}
+    command: gateway s3
+    networks:
+      local:
+        aliases:
+          - minio-s3    
+  
+volumes:
+  esdata01:
+    driver: local
+  esdata02:
+    driver: local
+  esdata03:
+    driver: local
+  mariadbdata:
+
+networks:
+  local:
+    name: dataPortal
+    ipam:
+      driver: default
+      config:
+        - 
+          subnet: 10.12.0.0/16
