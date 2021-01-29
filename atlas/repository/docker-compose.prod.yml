@@ -13,6 +13,7 @@ services:
       - ENV_APACHE_SERVER_NAME=${ENV_APACHE_SERVER_NAME}
     volumes:
       - ${ENV_REACT_APPDIR}/build:/var/www/html
+      - ${ENV_EXPLORER_REACT_APPDIR}/build:/var/www/html/explorer
       - ${ENV_SSL_CERT_DIR}:/certs
     networks:
       local:
@@ -32,6 +33,18 @@ services:
       local:
         aliases:
           - index-creator
+
+  arranger-server:
+    image: overture/arranger-server:2.2.4 
+    container_name: arranger-server.local
+    ports:
+      - 5050:5050
+    environment:
+      ES_HOST: ${ENV_ES_HOST_IP}
+    networks:
+      local:
+        aliases:
+          - arranger-server
 
 networks:
   local:
