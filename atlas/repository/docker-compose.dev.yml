@@ -33,6 +33,32 @@ services:
         aliases:
           - index-creator
 
+  arranger-ui:
+    image: overture/arranger-ui:2.2.4
+    hostname: arranger-ui.local
+    container_name: arranger-ui.local
+    depends_on:
+      - arranger-server
+    ports:
+      - 8080:8080
+      - 8081:8081
+    networks:
+      local:
+        aliases:
+          - arranger-ui
+
+  arranger-server:
+    image: overture/arranger-server:2.2.4 
+    container_name: arranger-server.local
+    ports:
+      - 5050:5050
+    environment:
+      ES_HOST: ${ENV_ES_HOST_IP}
+    networks:
+      local:
+        aliases:
+          - arranger-server
+
 networks:
   local:
     name: dataPortal

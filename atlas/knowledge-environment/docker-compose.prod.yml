@@ -139,22 +139,6 @@ services:
         aliases:
           - kibana
 
-  arranger-server:
-    image: overture/arranger-server:2.2.4 
-    container_name: arranger-server.local
-    depends_on:
-      - es01
-      - es02
-      - es03
-    ports:
-      - 5050:5050
-    environment:
-      ES_HOST: http://elasticsearch:9200
-    networks:
-      local:
-        aliases:
-          - arranger-server
-          
   atlas-file-service:
     image: kingstonduo/atlas-file-service
     ports:
