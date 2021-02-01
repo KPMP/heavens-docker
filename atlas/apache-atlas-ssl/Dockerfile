@@ -23,4 +23,4 @@ RUN echo "************** Built Apache WITH SSL **************"
 
 EXPOSE 80 443
 
-ENTRYPOINT ["sh", "-c", "httpd-ssl-foreground $ENV_APACHE_SERVER_NAME"]
+ENTRYPOINT ["sh", "-c", "httpd-ssl-foreground $ENV_APACHE_SERVER_NAME $ENV_ARRANGER_SERVER_ADDRESS $ENV_FILE_SERVICE_ADDRESS"]
