@@ -1,6 +1,21 @@
 version: "3.5"
 services:
 
+  spring:
+    container_name: spring
+    image: kingstonduo/kpmp-spring
+    depends_on: 
+      - mariadb
+    ports:
+      - "${ENV_APACHE_TOMCAT_PORT:-3030}:3030"
+    volumes:
+      - "${ENV_SPRING_BOOT_APPDIR}:/home/gradle"  
+    environment:
+      SPRING_BOOT_ENVIRONMENT: ${ENV_DOCKER_ENVIRONMENT}
+      MYSQL_HOST: ${ENV_MYSQL_HOST}
+      MYSQL_USER: ${ENV_MYSQL_USER}
+      MYSQL_PASSWORD: ${ENV_MYSQL_PASSWORD}
+
   mariadb:
     image: mariadb
     restart: always
