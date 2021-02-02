@@ -13,6 +13,7 @@ services:
       - ENV_APACHE_SERVER_NAME=${ENV_APACHE_SERVER_NAME}
     volumes:
       - ${ENV_REACT_APPDIR}/build:/var/www/html
+      - ${ENV_EXPLORER_REACT_APPDIR}/build:/var/www/html/explorer
     networks:
       local:
         aliases:
@@ -31,6 +32,18 @@ services:
       local:
         aliases:
           - index-creator
+
+  arranger-ui:
+    image: overture/arranger-ui:2.2.4
+    hostname: arranger-ui.local
+    container_name: arranger-ui.local
+    ports:
+      - 8080:8080
+      - 8081:8081
+    networks:
+      local:
+        aliases:
+          - arranger-ui
 
 networks:
   local:

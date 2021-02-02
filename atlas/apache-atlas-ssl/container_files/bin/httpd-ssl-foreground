@@ -1,12 +1,19 @@
 #!/bin/sh
 set -e
 
-# Accept first argument as the ENV_APACHE_SERVER_NAME
+# Accept arguments 
 ENV_APACHE_SERVER_NAME=$1
+ENV_ARRANGER_SERVER_ADDRESS=$2
+ENV_FILE_SERVER_ADDRESS=$3
+
+echo $ENV_ARRANGER_SERVER_ADDRESS
+echo $ENV_FILE_SERVER_ADDRESS
 
 # Apache gets grumpy about PID files pre-existing
 rm -f /etc/httpd/logs/httpd.pid
 
 sed -i "s/ENV_APACHE_SERVER_NAME/$ENV_APACHE_SERVER_NAME/g" /opt/etc/httpd/conf.d/virt.conf
+sed -i "s/ENV_ARRANGER_SERVER_ADDRESS/$ENV_ARRANGER_SERVER_ADDRESS/g" /opt/etc/httpd/conf.d/virt.conf
+sed -i "s/ENV_FILE_SERVER_ADDRESS/$ENV_FILE_SERVER_ADDRESS/g" /opt/etc/httpd/conf.d/virt.conf
 
 httpd -DFOREGROUND
