@@ -15,6 +15,7 @@ services:
       - ENV_FILE_SERVER_ADDRESS=${ENV_FILE_SERVER_ADDRESS}
     volumes:
       - ${ENV_REACT_APPDIR}/build:/var/www/html
+      - ${ENV_REPOSITORY_APPDIR}/build:/var/www/html/repository
       - ${ENV_EXPLORER_REACT_APPDIR}/build:/var/www/html/explorer
       - ${ENV_SSL_CERT_DIR}:/certs
     networks:
