@@ -13,6 +13,7 @@ services:
       - ENV_APACHE_SERVER_NAME=${ENV_APACHE_SERVER_NAME}
     volumes:
       - ${ENV_REACT_APPDIR}/build:/var/www/html
+      - ${ENV_REPOSITORY_APPDIR}/build:/var/www/html/repository
       - ${ENV_EXPLORER_REACT_APPDIR}/build:/var/www/html/explorer
     networks:
       local:
