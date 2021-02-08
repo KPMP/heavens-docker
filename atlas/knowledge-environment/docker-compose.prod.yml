@@ -7,7 +7,7 @@ services:
     depends_on: 
       - mariadb
     ports:
-      - "${ENV_APACHE_TOMCAT_PORT:-3030}:3030"
+      - "${ENV_APACHE_TOMCAT_PORT:-3030}:8080"
     volumes:
       - "${ENV_SPRING_BOOT_APPDIR}:/home/gradle"  
     environment:
