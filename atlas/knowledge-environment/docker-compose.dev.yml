@@ -3,11 +3,11 @@ services:
 
   spring:
     container_name: spring
-    image: kingstonduo/kpmp-spring
+    image: kingstonduo/pegasus-data
     depends_on: 
       - mariadb
     ports:
-      - "${ENV_APACHE_TOMCAT_PORT:-3030}:8080"
+      - "${ENV_APACHE_TOMCAT_PORT:-3030}:3030"
     volumes:
       - "${ENV_SPRING_BOOT_APPDIR}:/home/gradle"  
     environment:
@@ -17,11 +17,6 @@ services:
       MYSQL_PASSWORD: ${ENV_MYSQL_PASSWORD}
       TZ: "America/Detroit"
     privileged: true
-    logging:
-      driver: "fluentd"
-      options:
-        fluentd-address: "${ENV_FLUENTD_ADDRESS}"
-        tag: "pegasus-data"
     networks:
       local:
         aliases:
@@ -45,7 +40,7 @@ services:
     image: adminer
     restart: always
     ports:
-      - 9090:8080 
+      - 9090:9090
     networks:
       local:
         aliases:
@@ -188,7 +183,6 @@ services:
     depends_on:
       - arranger-server
     ports:
-      - 8080:8080
       - 8081:8081
     networks:
       local:
