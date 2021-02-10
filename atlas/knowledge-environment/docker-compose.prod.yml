@@ -3,13 +3,11 @@ services:
 
   spring:
     container_name: spring
-    image: kingstonduo/kpmp-spring
+    image: kingstonduo/pegasus-data:1.0
     depends_on: 
       - mariadb
     ports:
-      - "${ENV_APACHE_TOMCAT_PORT:-3030}:8080"
-    volumes:
-      - "${ENV_SPRING_BOOT_APPDIR}:/home/gradle"  
+      - "${ENV_APACHE_TOMCAT_PORT:-3030}:3030"
     environment:
       SPRING_BOOT_ENVIRONMENT: ${ENV_DOCKER_ENVIRONMENT}
       MYSQL_HOST: ${ENV_MYSQL_HOST}
