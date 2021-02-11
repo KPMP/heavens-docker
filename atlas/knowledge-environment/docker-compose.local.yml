@@ -38,7 +38,7 @@ services:
     image: adminer
     restart: always
     ports:
-      - 9090:8080 
+      - 9090:8080
     networks:
       local:
         aliases:
@@ -74,61 +74,6 @@ services:
         aliases:
           - elasticsearch
 
-  es02:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.0
-    container_name: es02
-    expose:
-      - 9200
-      - 9300
-    volumes:
-      - esdata02:/usr/share/elasticsearch/data
-      - ${ENV_ES_CONF_DIR}/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
-    environment:
-      - node.name=es02
-      - discovery.seed_hosts=es01,es03
-      - cluster.initial_master_nodes=es01,es02,es03
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    restart: always
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "50m"
-        max-file: "10"
-    networks:
-      local:
-        aliases:
-          - elasticsearch
-
-  es03:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.0
-    container_name: es03
-    expose:
-      - 9200
-      - 9300
-    volumes:
-      - esdata03:/usr/share/elasticsearch/data
-      - ${ENV_ES_CONF_DIR}/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
-    environment:
-      - node.name=es03
-      - discovery.seed_hosts=es01,es02
-      - cluster.initial_master_nodes=es01,es02,es03
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    restart: always
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "50m"
-        max-file: "10"
     networks:
       local:
         aliases:
@@ -145,8 +90,6 @@ services:
         max-file: "10"
     depends_on:
       - es01
-      - es02
-      - es03
     environment:
       SERVER_NAME: elasticsearch
       ELASTICSEARCH_URL: http://elasticsearch:9200
@@ -163,8 +106,6 @@ services:
     container_name: arranger-server.local
     depends_on:
       - es01
-      - es02
-      - es03
     ports:
       - 5050:5050
     environment:
@@ -219,10 +160,6 @@ services:
   
 volumes:
   esdata01:
-    driver: local
-  esdata02:
-    driver: local
-  esdata03:
     driver: local
   mariadbdata:
 
