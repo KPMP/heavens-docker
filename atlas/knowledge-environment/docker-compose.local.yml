@@ -3,13 +3,11 @@ services:
 
   spring:
     container_name: spring
-    image: kingstonduo/kpmp-spring
+    image: kingstonduo/pegasus-data
     depends_on: 
       - mariadb
     ports:
-      - "${ENV_APACHE_TOMCAT_PORT:-3030}:8080"
-    volumes:
-      - "${ENV_SPRING_BOOT_APPDIR}:/home/gradle"  
+      - "${ENV_APACHE_TOMCAT_PORT:-3030}:3030"
     environment:
       SPRING_BOOT_ENVIRONMENT: ${ENV_DOCKER_ENVIRONMENT}
       MYSQL_HOST: ${ENV_MYSQL_HOST}
@@ -17,11 +15,6 @@ services:
       MYSQL_PASSWORD: ${ENV_MYSQL_PASSWORD}
       TZ: "America/Detroit"
     privileged: true
-    logging:
-      driver: "fluentd"
-      options:
-        fluentd-address: "${ENV_FLUENTD_ADDRESS}"
-        tag: "pegasus-data"
     networks:
       local:
         aliases:
@@ -45,11 +38,7 @@ services:
     image: adminer
     restart: always
     ports:
-<<<<<<< Updated upstream
-      - 9090:8080 
-=======
       - 9090:8080
->>>>>>> Stashed changes
     networks:
       local:
         aliases:
@@ -85,61 +74,6 @@ services:
         aliases:
           - elasticsearch
 
-  es02:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.0
-    container_name: es02
-    expose:
-      - 9200
-      - 9300
-    volumes:
-      - esdata02:/usr/share/elasticsearch/data
-      - ${ENV_ES_CONF_DIR}/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
-    environment:
-      - node.name=es02
-      - discovery.seed_hosts=es01,es03
-      - cluster.initial_master_nodes=es01,es02,es03
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    restart: always
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "50m"
-        max-file: "10"
-    networks:
-      local:
-        aliases:
-          - elasticsearch
-
-  es03:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.0
-    container_name: es03
-    expose:
-      - 9200
-      - 9300
-    volumes:
-      - esdata03:/usr/share/elasticsearch/data
-      - ${ENV_ES_CONF_DIR}/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
-    environment:
-      - node.name=es03
-      - discovery.seed_hosts=es01,es02
-      - cluster.initial_master_nodes=es01,es02,es03
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    restart: always
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "50m"
-        max-file: "10"
     networks:
       local:
         aliases:
@@ -156,8 +90,6 @@ services:
         max-file: "10"
     depends_on:
       - es01
-      - es02
-      - es03
     environment:
       SERVER_NAME: elasticsearch
       ELASTICSEARCH_URL: http://elasticsearch:9200
@@ -174,8 +106,6 @@ services:
     container_name: arranger-server.local
     depends_on:
       - es01
-      - es02
-      - es03
     ports:
       - 5050:5050
     environment:
@@ -192,7 +122,6 @@ services:
     depends_on:
       - arranger-server
     ports:
-      - 8080:8080
       - 8081:8081
     networks:
       local:
@@ -231,10 +160,6 @@ services:
   
 volumes:
   esdata01:
-    driver: local
-  esdata02:
-    driver: local
-  esdata03:
     driver: local
   mariadbdata:
 
