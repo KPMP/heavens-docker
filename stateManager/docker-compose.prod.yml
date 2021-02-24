@@ -3,7 +3,8 @@ services:
 
   state-spring:
     container_name: state-spring
-    image: "${ENV_SPRING_CONTAINER}" 
+    image: "${ENV_SPRING_CONTAINER}"
+    restart: unless-stopped
     ports:
       - "${ENV_APACHE_TOMCAT_PORT:-3060}:3060"
     volumes:
