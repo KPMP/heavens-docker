@@ -4,6 +4,7 @@ services:
   metadata-validation:
     container_name: metadata-validation
     image: kingstonduo/pentaho-validation
+    restart: unless-stopped
     expose:
       - 8080
     volumes:
