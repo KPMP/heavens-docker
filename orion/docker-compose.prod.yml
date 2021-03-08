@@ -58,6 +58,11 @@ services:
       DEFAULT_CLIENT_ID: ${ENV_DEFAULT_CLIENT_ID}
       TZ: "America/Detroit"
     privileged: true
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: "${ENV_FLUENTD_ADDRESS}"
+        tag: "orion-data"
     networks:
       dataLake:
         aliases:
