@@ -4,6 +4,7 @@ services:
   spring:
     container_name: eridanus-spring
     image: kingstonduo/kpmp-spring
+    restart: unless-stopped    
     volumes:
       - "${ENV_SPRING_BOOT_APPDIR}:/home/gradle"
     environment:
@@ -24,6 +25,7 @@ services:
   postfix:
     container_name: postfix-relay
     image: juanluisbaptiste/postfix:latest
+    restart: unless-stopped
     expose:
       - 25
     environment:

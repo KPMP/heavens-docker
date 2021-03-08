@@ -1,20 +1,24 @@
 version: "3.5"
 services:
 
-  apache:
-    container_name: apache
-    image: ${ENV_APACHE_CONTAINER} 
+  spring:
+    container_name: spring
+    image: kingstonduo/pegasus-data
+    depends_on: 
+      - mariadb
     ports:
-      - "80:80"
-      - "443:443"
+      - "${ENV_APACHE_TOMCAT_PORT:-3030}:3030"
     environment:
-      - ENV_APACHE_SERVER_NAME=${ENV_APACHE_SERVER_NAME}
-    volumes:
-      - ${ENV_REACT_APPDIR}/build:/var/www/html
+      SPRING_BOOT_ENVIRONMENT: ${ENV_DOCKER_ENVIRONMENT}
+      MYSQL_HOST: ${ENV_MYSQL_HOST}
+      MYSQL_USER: ${ENV_MYSQL_USER}
+      MYSQL_PASSWORD: ${ENV_MYSQL_PASSWORD}
+      TZ: "America/Detroit"
+    privileged: true
     networks:
       local:
         aliases:
-          - apache
+          - spring  
 
   mariadb:
     image: mariadb
@@ -30,22 +34,6 @@ services:
         aliases:
           - mariadb
 
-  index-creation-worker:
-    image: kingstonduo/atlas-index-creation-worker:latest
-    container_name: index-creation-worker
-    restart: always
-    ports:
-      - "5001:5000"
-    environment:
-      MYSQL_USER: root
-      MYSQL_ROOT_PASSWORD: ${ENV_MARIADB_ROOT_PWD}
-    depends_on:
-      - mariadb
-    networks:
-      local:
-        aliases:
-          - index-creator
-
   adminer:
     image: adminer
     restart: always
@@ -54,7 +42,7 @@ services:
     networks:
       local:
         aliases:
-          - adminer   
+          - adminer    
 
   es01:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.5.0
@@ -86,61 +74,6 @@ services:
         aliases:
           - elasticsearch
 
-  es02:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.0
-    container_name: es02
-    expose:
-      - 9200
-      - 9300
-    volumes:
-      - esdata02:/usr/share/elasticsearch/data
-      - ${ENV_ES_CONF_DIR}/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
-    environment:
-      - node.name=es02
-      - discovery.seed_hosts=es01,es03
-      - cluster.initial_master_nodes=es01,es02,es03
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    restart: always
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "50m"
-        max-file: "10"
-    networks:
-      local:
-        aliases:
-          - elasticsearch
-
-  es03:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.0
-    container_name: es03
-    expose:
-      - 9200
-      - 9300
-    volumes:
-      - esdata03:/usr/share/elasticsearch/data
-      - ${ENV_ES_CONF_DIR}/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
-    environment:
-      - node.name=es03
-      - discovery.seed_hosts=es01,es02
-      - cluster.initial_master_nodes=es01,es02,es03
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    restart: always
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "50m"
-        max-file: "10"
     networks:
       local:
         aliases:
@@ -157,11 +90,10 @@ services:
         max-file: "10"
     depends_on:
       - es01
-      - es02
-      - es03 
     environment:
       SERVER_NAME: elasticsearch
       ELASTICSEARCH_URL: http://elasticsearch:9200
+      LOGGING_QUIET: "true"
     volumes:
       - ${ENV_KIBANA_CONF_DIR}/kibana.yml:/usr/share/kibana/kibana.yml
     networks:
@@ -174,8 +106,6 @@ services:
     container_name: arranger-server.local
     depends_on:
       - es01
-      - es02
-      - es03 
     ports:
       - 5050:5050
     environment:
@@ -184,7 +114,7 @@ services:
       local:
         aliases:
           - arranger-server
-  
+
   arranger-ui:
     image: overture/arranger-ui:2.2.4
     hostname: arranger-ui.local
@@ -192,23 +122,20 @@ services:
     depends_on:
       - arranger-server
     ports:
-      - 8080:8080
       - 8081:8081
     networks:
       local:
         aliases:
           - arranger-ui
-
+          
   atlas-file-service:
     image: kingstonduo/atlas-file-service
     ports:
       - "5000:5000"
     volumes:
       - ${ENV_FLASK_HOME}:/code
-    depends_on:
-      - redis
     environment:
-      - FLASK_ENV=development
+      - FLASK_ENV=production
       - MINIO_ACCESS_KEY=${ENV_MINIO_ACCESS_KEY}
       - MINIO_SECRET_KEY=${ENV_MINIO_SECRET_KEY}
       - MINIO_URL=${ENV_MINIO_URL}
@@ -216,14 +143,7 @@ services:
     networks:
       local:
         aliases:
-          - atlas-file-service
-
-  redis:
-    image: redis
-    networks:
-      local:
-        aliases:
-          - redis
+          - atlas-file-service   
           
   minio-s3:
     image: minio/minio
@@ -236,17 +156,12 @@ services:
     networks:
       local:
         aliases:
-          - minio-s3
-
+          - minio-s3    
+  
 volumes:
   esdata01:
     driver: local
-  esdata02:
-    driver: local
-  esdata03:
-    driver: local
   mariadbdata:
-
 
 networks:
   local:

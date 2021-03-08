@@ -15,6 +15,10 @@ services:
     environment:
       SERVER_NAME: elasticsearch
       ELASTICSEARCH_URL: http://elasticsearch:9200
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
     networks:
       local:
         aliases:
@@ -50,6 +54,10 @@ services:
     volumes: 
       - esdata01:/usr/share/elasticsearch/data
       - ${ENV_ES_CONF_DIR}/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
     networks:
       local:
         aliases:
@@ -70,6 +78,10 @@ services:
       memlock:
         soft: -1
         hard: -1
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
     volumes: 
       - esdata02:/usr/share/elasticsearch/data
       - ${ENV_ES_CONF_DIR}/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
@@ -96,6 +108,10 @@ services:
     volumes: 
       - esdata03:/usr/share/elasticsearch/data
       - ${ENV_ES_CONF_DIR}/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
     networks:
       local:
         aliases:
@@ -109,6 +125,10 @@ services:
       - ${ENV_FLUENTD_LOG_DIR}:/logs
     ports:
       - "24224:24224"
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
     networks:
       local:
         aliases:
@@ -127,6 +147,10 @@ services:
       - ${ENV_ELASTALERT_SERVER_CONF}:/opt/elastalert-server/config/config.json
       - ${ENV_ELASTALERT_RULES_DIR}:/opt/elastalert/rules
       - ${ENV_ELASTALERT_RULES_TEMPLATE_DIR}:/opt/elastalert/rule_templates
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
     networks:
       local:
         aliases:

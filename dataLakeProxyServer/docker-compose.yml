@@ -3,7 +3,8 @@ services:
 
   apache:
     container_name: apache-proxy
-    image: ${ENV_APACHE_IMAGE} 
+    image: ${ENV_APACHE_IMAGE}
+    restart: unless-stopped
     ports:
       - "80:80"
       - "443:443"
