@@ -39,7 +39,7 @@ services:
 
   spring:
     container_name: cassie-spring
-    image: kingstonduo/kpmp-spring
+    image: kingstonduo/cassiopeia-data:1.2
     environment:
       - "TZ=America/Detroit"
     ports:
