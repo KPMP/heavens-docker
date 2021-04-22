@@ -43,8 +43,8 @@ services:
   adminer:
     image: adminer
     restart: always
-    environment:  
-	    TZ: "America/Detroit"
+    environment:
+      TZ: "America/Detroit"
     ports:
       - 9090:8080 
     networks:
