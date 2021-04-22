@@ -40,8 +40,8 @@ services:
     image: overture/arranger-ui:2.2.4
     hostname: arranger-ui.local
     container_name: arranger-ui.local
-    environment:  
-	    TZ: "America/Detroit"
+    environment:
+      TZ: "America/Detroit"
     ports:
       - 8080:8080
       - 8081:8081
