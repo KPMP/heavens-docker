@@ -125,8 +125,8 @@ services:
     image: overture/arranger-ui:2.2.4
     hostname: arranger-ui.local
     container_name: arranger-ui.local
-    environment:  
-	    TZ: "America/Detroit"
+    environment:
+      TZ: "America/Detroit"
     depends_on:
       - arranger-server
     ports:
