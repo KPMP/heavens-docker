@@ -39,7 +39,7 @@ services:
     image: adminer
     restart: always
     environment:
-      TZ: "America/Detroit"
+      - "TZ=America/Detroit"
     ports:
       - 9090:8080 
     networks:
@@ -62,7 +62,7 @@ services:
       - cluster.initial_master_nodes=es01,es02,es03
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      - "TZ:America/Detroit"
+      - "TZ=America/Detroit"
     ulimits:
       memlock:
         soft: -1
@@ -93,7 +93,7 @@ services:
       - cluster.initial_master_nodes=es01,es02,es03
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      - "TZ:America/Detroit"
+      - "TZ=America/Detroit"
     ulimits:
       memlock:
         soft: -1
@@ -124,7 +124,7 @@ services:
       - cluster.initial_master_nodes=es01,es02,es03
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      - "TZ:America/Detroit"
+      - "TZ=America/Detroit"
     ulimits:
       memlock:
         soft: -1
@@ -187,7 +187,7 @@ services:
     hostname: arranger-ui.local
     container_name: arranger-ui.local
     environment:
-      - "TZ:America/Detroit"
+      - "TZ=America/Detroit"
     depends_on:
       - arranger-server
     ports:
@@ -209,7 +209,7 @@ services:
       - MINIO_SECRET_KEY=${ENV_MINIO_SECRET_KEY}
       - MINIO_URL=${ENV_MINIO_URL}
       - BUCKET_NAME=${ENV_BUCKET_NAME}
-      - "TZ:America/Detroit"
+      - TZ=America/Detroit
     networks:
       local:
         aliases:
@@ -222,7 +222,7 @@ services:
     environment:
       - MINIO_ACCESS_KEY=${ENV_MINIO_ACCESS_KEY}
       - MINIO_SECRET_KEY=${ENV_MINIO_SECRET_KEY}
-      - "TZ:America/Detroit"
+      - "TZ=America/Detroit"
     command: gateway s3
     networks:
       local:

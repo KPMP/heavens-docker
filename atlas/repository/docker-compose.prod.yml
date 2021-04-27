@@ -14,7 +14,7 @@ services:
       - ENV_ARRANGER_SERVER_ADDRESS=${ENV_ARRANGER_SERVER_ADDRESS}
       - ENV_FILE_SERVER_ADDRESS=${ENV_FILE_SERVER_ADDRESS}
       - ENV_EXPLORER_DATA_SERVER_ADDRESS=${ENV_EXPLORER_DATA_SERVER_ADDRESS}
-      - "TZ:America/Detroit"
+      - "TZ=America/Detroit"
     volumes:
       - ${ENV_REACT_APPDIR}/build:/var/www/html
       - ${ENV_REPOSITORY_APPDIR}/build:/var/www/html/repository
