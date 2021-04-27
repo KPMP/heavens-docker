@@ -25,7 +25,6 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${ENV_MARIADB_ROOT_PWD}
-      TZ: "America/Detroit"
     volumes:
       - mariadbdata:/var/lib/mysql
     ports:
