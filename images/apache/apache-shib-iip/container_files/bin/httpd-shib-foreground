@@ -1,0 +1,12 @@
+#!/bin/sh
+set -e
+
+# Accept first argument as the ENV_APACHE_SERVER_NAME
+ENV_APACHE_SERVER_NAME=$1
+
+# Apache gets grumpy about PID files pre-existing
+rm -f /etc/httpd/logs/httpd.pid
+
+sed -i "s/ENV_APACHE_SERVER_NAME/$ENV_APACHE_SERVER_NAME/g" /opt/etc/httpd/conf.d/virt.conf
+
+(/usr/sbin/shibd) & httpd -DFOREGROUND
