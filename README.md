@@ -27,7 +27,7 @@ you can and should just use the docker-compose.yml file in the directory.
 ## Developer notes
 
 Instructions on how to get your machine set up to run Docker for these projects
-- Download and install Docker
+- Download and install Docker (https://docs.docker.com/desktop/)
 - Launch Docker
 - Go to Preferences
 -- Go to the Advanced tab and change your memory to 4GB
@@ -35,6 +35,7 @@ Instructions on how to get your machine set up to run Docker for these projects
 -- (on a PC) Go to the Shared Drives tab and check the box next to the C drive
 -- (on a PC) run 'set COMPOSE_CONVERT_WINDOWS_PATHS=1'
 - Apply & restart docker
+- Wait until docker engine completely starts (docker whale icon in taskbar will stop moving)
 
 WARNING: Docker containers running in Windows 10 can have a wonky date. It is a known issue. 
 

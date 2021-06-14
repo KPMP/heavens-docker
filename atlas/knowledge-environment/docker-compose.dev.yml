@@ -37,6 +37,8 @@ services:
   adminer:
     image: adminer
     restart: always
+    environment:
+      - "TZ=America/Detroit"
     ports:
       - 9090:8080 
     networks:
@@ -59,6 +61,7 @@ services:
       - cluster.initial_master_nodes=es01,es02,es03
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "TZ=America/Detroit"
     ulimits:
       memlock:
         soft: -1
@@ -89,6 +92,7 @@ services:
       - cluster.initial_master_nodes=es01,es02,es03
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "TZ=America/Detroit"
     ulimits:
       memlock:
         soft: -1
@@ -119,6 +123,7 @@ services:
       - cluster.initial_master_nodes=es01,es02,es03
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "TZ=America/Detroit"
     ulimits:
       memlock:
         soft: -1
@@ -151,6 +156,7 @@ services:
       SERVER_NAME: elasticsearch
       ELASTICSEARCH_URL: http://elasticsearch:9200
       LOGGING_QUIET: "true"
+      TZ: "America/Detroit"
     volumes:
       - ${ENV_KIBANA_CONF_DIR}/kibana.yml:/usr/share/kibana/kibana.yml
     networks:
@@ -169,6 +175,7 @@ services:
       - 5050:5050
     environment:
       ES_HOST: http://elasticsearch:9200
+      TZ: "America/Detroit"
     networks:
       local:
         aliases:
@@ -178,6 +185,8 @@ services:
     image: overture/arranger-ui:2.2.4
     hostname: arranger-ui.local
     container_name: arranger-ui.local
+    environment:
+      - "TZ=America/Detroit"
     depends_on:
       - arranger-server
     ports:
@@ -199,6 +208,7 @@ services:
       - MINIO_SECRET_KEY=${ENV_MINIO_SECRET_KEY}
       - MINIO_URL=${ENV_MINIO_URL}
       - BUCKET_NAME=${ENV_BUCKET_NAME}
+      - TZ=America/Detroit
     networks:
       local:
         aliases:
@@ -211,6 +221,7 @@ services:
     environment:
       - MINIO_ACCESS_KEY=${ENV_MINIO_ACCESS_KEY}
       - MINIO_SECRET_KEY=${ENV_MINIO_SECRET_KEY}
+      - "TZ=America/Detroit"
     command: gateway s3
     networks:
       local:
