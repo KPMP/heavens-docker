@@ -68,10 +68,11 @@ services:
         hard: -1
     restart: always
     logging:
-      driver: "json-file"
+      driver: "fluentd"
       options:
-        max-size: "50m"
-        max-file: "10"
+        fluentd-address: "${ENV_FLUENTD_ADDRESS}"
+        tag: "ke-es01"
+
     networks:
       local:
         aliases:
@@ -99,10 +100,11 @@ services:
         hard: -1
     restart: always
     logging:
-      driver: "json-file"
+      driver: "fluentd"
       options:
-        max-size: "50m"
-        max-file: "10"
+        fluentd-address: "${ENV_FLUENTD_ADDRESS}"
+        tag: "ke-es02"
+
     networks:
       local:
         aliases:
@@ -130,10 +132,11 @@ services:
         hard: -1
     restart: always
     logging:
-      driver: "json-file"
+      driver: "fluentd"
       options:
-        max-size: "50m"
-        max-file: "10"
+        fluentd-address: "${ENV_FLUENTD_ADDRESS}"
+        tag: "ke-es03"
+
     networks:
       local:
         aliases:
@@ -213,6 +216,11 @@ services:
       local:
         aliases:
           - atlas-file-service   
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: "${ENV_FLUENTD_ADDRESS}"
+        tag: "atlas-file-service"
           
   minio-s3:
     image: minio/minio
