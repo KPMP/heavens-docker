@@ -68,10 +68,11 @@ services:
         hard: -1
     restart: always
     logging:
-      driver: "json-file"
+        driver: "json-file"
       options:
         max-size: "50m"
         max-file: "10"
+
     networks:
       local:
         aliases:
@@ -99,10 +100,11 @@ services:
         hard: -1
     restart: always
     logging:
-      driver: "json-file"
+        driver: "json-file"
       options:
         max-size: "50m"
         max-file: "10"
+
     networks:
       local:
         aliases:
@@ -130,7 +132,7 @@ services:
         hard: -1
     restart: always
     logging:
-      driver: "json-file"
+        driver: "json-file"
       options:
         max-size: "50m"
         max-file: "10"
