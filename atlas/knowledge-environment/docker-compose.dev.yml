@@ -68,10 +68,10 @@ services:
         hard: -1
     restart: always
     logging:
-      driver: "fluentd"
+        driver: "json-file"
       options:
-        fluentd-address: "${ENV_FLUENTD_ADDRESS}"
-        tag: "ke-es01"
+        max-size: "50m"
+        max-file: "10"
 
     networks:
       local:
@@ -100,10 +100,10 @@ services:
         hard: -1
     restart: always
     logging:
-      driver: "fluentd"
+        driver: "json-file"
       options:
-        fluentd-address: "${ENV_FLUENTD_ADDRESS}"
-        tag: "ke-es02"
+        max-size: "50m"
+        max-file: "10"
 
     networks:
       local:
@@ -132,11 +132,10 @@ services:
         hard: -1
     restart: always
     logging:
-      driver: "fluentd"
+        driver: "json-file"
       options:
-        fluentd-address: "${ENV_FLUENTD_ADDRESS}"
-        tag: "ke-es03"
-
+        max-size: "50m"
+        max-file: "10"
     networks:
       local:
         aliases:
