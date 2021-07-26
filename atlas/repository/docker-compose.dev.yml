@@ -20,11 +20,6 @@ services:
       local:
         aliases:
           - apache
-    logging:
-      driver: "fluentd"
-      options:
-        fluentd-address: "${ENV_FLUENTD_ADDRESS}"
-        tag: "repository-apache"
 
   index-creation-worker:
     image: kingstonduo/atlas-index-creation-worker:latest
