@@ -3,6 +3,9 @@ import docker
 import os
 import requests
 from dotenv import load_dotenv
+import endpoint_check
+import docker_container_reboot
+
 
 load_dotenv()
 
@@ -15,20 +18,42 @@ slack_url = 'https://hooks.slack.com/services/' + slack_passcode
 docker_client = docker.from_env()
 containers = docker_client.containers.list()
 
-running_containers = set()
-expected_containers = set(expected_containers_list)
-message = ""
 
-for container in containers:
-    running_containers.add(container.name)
+def checkDockerContainers():
+    running_containers = set()
+    expected_containers = set(expected_containers_list)
+    message = ""
 
-missing_containers = expected_containers.difference(running_containers)
+    for container in containers:
+        running_containers.add(container.name)
 
-if len(missing_containers) > 0:
-    message = "ALERT: The following containers are missing on " + environment + ": " + ', '.join(missing_containers)
-    response = requests.post(slack_url, headers={'Content-type': 'application/json',}, data='{"text":"' + message+ '"}')
-else:
-    message = "All containers are running as expected: " + ', '.join(running_containers)
+    missing_containers = expected_containers.difference(running_containers)
 
-print(message)
+    if len(missing_containers) > 0:
+        message = "ALERT: The following containers are missing on " + \
+            environment + ": " + \
+            ', '.join(missing_containers) + \
+            ' - Attempting to restart containers...'
+        response = requests.post(slack_url, headers={
+            'Content-type': 'application/json', }, data='{"text":"' + message + '"}')
+        docker_container_reboot.restartContainers()
+        checkDockerContainers()
+    else:
+        message = "All containers are running as expected: " + \
+            ', '.join(running_containers)
+        print(message)
 
+        healthy = endpoint_check.isHealthy()
+        if(not healthy):
+            message = "ALERT: The following service is not responding on " + \
+                environment + ' - Attempting to restart containers...'
+            response = requests.post(slack_url, headers={
+                'Content-type': 'application/json', }, data='{"text":"' + message + '"}')
+            docker_container_reboot.restartContainers()
+        else:
+            message = "Service is running as expected on: " + environment
+            print(message)
+
+
+if __name__ == "__main__":
+    checkDockerContainers()
