@@ -26,6 +26,13 @@ services:
         aliases:
           - apache
 
+  vitessce:
+    image: ${ENV_VITESSCE}
+    container_name: vitessce
+    restart: always
+    ports: 
+      - "3000:3000"
+
   index-creation-worker:
     image: ${ENV_INDEX_CREATION_WORKER}
     container_name: index-creation-worker
