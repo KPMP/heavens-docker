@@ -16,10 +16,19 @@ services:
       - ${ENV_REACT_APPDIR}/build:/var/www/html
       - ${ENV_REPOSITORY_APPDIR}/build:/var/www/html/repository
       - ${ENV_EXPLORER_REACT_APPDIR}/build:/var/www/html/explorer
+      - ${ENV_VITESSCE_APPDIR}/dist-demo:/var/www/html/vitessce
+
     networks:
       local:
         aliases:
           - apache
+          
+  vitessce:
+    image: ${ENV_VITESSCE}
+    container_name: vitessce
+    restart: always
+    ports: 
+      - "3000:3000"
 
   index-creation-worker:
     image: kingstonduo/atlas-index-creation-worker:latest
