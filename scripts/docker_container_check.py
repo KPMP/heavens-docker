@@ -6,7 +6,6 @@ from dotenv import load_dotenv
 import endpoint_check
 import docker_container_reboot
 
-
 load_dotenv()
 
 expected_containers_string = os.environ.get('expected_containers')
@@ -16,13 +15,14 @@ expected_containers_list = expected_containers_string.split(', ')
 slack_url = 'https://hooks.slack.com/services/' + slack_passcode
 
 docker_client = docker.from_env()
-containers = docker_client.containers.list()
 
 
 def checkDockerContainers():
     running_containers = set()
     expected_containers = set(expected_containers_list)
     message = ""
+
+    containers = docker_client.containers.list()
 
     for container in containers:
         running_containers.add(container.name)
@@ -38,6 +38,7 @@ def checkDockerContainers():
             'Content-type': 'application/json', }, data='{"text":"' + message + '"}')
         docker_container_reboot.restartContainers()
         checkDockerContainers()
+        return
     else:
         message = "All containers are running as expected: " + \
             ', '.join(running_containers)
@@ -45,15 +46,18 @@ def checkDockerContainers():
 
         healthy = endpoint_check.isHealthy()
         if(not healthy):
-            message = "ALERT: The following service is not responding on " + \
+            message = "ALERT: The following service is not responding " + \
                 environment + ' - Attempting to restart containers...'
             response = requests.post(slack_url, headers={
                 'Content-type': 'application/json', }, data='{"text":"' + message + '"}')
             docker_container_reboot.restartContainers()
+            checkDockerContainers()
         else:
             message = "Service is running as expected on: " + environment
             print(message)
+            return message
 
 
 if __name__ == "__main__":
     checkDockerContainers()
+    print("completed container check")
