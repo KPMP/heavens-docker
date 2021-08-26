@@ -32,6 +32,18 @@ services:
         aliases:
           - delphinus-apache
 
+  iipimage-server:
+    container_name: iipimage-server
+    image: kingstonduo/pathology-imageserver:master
+    ports:
+      - "9090:80"
+    volumes:
+      - ${ENV_IMAGE_HOME}:/root/src/images
+    networks:
+      local:
+        aliases:
+          - iipimage-server    
+
   mongodb:
     container_name: delphinus-mongodb
     image: mongo:4.0
