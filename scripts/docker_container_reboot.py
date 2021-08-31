@@ -8,13 +8,17 @@ environment = os.environ.get('environment')
 
 
 def restartContainers():
-    composeDown = 'docker-compose -f docker-compose.prod.yml down'
-    composeUp = 'docker-compose -f docker-compose.prod.yml up -d'
+    composeDown = '/usr/local/bin/docker-compose -f docker-compose.prod.yml down'
+    composeUp = '/usr/local/bin/docker-compose -f docker-compose.prod.yml up -d'
 
     if "atlas" in environment.lower():
         if "ke" in environment.lower():
-            os.system('cd ../atlas/knowledge-environment && ' + + composeDown)
-            os.system('cd ../atlas/knowledge-environment && ' + composeUp)
+            os.system(
+                'cd /home/ubuntu/heavens-docker/atlas/knowledge-environment && ' + + composeDown)
+            os.system(
+                'cd /home/ubuntu/heavens-docker/atlas/knowledge-environment && ' + composeUp)
         else:
-            os.system('cd ../atlas/repository && ' + composeDown)
-            os.system('cd ../atlas/repository && ' + composeUp)
+            os.system(
+                'cd /home/ubuntu/heavens-docker/atlas/repository && ' + composeDown)
+            os.system(
+                'cd /home/ubuntu/heavens-docker/atlas/repository && ' + composeUp)
