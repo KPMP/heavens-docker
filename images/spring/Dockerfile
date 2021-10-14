@@ -35,7 +35,8 @@ RUN set -o errexit -o nounset \
 	\
 	&& echo "Symlinking root Gradle cache to gradle Gradle cache" \
 	&& ln -s /home/gradle/.gradle /root/.gradle \
-        && apk add --no-cache tzdata
+        && apk add --no-cache tzdata \
+	&& apk add --no-cache rsync
 
 # Create Gradle volume
 VOLUME "/home/gradle/.gradle"
