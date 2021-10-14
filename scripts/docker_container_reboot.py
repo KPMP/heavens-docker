@@ -22,7 +22,7 @@ def restartContainers():
                 'cd /home/ubuntu/heavens-docker/atlas/repository && ' + composeDown)
             os.system(
                 'cd /home/ubuntu/heavens-docker/atlas/repository && ' + composeUp)
-    elif "orion" in environment.lower():
+    elif "uploader" in environment.lower():
         if "dev" in environment.lower():
             os.system('cd /home/kpmp-appuser/heavens-docker/ && ./dataLake.sh dev down && ./dataLake.sh dev up')
         elif "qa" in environment.lower():
