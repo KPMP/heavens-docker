@@ -2,7 +2,7 @@ version: "3.5"
 services:
 
   mongodb:
-    container_name: mongodb
+    container_name: orion-mongodb
     image: mongo:4.0
     restart: unless-stopped
     environment:
@@ -20,7 +20,7 @@ services:
           - mongodb    
 
   spring:
-    container_name: spring
+    container_name: orion-spring
     image: kingstonduo/kpmp-spring
     restart: unless-stopped
     depends_on: 
