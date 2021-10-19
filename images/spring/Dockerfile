@@ -47,7 +47,8 @@ ENV NODE_PATH=/usr/lib/node_modules
 RUN cp /usr/share/zoneinfo/America/Detroit /etc/localtime
 RUN echo "America/Detroit" > /etc/timezone
 
-USER gradle
+# Commenting out because this started causing permissions problems during build.
+#USER gradle
 
 RUN set -o errexit -o nounset \
 	&& echo "Testing Gradle installation" \
