@@ -1,4 +1,4 @@
-#Ara, Log Aggregator
+# Ara, Log Aggregator
 
 NOTE: You may need to increase the memory allocated to Docker to get the Elasticsearch nodes to behave: 
 - `sudo sysctl -w vm.max_map_count=262144`
