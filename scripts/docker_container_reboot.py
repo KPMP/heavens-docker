@@ -24,10 +24,10 @@ def restartContainers():
                 'cd /home/ubuntu/heavens-docker/atlas/repository && ' + composeUp)
     elif "uploader" in environment.lower():
         if "dev" in environment.lower():
-            os.system('cd /home/kpmp-appuser/heavens-docker/ && ./dataLake.sh dev down && ./dataLake.sh dev up')
+            os.system('cd /home/kpmp-appuser/heavens-docker/ && ./dataLake.sh dev down && ./dataLake.sh dev up && ./dataLake.sh dev down && ./dataLake.sh dev up')
         elif "qa" in environment.lower():
-            os.system('cd /home/kpmp-appuser/heavens-docker/ && ./dataLake.sh dev down && ./dataLake.sh dev up')
+            os.system('cd /home/kpmp-appuser/heavens-docker/ && ./dataLake.sh dev down && ./dataLake.sh dev up && ./dataLake.sh dev down && ./dataLake.sh dev up')
         elif "prod" in environment.lower():
-            os.system('cd /home/kpmp-appuser/heavens-docker/ && ./dataLake.sh prod down && ./dataLake.sh prod up')
+            os.system('cd /home/kpmp-appuser/heavens-docker/ && ./dataLake.sh prod down && ./dataLake.sh prod up && ./dataLake.sh dev down && ./dataLake.sh dev up')
 
 
