@@ -26,6 +26,7 @@ services:
           - spring  
 
   mariadb:
+    container_name: mariadb
     image: mariadb
     restart: always
     environment:
@@ -40,6 +41,7 @@ services:
           - mariadb
 
   adminer:
+    container_name: adminer
     image: adminer
     restart: always
     environment:
@@ -145,6 +147,7 @@ services:
           - elasticsearch
 
   kibana:
+    container_name: kibana
     image: docker.elastic.co/kibana/kibana:7.5.0
     ports:
       - 5601:5601
@@ -170,7 +173,8 @@ services:
           - kibana
 
   atlas-file-service:
-    image: kingstonduo/atlas-file-service
+    container_name: atlas-file-service
+    image: kingstonduo/atlas-file-service:3.0
     ports:
       - "5000:5000"
     volumes:
@@ -193,6 +197,7 @@ services:
         tag: "atlas-file-service"
 
   minio-s3:
+    container_name: minio
     image: minio/minio
     ports:
       - "9000:9000"
