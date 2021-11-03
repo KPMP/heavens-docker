@@ -29,5 +29,9 @@ def restartContainers():
             os.system('cd /home/kpmp-appuser/heavens-docker/ && ./dataLake.sh dev down && ./dataLake.sh dev down && ./dataLake.sh dev up')
         elif "prod" in environment.lower():
             os.system('cd /home/kpmp-appuser/heavens-docker/ && ./dataLake.sh prod down && ./dataLake.sh prod down && ./dataLake.sh prod up')
-
+    elif "dpr" in environment.lower():
+        os.system('cd /home/ubuntu/heavens-docker/delphinus/ && ' + composeDown)
+        # double down to attempt to resolve possible apache issues
+        os.system('cd /home/ubuntu/heavens-docker/delphinus/ && ' + composeDown)
+        os.system('cd /home/ubuntu/heavens-docker/delphinus/ && ' + composeUp)
 
