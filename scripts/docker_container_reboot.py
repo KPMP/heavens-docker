@@ -34,4 +34,9 @@ def restartContainers():
         # double down to attempt to resolve possible apache issues
         os.system('cd /home/ubuntu/heavens-docker/delphinus/ && ' + composeDown)
         os.system('cd /home/ubuntu/heavens-docker/delphinus/ && ' + composeUp)
+    elif "cassiopeia" in environment.lower():
+        os.system('cd /home/ubuntu/heavens-docker/cassiopeia/ && ' + composeDown)
+        # double down to attempt to resolve possible apache issues
+        os.system('cd /home/ubuntu/heavens-docker/cassiopeia/ && ' + composeDown)
+        os.system('cd /home/ubuntu/heavens-docker/cassiopeia/ && ' + composeUp)
 
