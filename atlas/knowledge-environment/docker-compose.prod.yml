@@ -30,7 +30,7 @@ services:
     image: mariadb
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: ${ENV_MARIADB_ROOT_PWD}
+      MYSQL_ROOT_PASSWORD: ${ENV_MYSQL_PASSWORD}
     volumes:
       - mariadbdata:/var/lib/mysql
     ports:
