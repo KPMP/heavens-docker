@@ -37,8 +37,8 @@ def restartContainers():
         os.system('cd /home/ubuntu/heavens-docker/delphinus/ && ' + composeDown)
         os.system('cd /home/ubuntu/heavens-docker/delphinus/ && ' + composeUp)
     elif "logaggregator" in environment.lower():
-        os.system('cd /home/ubuntu/heavens-docker/ara/ && ' + composeDown)
-        os.system('cd /home/ubuntu/heavens-docker/ara/ && ' + composeUp)
+        os.system('cd /home/ubuntu/heavens-docker/ara/ && /usr/local/bin/docker-compose -f docker-compose.yml down')
+        os.system('cd /home/ubuntu/heavens-docker/ara/ && /usr/local/bin/docker-compose -f docker-compose.yml up -d')
         message = 'Log Aggregator has been restarted, a dev is requested to login and restart elastalert'
         requests.post(slack_url, headers={'Content-type': 'application/json', }, data='{"text":"' + message + '"}')
     elif "cassiopeia" in environment.lower():
