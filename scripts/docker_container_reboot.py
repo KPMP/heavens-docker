@@ -1,11 +1,13 @@
 #! /usr/bin/python3
 from dotenv import load_dotenv
 import os
+import requests
 
 load_dotenv()
 
 environment = os.environ.get('environment')
-
+slack_passcode = os.environ.get('slack_passcode')
+slack_url = 'https://hooks.slack.com/services/' + slack_passcode
 
 def restartContainers():
     composeDown = '/usr/local/bin/docker-compose -f docker-compose.prod.yml down'
@@ -37,4 +39,6 @@ def restartContainers():
     elif "logaggregator" in environment.lower():
         os.system('cd /home/ubuntu/heavens-docker/ara/ && ' + composeDown)
         os.system('cd /home/ubuntu/heavens-docker/ara/ && ' + composeUp)
+        message = 'Log Aggregator has been restarted, a dev is requested to login and restart elastalert'
+        requests.post(slack_url, headers={'Content-type': 'application/json', }, data='{"text":"' + message + '"}')
 
