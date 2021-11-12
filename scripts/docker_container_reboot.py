@@ -41,4 +41,9 @@ def restartContainers():
         os.system('cd /home/ubuntu/heavens-docker/ara/ && ' + composeUp)
         message = 'Log Aggregator has been restarted, a dev is requested to login and restart elastalert'
         requests.post(slack_url, headers={'Content-type': 'application/json', }, data='{"text":"' + message + '"}')
+    elif "cassiopeia" in environment.lower():
+        os.system('cd /home/ubuntu/heavens-docker/cassiopeia/ && ' + composeDown)
+        # double down to attempt to resolve possible apache issues
+        os.system('cd /home/ubuntu/heavens-docker/cassiopeia/ && ' + composeDown)
+        os.system('cd /home/ubuntu/heavens-docker/cassiopeia/ && ' + composeUp)
 
