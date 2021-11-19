@@ -228,7 +228,6 @@ services:
         aliases:
           - arranger-server
 
-  
 volumes:
   esdata01:
     driver: local
