@@ -18,6 +18,8 @@ services:
     logging:
       driver: "fluentd"
       options:
+        max-size: "10m"
+        max-file: "5"
         fluentd-address: "${ENV_FLUENTD_ADDRESS}"
         tag: "pegasus-data"
     networks:
@@ -39,6 +41,11 @@ services:
       local:
         aliases:
           - mariadb
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
 
   adminer:
     container_name: adminer
@@ -51,7 +58,12 @@ services:
     networks:
       local:
         aliases:
-          - adminer    
+          - adminer
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
 
   es01:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.5.0
@@ -79,6 +91,8 @@ services:
       options:
         fluentd-address: "${ENV_FLUENTD_ADDRESS}"
         tag: "ke-es01"
+        max-size: "10m"
+        max-file: "5"
     networks:
       local:
         aliases:
@@ -110,6 +124,8 @@ services:
       options:
         fluentd-address: "${ENV_FLUENTD_ADDRESS}"
         tag: "ke-es02"
+        max-size: "10m"
+        max-file: "5"
     networks:
       local:
         aliases:
@@ -141,6 +157,8 @@ services:
       options:
         fluentd-address: "${ENV_FLUENTD_ADDRESS}"
         tag: "ke-es03"
+        max-size: "10m"
+        max-file: "5"
     networks:
       local:
         aliases:
@@ -195,6 +213,8 @@ services:
       options:
         fluentd-address: "${ENV_FLUENTD_ADDRESS}"
         tag: "atlas-file-service"
+        max-size: "10m"
+        max-file: "5"
 
   minio-s3:
     container_name: minio
@@ -209,7 +229,12 @@ services:
     networks:
       local:
         aliases:
-          - minio-s3    
+          - minio-s3
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
 
   arranger-server:
     image: overture/arranger-server:2.2.4
@@ -227,6 +252,11 @@ services:
       local:
         aliases:
           - arranger-server
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
 
 volumes:
   esdata01:
