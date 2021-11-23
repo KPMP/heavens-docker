@@ -1,11 +1,13 @@
 #! /usr/bin/python3
 from dotenv import load_dotenv
 import os
+import requests
 
 load_dotenv()
 
 environment = os.environ.get('environment')
-
+slack_passcode = os.environ.get('slack_passcode')
+slack_url = 'https://hooks.slack.com/services/' + slack_passcode
 
 def restartContainers():
     composeDown = '/usr/local/bin/docker-compose -f docker-compose.prod.yml down'
@@ -24,10 +26,24 @@ def restartContainers():
                 'cd /home/ubuntu/heavens-docker/atlas/repository && ' + composeUp)
     elif "uploader" in environment.lower():
         if "dev" in environment.lower():
-            os.system('cd /home/kpmp-appuser/heavens-docker/ && ./dataLake.sh dev down && ./dataLake.sh dev up')
+            os.system('cd /home/kpmp-appuser/heavens-docker/ && ./dataLake.sh dev down && ./dataLake.sh dev down && ./dataLake.sh dev up')
         elif "qa" in environment.lower():
-            os.system('cd /home/kpmp-appuser/heavens-docker/ && ./dataLake.sh dev down && ./dataLake.sh dev up')
+            os.system('cd /home/kpmp-appuser/heavens-docker/ && ./dataLake.sh dev down && ./dataLake.sh dev down && ./dataLake.sh dev up')
         elif "prod" in environment.lower():
-            os.system('cd /home/kpmp-appuser/heavens-docker/ && ./dataLake.sh prod down && ./dataLake.sh prod up')
-
+            os.system('cd /home/kpmp-appuser/heavens-docker/ && ./dataLake.sh prod down && ./dataLake.sh prod down && ./dataLake.sh prod up')
+    elif "dpr" in environment.lower():
+        os.system('cd /home/ubuntu/heavens-docker/delphinus/ && ' + composeDown)
+        # double down to attempt to resolve possible apache issues
+        os.system('cd /home/ubuntu/heavens-docker/delphinus/ && ' + composeDown)
+        os.system('cd /home/ubuntu/heavens-docker/delphinus/ && ' + composeUp)
+    elif "logaggregator" in environment.lower():
+        os.system('cd /home/ubuntu/heavens-docker/ara/ && /usr/local/bin/docker-compose -f docker-compose.yml down')
+        os.system('cd /home/ubuntu/heavens-docker/ara/ && /usr/local/bin/docker-compose -f docker-compose.yml up -d')
+        message = 'Log Aggregator has been restarted, a dev is requested to login and restart elastalert'
+        requests.post(slack_url, headers={'Content-type': 'application/json', }, data='{"text":"' + message + '"}')
+    elif "cassiopeia" in environment.lower():
+        os.system('cd /home/ubuntu/heavens-docker/cassiopeia/ && ' + composeDown)
+        # double down to attempt to resolve possible apache issues
+        os.system('cd /home/ubuntu/heavens-docker/cassiopeia/ && ' + composeDown)
+        os.system('cd /home/ubuntu/heavens-docker/cassiopeia/ && ' + composeUp)
 

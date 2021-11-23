@@ -19,27 +19,12 @@ services:
       - ${ENV_REACT_APPDIR}/build:/var/www/html
       - ${ENV_REPOSITORY_APPDIR}/build:/var/www/html/repository
       - ${ENV_EXPLORER_REACT_APPDIR}/build:/var/www/html/explorer
-      - ${ENV_SPATIAL_APPDIR}/build:/var/www/html/vitessce
+      - ${ENV_SPATIAL_APPDIR}/build:/var/www/html/spatial-viewer
       - ${ENV_SSL_CERT_DIR}:/certs
     networks:
       local:
         aliases:
           - apache
-
-  index-creation-worker:
-    image: ${ENV_INDEX_CREATION_WORKER}
-    container_name: index-creation-worker
-    restart: always
-    ports:
-      - "5001:5000"
-    environment:
-      MYSQL_USER: root
-      MYSQL_ROOT_PASSWORD: ${ENV_MARIADB_ROOT_PWD}
-      TZ: "America/Detroit"
-    networks:
-      local:
-        aliases:
-          - index-creator
 
 networks:
   local:

@@ -1,4 +1,7 @@
-#Ara, Log Aggregator
+# Ara, Log Aggregator
+
+NOTE: You may need to increase the memory allocated to Docker to get the Elasticsearch nodes to stay up: 
+- `sudo sysctl -w vm.max_map_count=262144`
 
 As a stopgap, Ara is secured with a simple Apache basic_auth proxy.  The secure htpasswd file is stored in the KPMP secure files repository.
 

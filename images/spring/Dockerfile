@@ -41,13 +41,14 @@ RUN set -o errexit -o nounset \
 # Create Gradle volume
 VOLUME "/home/gradle/.gradle"
 WORKDIR /home/gradle
-RUN apk update && apk add bash && apk add libstdc++ && apk add curl && apk add --update npm && npm install mongodb -g && npm install assert -g && npm install uuid -g && npm install md5-file -g
+RUN apk update && apk add bash && apk add libstdc++ && apk add curl && apk add --update npm && npm install mongodb@3.7.2 -g && npm install assert -g && npm install uuid -g && npm install md5-file -g
 ENV LC_ALL=C
 ENV NODE_PATH=/usr/lib/node_modules
 RUN cp /usr/share/zoneinfo/America/Detroit /etc/localtime
 RUN echo "America/Detroit" > /etc/timezone
 
-USER gradle
+# Commenting out because this started causing permissions problems during build.
+#USER gradle
 
 RUN set -o errexit -o nounset \
 	&& echo "Testing Gradle installation" \

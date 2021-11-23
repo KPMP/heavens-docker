@@ -3,7 +3,7 @@ services:
 
   spring:
     container_name: spring
-    image: kingstonduo/pegasus-data:1.0
+    image: ${ENV_PEGASUS_CONTAINER} 
     depends_on: 
       - mariadb
     ports:
@@ -30,7 +30,7 @@ services:
     image: mariadb
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: ${ENV_MARIADB_ROOT_PWD}
+      MYSQL_ROOT_PASSWORD: ${ENV_MYSQL_PASSWORD}
     volumes:
       - mariadbdata:/var/lib/mysql
     ports:
@@ -228,7 +228,6 @@ services:
         aliases:
           - arranger-server
 
-  
 volumes:
   esdata01:
     driver: local
