@@ -72,12 +72,6 @@ services:
       options:
         fluentd-address: "${ENV_FLUENTD_ADDRESS}"
         tag: "es01"
-
-    networks:
-      local:
-        aliases:
-          - elasticsearch
-
     networks:
       local:
         aliases:
@@ -137,7 +131,7 @@ services:
           - arranger-ui
           
   atlas-file-service:
-          image: kingstonduo/atlas-file-service:3.0
+    image: kingstonduo/atlas-file-service:3.0
     ports:
       - "5000:5000"
     volumes:
