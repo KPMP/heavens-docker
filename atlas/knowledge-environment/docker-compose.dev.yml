@@ -19,6 +19,11 @@ services:
       local:
         aliases:
           - spring  
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
 
   mariadb:
     image: mariadb
@@ -33,6 +38,11 @@ services:
       local:
         aliases:
           - mariadb
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
 
   adminer:
     image: adminer
@@ -45,6 +55,11 @@ services:
       local:
         aliases:
           - adminer    
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
 
   es01:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.5.0
@@ -180,6 +195,11 @@ services:
       local:
         aliases:
           - arranger-server
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
 
   arranger-ui:
     image: overture/arranger-ui:2.2.4
@@ -195,6 +215,11 @@ services:
       local:
         aliases:
           - arranger-ui
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
           
   atlas-file-service:
     image: kingstonduo/atlas-file-service:3.0
@@ -213,7 +238,12 @@ services:
       local:
         aliases:
           - atlas-file-service   
-          
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+ 
   minio-s3:
     image: minio/minio
     ports:
@@ -227,6 +257,11 @@ services:
       local:
         aliases:
           - minio-s3    
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
 
   index-creation-worker:
     image: kingstonduo/atlas-index-creation-worker:latest
@@ -242,6 +277,11 @@ services:
       local:
         aliases:
           - index-creator
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
 
 volumes:
   esdata01:

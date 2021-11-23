@@ -22,7 +22,12 @@ services:
       local:
         aliases:
           - apache
-          
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+
   arranger-ui:
     image: overture/arranger-ui:2.2.4
     hostname: arranger-ui.local
@@ -36,6 +41,11 @@ services:
       local:
         aliases:
           - arranger-ui
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
 
 networks:
   local:

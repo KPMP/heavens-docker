@@ -39,6 +39,11 @@ services:
       local:
         aliases:
           - mariadb
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
 
   adminer:
     container_name: adminer
@@ -51,7 +56,12 @@ services:
     networks:
       local:
         aliases:
-          - adminer    
+          - adminer
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
 
   es01:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.5.0
@@ -209,7 +219,12 @@ services:
     networks:
       local:
         aliases:
-          - minio-s3    
+          - minio-s3
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
 
   arranger-server:
     image: overture/arranger-server:2.2.4
@@ -227,6 +242,11 @@ services:
       local:
         aliases:
           - arranger-server
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
 
 volumes:
   esdata01:
