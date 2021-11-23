@@ -8,7 +8,7 @@ do
   partition=$(echo $output | awk '{print $2}')
   mount=$(echo $output | awk '{print $3}')
   data_drive='/data'
-  if [ $used -ge 5 ] && ([ $mount == $data_drive ]) && ([ $used -gt 1 ]); then
+  if [ $used -ge 5 ] && ([ $mount == $data_drive ]) && ([ $used -gt 80 ]); then
     if [ $mount == $data_drive ]; then
       drive='Data Drive'
     fi
