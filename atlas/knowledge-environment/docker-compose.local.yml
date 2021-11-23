@@ -87,8 +87,6 @@ services:
       options:
         fluentd-address: "${ENV_FLUENTD_ADDRESS}"
         tag: "es01"
-        max-size: "10m"
-        max-file: "5"
 
     networks:
       local:
