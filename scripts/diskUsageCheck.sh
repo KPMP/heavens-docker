@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 [[ $# -lt 1 ]] && { echo "Usage: /bin/bash $0 slackHookKey"; exit 1; }
 
 df -Ph | grep -vE '^Filesystem|tmpfs|cdrom' | awk '{ print $5,$1,$6,$4 }' | while read output;
