@@ -7,3 +7,5 @@ images/**/.env
 *.swp
 **/certs
 **/docker/*
+__pycache__/
+*.py[cod]
