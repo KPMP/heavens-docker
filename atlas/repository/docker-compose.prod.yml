@@ -25,21 +25,11 @@ services:
       local:
         aliases:
           - apache
-
-  index-creation-worker:
-    image: ${ENV_INDEX_CREATION_WORKER}
-    container_name: index-creation-worker
-    restart: always
-    ports:
-      - "5001:5000"
-    environment:
-      MYSQL_USER: root
-      MYSQL_ROOT_PASSWORD: ${ENV_MARIADB_ROOT_PWD}
-      TZ: "America/Detroit"
-    networks:
-      local:
-        aliases:
-          - index-creator
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
 
 networks:
   local:
