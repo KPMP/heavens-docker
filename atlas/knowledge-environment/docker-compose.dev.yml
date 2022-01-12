@@ -62,7 +62,7 @@ services:
         max-file: "5"
 
   es01:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.16.2
     container_name: es01
     ports:
       - 9200:9200
@@ -93,7 +93,7 @@ services:
           - elasticsearch
 
   es02:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.16.2
     container_name: es02
     expose:
       - 9200
@@ -124,7 +124,7 @@ services:
           - elasticsearch
 
   es03:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.16.2
     container_name: es03
     expose:
       - 9200
