@@ -227,7 +227,7 @@ services:
         max-file: "5"
 
   arranger-server:
-    image: overture/arranger-server:2.2.4
+    image: overture/arranger-server:2.16.1
     container_name: arranger-server.local
     depends_on:
       - es01
