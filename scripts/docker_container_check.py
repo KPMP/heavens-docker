@@ -86,6 +86,7 @@ def lockExists():
 
 if __name__ == "__main__":
     if lockExists():
+        print('Lock file exists with name ' + lock_name + ', exiting...')
         sys.exit(0)
     else:
         setLock()
