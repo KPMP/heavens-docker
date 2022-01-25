@@ -75,7 +75,8 @@ def setLock():
         print('Failed to create lock')
 
 def removeLock():
-    Path(lock_name).unlink(missing_ok=True)
+    if Path(lock_name).exists():
+        Path(lock_name).unlink()
 
 def lockExists():
     if os.path.exists(lock_name):
