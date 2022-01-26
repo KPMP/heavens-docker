@@ -6,6 +6,8 @@ from dotenv import load_dotenv
 import endpoint_check
 import docker_container_reboot
 import time
+import sys
+from pathlib import Path
 
 load_dotenv()
 
@@ -14,9 +16,9 @@ environment = os.environ.get('environment')
 slack_passcode = os.environ.get('slack_passcode')
 expected_containers_list = expected_containers_string.split(', ')
 slack_url = 'https://hooks.slack.com/services/' + slack_passcode
+lock_name = os.environ.get('lock_name')
 
 docker_client = docker.from_env()
-
 
 def checkDockerContainers(checkAttempts=0):
     checkLimit = 3
@@ -65,5 +67,28 @@ def checkDockerContainers(checkAttempts=0):
                 message = "Service is running as expected on: " + environment
                 return message
 
+def setLock():
+    try:
+        with open(lock_name, 'w') as f:
+            f.write('locked')
+    except:
+        print('Failed to create lock')
+
+def removeLock():
+    if Path(lock_name).exists():
+        Path(lock_name).unlink()
+
+def lockExists():
+    if os.path.exists(lock_name):
+        return True
+    else:
+        return False
+
 if __name__ == "__main__":
-    checkDockerContainers()
+    if lockExists():
+        print('Lock file exists with name ' + lock_name + ', exiting...')
+        sys.exit(0)
+    else:
+        setLock()
+        checkDockerContainers()
+        removeLock()
