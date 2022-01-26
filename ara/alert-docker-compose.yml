@@ -1,0 +1,31 @@
+version: "3.5"
+services:
+
+  elastalert:
+    container_name: elastalert
+    image: kingstonduo/elastalert
+    volumes:
+      - ${ENV_ELASTALERT_CONF}:/opt/elastalert/config.yaml
+      - ${ENV_ELASTALERT_TEST_CONF}:/opt/elastalert/config-test.yaml
+      - ${ENV_ELASTALERT_SERVER_CONF}:/opt/elastalert-server/config/config.json
+      - ${ENV_ELASTALERT_RULES_DIR}:/opt/elastalert/rules
+      - ${ENV_ELASTALERT_RULES_TEMPLATE_DIR}:/opt/elastalert/rule_templates
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      local:
+        aliases:
+          - elastalert
+
+networks:
+  local:
+    name: logAggregator
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - 
+          subnet: 10.3.0.0/16
+
