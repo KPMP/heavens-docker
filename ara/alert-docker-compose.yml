@@ -15,17 +15,10 @@ services:
         max-size: "10m"
         max-file: "3"
     networks:
-      local:
+      logAggregator:
         aliases:
           - elastalert
 
 networks:
-  local:
-    name: logAggregator
-    driver: bridge
-    ipam:
-      driver: default
-      config:
-        - 
-          subnet: 10.3.0.0/16
-
+  logAggregator:
+    external: true
