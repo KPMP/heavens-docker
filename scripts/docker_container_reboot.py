@@ -16,7 +16,7 @@ def restartContainers():
     if "atlas" in environment.lower():
         if "ke" in environment.lower():
             os.system(
-                'cd /home/ubuntu/heavens-docker/atlas/knowledge-environment && ' + + composeDown)
+                'cd /home/ubuntu/heavens-docker/atlas/knowledge-environment && ' + composeDown)
             os.system(
                 'cd /home/ubuntu/heavens-docker/atlas/knowledge-environment && ' + composeUp)
         else:
