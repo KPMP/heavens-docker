@@ -3,7 +3,7 @@ services:
 
   kibana:
     container_name: kibana
-    image: docker.elastic.co/kibana/kibana:7.16.1
+    image: docker.elastic.co/kibana/kibana:7.16.2
     depends_on: 
       - es01
       - es02
@@ -38,6 +38,7 @@ services:
 
   es01:
     container_name: es01
+    restart: always
     image: docker.elastic.co/elasticsearch/elasticsearch:7.16.2
     ports:
       - "9200:9200"
@@ -65,6 +66,7 @@ services:
           
   es02:
     container_name: es02
+    restart: always
     image: docker.elastic.co/elasticsearch/elasticsearch:7.16.2
     expose:
       - "9200"
@@ -92,6 +94,7 @@ services:
 
   es03:
     container_name: es03
+    restart: always
     image: docker.elastic.co/elasticsearch/elasticsearch:7.16.2
     expose:
       - "9200"
@@ -134,28 +137,6 @@ services:
         aliases:
           - fluentd
 
-  elastalert:
-    container_name: elastalert
-    image: kingstonduo/elastalert
-    depends_on:
-      - es01
-      - es02
-      - es03
-    volumes:
-      - ${ENV_ELASTALERT_CONF}:/opt/elastalert/config.yaml
-      - ${ENV_ELASTALERT_TEST_CONF}:/opt/elastalert/config-test.yaml
-      - ${ENV_ELASTALERT_SERVER_CONF}:/opt/elastalert-server/config/config.json
-      - ${ENV_ELASTALERT_RULES_DIR}:/opt/elastalert/rules
-      - ${ENV_ELASTALERT_RULES_TEMPLATE_DIR}:/opt/elastalert/rule_templates
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "3"
-    networks:
-      local:
-        aliases:
-          - elastalert
-
 volumes:
   esdata01:
     driver: local
@@ -174,4 +155,3 @@ networks:
       config:
         - 
           subnet: 10.3.0.0/16
-
