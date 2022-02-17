@@ -31,7 +31,7 @@ services:
     depends_on: 
       - mariadb
     ports:
-      - "${ENV_APACHE_TOMCAT_PORT:-3040}:3030"
+      - "3040:3030"
     environment:
       SPRING_BOOT_ENVIRONMENT: ${ENV_DOCKER_ENVIRONMENT}
       MYSQL_HOST: ${ENV_MYSQL_HOST}
