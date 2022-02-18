@@ -1,8 +1,8 @@
 version: "3.5"
 services:
 
-  spring:
-    container_name: spring
+  pegasus-spring:
+    container_name: pegasus-spring
     image: kingstonduo/pegasus-data
     depends_on: 
       - mariadb
@@ -18,12 +18,36 @@ services:
     networks:
       local:
         aliases:
-          - spring  
+          - pegasus-spring
     logging:
       driver: "json-file"
       options:
         max-size: "10m"
         max-file: "5"
+  
+  hubble-spring:
+    container_name: hubble-spring
+    image: kingstonduo/pegasus-data
+    depends_on: 
+      - mariadb
+    ports:
+      - "3040:3030"
+    environment:
+      SPRING_BOOT_ENVIRONMENT: ${ENV_DOCKER_ENVIRONMENT}
+      MYSQL_HOST: ${ENV_MYSQL_HOST}
+      MYSQL_USER: ${ENV_MYSQL_USER}
+      MYSQL_PASSWORD: ${ENV_MYSQL_PASSWORD}
+      TZ: "America/Detroit"
+    privileged: true
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+    networks:
+      local:
+        aliases:
+          - hubble-spring       
 
   mariadb:
     image: mariadb
