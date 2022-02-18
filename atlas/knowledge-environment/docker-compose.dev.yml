@@ -272,6 +272,7 @@ services:
     environment:
       MYSQL_USER: root
       MYSQL_ROOT_PASSWORD: ${ENV_MARIADB_ROOT_PWD}
+      MYSQL_HOST: ${MYSQL_HOST}
       TZ: "America/Detroit"
     networks:
       local:
