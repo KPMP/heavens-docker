@@ -1,4 +1,4 @@
-FROM centos:centos8.4.2105
+FROM centos:centos7.9.2009
 
 # Add starters and installers
 ADD ./container_files /opt
