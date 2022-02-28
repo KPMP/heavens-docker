@@ -53,7 +53,7 @@ services:
     image: mariadb
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: ${ENV_MARIADB_ROOT_PWD}
+      MYSQL_ROOT_PASSWORD: ${ENV_MYSQL_PASSWORD}
     volumes:
       - mariadbdata:/var/lib/mysql
     ports:
@@ -231,10 +231,12 @@ services:
     container_name: arranger-ui.local
     environment:
       - "TZ=America/Detroit"
+      - "REACT_APP_ARRANGER_ADMIN_ROOT=http://arranger-server:5050"
     depends_on:
       - arranger-server
     ports:
-      - 8081:8081
+      - 8080:3000
+      - 8081:3000
     networks:
       local:
         aliases:
@@ -295,8 +297,8 @@ services:
       - "5001:5000"
     environment:
       MYSQL_USER: root
-      MYSQL_ROOT_PASSWORD: ${ENV_MARIADB_ROOT_PWD}
-      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_ROOT_PASSWORD: ${ENV_MYSQL_PASSWORD}
+      MYSQL_HOST: ${ENV_MYSQL_HOST}
       TZ: "America/Detroit"
     networks:
       local:
