@@ -53,7 +53,7 @@ services:
     image: mariadb
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: ${ENV_MARIADB_ROOT_PWD}
+      MYSQL_ROOT_PASSWORD: ${ENV_MYSQL_PASSWORD}
     volumes:
       - mariadbdata:/var/lib/mysql
     ports:
@@ -87,17 +87,16 @@ services:
 
   es01:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.16.2
-    container_name: es01
+    container_name: es01-local
     ports:
       - 9200:9200
       - 9300:9300
     volumes:
-      - esdata01:/usr/share/elasticsearch/data
-      - ${ENV_ES_CONF_DIR}/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - esdata01-local:/usr/share/elasticsearch/data
+      - ./local-es-config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
     environment:
-      - node.name=es01
-      - discovery.seed_hosts=es02,es03
-      - cluster.initial_master_nodes=es01,es02,es03
+      - xpack.security.enabled=false
+      - discovery.type=single-node
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       - "TZ=America/Detroit"
@@ -106,11 +105,6 @@ services:
         soft: -1
         hard: -1
     restart: always
-    logging:
-      driver: "fluentd"
-      options:
-        fluentd-address: "${ENV_FLUENTD_ADDRESS}"
-        tag: "es01"
     networks:
       local:
         aliases:
@@ -129,7 +123,7 @@ services:
       - es01
     environment:
       SERVER_NAME: elasticsearch
-      ELASTICSEARCH_URL: http://elasticsearch:9200
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
       LOGGING_QUIET: "true"
       TZ: "America/Detroit"
     volumes:
@@ -164,11 +158,12 @@ services:
     hostname: arranger-ui.local
     container_name: arranger-ui.local
     environment:
-      TZ: "America/Detroit"
+      - "TZ=America/Detroit"
+      - "REACT_APP_ARRANGER_ADMIN_ROOT=http://arranger-server:5050"
     depends_on:
       - arranger-server
     ports:
-      - 8081:8081
+      - 8080:3000
     networks:
       local:
         aliases:
@@ -180,7 +175,7 @@ services:
         max-file: "5"
           
   atlas-file-service:
-    image: kingstonduo/atlas-file-service:3.1
+    image: kingstonduo/atlas-file-service:latest
     ports:
       - "5000:5000"
     volumes:
@@ -196,13 +191,6 @@ services:
       local:
         aliases:
           - atlas-file-service   
-    logging:
-      driver: "fluentd"
-      options:
-        fluentd-address: "${ENV_FLUENTD_ADDRESS}"
-        tag: "atlas-file-service"
-        max-size: "10m"
-        max-file: "5"
 
   minio-s3:
     image: minio/minio
@@ -223,8 +211,30 @@ services:
         max-size: "10m"
         max-file: "5"
 
+  index-creation-worker:
+    image: kingstonduo/atlas-index-creation-worker:latest
+    container_name: index-creation-worker
+    restart: always
+    ports:
+      - "5001:5000"
+    environment:
+      MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: ${ENV_MYSQL_PASSWORD}
+      MYSQL_HOST: ${ENV_MYSQL_HOST}
+      TZ: "America/Detroit"
+    networks:
+      local:
+        aliases:
+          - index-creator
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+
+
 volumes:
-  esdata01:
+  esdata01-local:
     driver: local
   mariadbdata:
 

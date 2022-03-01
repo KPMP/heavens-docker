@@ -28,24 +28,6 @@ services:
         max-size: "10m"
         max-file: "5"
 
-  arranger-ui:
-    image: overture/arranger-ui:2.16.1
-    hostname: arranger-ui.local
-    container_name: arranger-ui.local
-    environment:
-      TZ: "America/Detroit"
-    ports:
-      - 8080:8080
-      - 8081:8081
-    networks:
-      local:
-        aliases:
-          - arranger-ui
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "5"
 
 networks:
   local:

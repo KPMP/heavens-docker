@@ -2,7 +2,7 @@ version: "3"
 services:
 
   user-auth:
-    container_name: user-auth
+    container_name: delphinus-user-auth
     image: ${ENV_AUTH_IMAGE} 
     environment:
       DEFAULT_CLIENT_ID: ${ENV_DEFAULT_CLIENT_ID}
@@ -31,18 +31,6 @@ services:
       local:
         aliases:
           - delphinus-apache
-
-  iipimage-server:
-    container_name: iipimage-server
-    image: kingstonduo/pathology-imageserver:master
-    ports:
-      - "9090:80"
-    volumes:
-      - ${ENV_IMAGE_HOME}:/root/src/images
-    networks:
-      local:
-        aliases:
-          - iipimage-server   
 
   mongodb:
     container_name: delphinus-mongodb
