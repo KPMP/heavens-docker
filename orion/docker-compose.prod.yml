@@ -21,7 +21,7 @@ services:
 
   spring:
     container_name: orion-spring
-    image: kingstonduo/kpmp-spring
+    image:  ${ENV_SPRING_IMAGE}
     restart: unless-stopped
     depends_on: 
       - mongodb

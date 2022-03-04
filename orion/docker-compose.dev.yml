@@ -38,7 +38,7 @@ services:
 
   spring:
     container_name: orion-spring
-    image: kingstonduo/kpmp-spring
+    image: ${ENV_SPRING_IMAGE} 
     ports:
       - "${ENV_APACHE_TOMCAT_PORT:-3030}:3030"
     volumes:
