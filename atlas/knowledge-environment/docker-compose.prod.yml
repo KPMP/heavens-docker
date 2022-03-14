@@ -294,6 +294,8 @@ services:
         max-file: "5"
 
 volumes:
+  es-config:
+    driver: local
   esdata01:
     driver: local
   esdata02:
