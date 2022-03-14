@@ -1,6 +1,26 @@
 version: "3.5"
 services:
 
+  enterprise-search:
+    image: docker.elastic.co/enterprise-search/enterprise-search:8.0.0
+    volumes:
+      - es-config:/usr/share/enterprise-search/es-config
+    ports:
+      - 3002:3002
+    environment:
+      secret_management.encryption_keys: '[2f983d978dfb257aaa0586ea2fae8f2c60feac14c34bb6cb3ef2af355dce1192]'
+      allow_es_settings_modification: 'true'
+      elasticsearch.host: http://elasticsearch:9200
+      #elasticsearch.username: elastic
+      #elasticsearch.password: exLUqEk9Ex39WBnF 
+      elasticsearch.ssl.enabled: 'false'
+      elasticsearch.ssl.certificate_authority: /usr/share/enterprise-search/es-config/certs/http_ca.crt
+      kibana.external_url: http://kibana:5601
+    networks:
+      local:
+        aliases:
+          - enterprise-search
+
   pegasus-spring:
     container_name: pegasus-spring
     image: ${ENV_PEGASUS_CONTAINER} 
@@ -199,6 +219,7 @@ services:
       ELASTICSEARCH_URL: http://elasticsearch:9200
       LOGGING_QUIET: "true"
       TZ: "America/Detroit"
+      ENTERPRISESEARCH_HOST: http://enterprise-search:3002
     volumes:
       - ${ENV_KIBANA_CONF_DIR}/kibana.yml:/usr/share/kibana/kibana.yml
     networks:
