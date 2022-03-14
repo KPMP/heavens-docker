@@ -1,23 +1,19 @@
-FROM frolvlad/alpine-java
+FROM alpine
 
 CMD ["gradle"]
 
 ENV GRADLE_HOME /opt/gradle
-ENV GRADLE_VERSION 4.9
+ENV GRADLE_VERSION 7.4
 
+RUN apk add openjdk8
 ARG GRADLE_DOWNLOAD_SHA256=e66e69dce8173dd2004b39ba93586a184628bc6c28461bc771d6835f7f9b0d28
+RUN wget -O gradle.zip "https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip"
 RUN set -o errexit -o nounset \
 	&& echo "Installing build dependencies" \
 	&& apk add --no-cache --virtual .build-deps \
 		ca-certificates \
 		openssl \
 		unzip \
-	\
-	&& echo "Downloading Gradle" \
-	&& wget -O gradle.zip "https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip" \
-	\
-	&& echo "Checking download hash" \
-	&& echo "${GRADLE_DOWNLOAD_SHA256} *gradle.zip" | sha256sum -c - \
 	\
 	&& echo "Installing Gradle" \
 	&& unzip gradle.zip \
