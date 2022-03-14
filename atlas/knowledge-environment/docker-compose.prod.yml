@@ -2,6 +2,7 @@ version: "3.5"
 services:
 
   enterprise-search:
+    container_name: enterprise_search
     image: docker.elastic.co/enterprise-search/enterprise-search:8.0.0
     volumes:
       - es-config:/usr/share/enterprise-search/es-config
@@ -14,7 +15,7 @@ services:
       #elasticsearch.username: elastic
       #elasticsearch.password: exLUqEk9Ex39WBnF 
       elasticsearch.ssl.enabled: 'false'
-      elasticsearch.ssl.certificate_authority: /usr/share/enterprise-search/es-config/certs/http_ca.crt
+      #elasticsearch.ssl.certificate_authority: /usr/share/enterprise-search/es-config/certs/http_ca.crt
       kibana.external_url: http://kibana:5601
     networks:
       local:
