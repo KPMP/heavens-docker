@@ -405,6 +405,7 @@ services:
         max-file: "5"
 
 volumes:
+  es-config:
   certs:
     driver: local
   esdata01:
