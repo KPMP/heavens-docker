@@ -52,7 +52,7 @@ services:
 
   user-auth:
     container_name: user-auth
-    image: kingstonduo/user-auth:1.2
+    image: kingstonduo/user-auth:2.0
     restart: unless-stopped
     environment:
       DEFAULT_CLIENT_ID: ${ENV_DEFAULT_CLIENT_ID}
