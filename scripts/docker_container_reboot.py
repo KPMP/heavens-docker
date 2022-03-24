@@ -16,7 +16,7 @@ def restartContainers():
     if "atlas" in environment.lower():
         if "ke" in environment.lower():
             os.system(
-                'cd /home/ubuntu/heavens-docker/atlas/knowledge-environment && ' + + composeDown)
+                'cd /home/ubuntu/heavens-docker/atlas/knowledge-environment && ' + composeDown)
             os.system(
                 'cd /home/ubuntu/heavens-docker/atlas/knowledge-environment && ' + composeUp)
         else:
@@ -37,10 +37,8 @@ def restartContainers():
         os.system('cd /home/ubuntu/heavens-docker/delphinus/ && ' + composeDown)
         os.system('cd /home/ubuntu/heavens-docker/delphinus/ && ' + composeUp)
     elif "logaggregator" in environment.lower():
-        os.system('cd /home/ubuntu/heavens-docker/ara/ && /usr/local/bin/docker-compose -f docker-compose.yml down')
-        os.system('cd /home/ubuntu/heavens-docker/ara/ && /usr/local/bin/docker-compose -f docker-compose.yml up -d')
-        message = 'Log Aggregator has been restarted, a dev is requested to login and restart elastalert'
-        requests.post(slack_url, headers={'Content-type': 'application/json', }, data='{"text":"' + message + '"}')
+        os.system('cd /home/ubuntu/heavens-docker/ara/ && ./logAggregator.sh down')
+        os.system('cd /home/ubuntu/heavens-docker/ara/ && ./logAggregator.sh up -d')
     elif "cassiopeia" in environment.lower():
         os.system('cd /home/ubuntu/heavens-docker/cassiopeia/ && ' + composeDown)
         # double down to attempt to resolve possible apache issues

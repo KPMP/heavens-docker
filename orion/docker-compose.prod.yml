@@ -3,7 +3,7 @@ services:
 
   mongodb:
     container_name: orion-mongodb
-    image: mongo:4.0
+    image: mongo:5.0.6
     restart: unless-stopped
     environment:
        - MONGO_DATA_DIR=/data/db
@@ -21,7 +21,7 @@ services:
 
   spring:
     container_name: orion-spring
-    image: kingstonduo/kpmp-spring
+    image:  ${ENV_SPRING_IMAGE}
     restart: unless-stopped
     depends_on: 
       - mongodb
@@ -52,7 +52,7 @@ services:
 
   user-auth:
     container_name: user-auth
-    image: kingstonduo/user-auth:1.1
+    image: kingstonduo/user-auth:2.0
     restart: unless-stopped
     environment:
       DEFAULT_CLIENT_ID: ${ENV_DEFAULT_CLIENT_ID}

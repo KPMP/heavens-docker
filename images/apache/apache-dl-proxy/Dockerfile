@@ -1,4 +1,4 @@
-FROM tier/centos7base
+FROM oraclelinux:8.5
 
 # Define args and set a default value
 ARG maintainer=tier

@@ -1,4 +1,4 @@
-FROM tier/centos7base
+FROM centos:centos7.9.2009
 
 # Add starters and installers
 ADD ./container_files /opt

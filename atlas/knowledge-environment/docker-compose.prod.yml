@@ -1,8 +1,8 @@
 version: "3.5"
 services:
 
-  spring:
-    container_name: spring
+  pegasus-spring:
+    container_name: pegasus-spring
     image: ${ENV_PEGASUS_CONTAINER} 
     depends_on: 
       - mariadb
@@ -23,7 +23,31 @@ services:
     networks:
       local:
         aliases:
-          - spring  
+          - pegasus-spring
+          
+  hubble-spring:
+    container_name: hubble-spring
+    image: ${ENV_HUBBLE_CONTAINER} 
+    depends_on: 
+      - mariadb
+    ports:
+      - "3040:3030"
+    environment:
+      SPRING_BOOT_ENVIRONMENT: ${ENV_DOCKER_ENVIRONMENT}
+      MYSQL_HOST: ${ENV_MYSQL_HOST}
+      MYSQL_USER: ${ENV_MYSQL_USER}
+      MYSQL_PASSWORD: ${ENV_MYSQL_PASSWORD}
+      TZ: "America/Detroit"
+    privileged: true
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: "${ENV_FLUENTD_ADDRESS}"
+        tag: "hubble-data"
+    networks:
+      local:
+        aliases:
+          - hubble-spring          
 
   mariadb:
     container_name: mariadb
@@ -64,7 +88,7 @@ services:
         max-file: "5"
 
   es01:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.16.2
     container_name: es01
     ports:
       - 9200:9200
@@ -95,7 +119,7 @@ services:
           - elasticsearch
 
   es02:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.16.2
     container_name: es02
     expose:
       - 9200
@@ -126,7 +150,7 @@ services:
           - elasticsearch
 
   es03:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.16.2
     container_name: es03
     expose:
       - 9200
@@ -158,7 +182,7 @@ services:
 
   kibana:
     container_name: kibana
-    image: docker.elastic.co/kibana/kibana:7.5.0
+    image: docker.elastic.co/kibana/kibana:7.16.1
     ports:
       - 5601:5601
     logging:
@@ -184,7 +208,7 @@ services:
 
   atlas-file-service:
     container_name: atlas-file-service
-    image: kingstonduo/atlas-file-service:3.0
+    image: kingstonduo/atlas-file-service:3.1
     ports:
       - "5000:5000"
     volumes:
@@ -227,7 +251,7 @@ services:
         max-file: "5"
 
   arranger-server:
-    image: overture/arranger-server:2.2.4
+    image: overture/arranger-server:2.16.1
     container_name: arranger-server.local
     depends_on:
       - es01
@@ -248,6 +272,167 @@ services:
         max-size: "10m"
         max-file: "5"
 
+  search-setup:
+    image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
+    volumes:
+      - certs:/usr/share/elasticsearch/config/certs
+    user: "0"
+    command: >
+      bash -c '
+        if [ x${ELASTIC_PASSWORD} == x ]; then
+          echo "Set the ELASTIC_PASSWORD environment variable in the .env file";
+          exit 1;
+        elif [ x${KIBANA_PASSWORD} == x ]; then
+          echo "Set the KIBANA_PASSWORD environment variable in the .env file";
+          exit 1;
+        fi;
+        if [ ! -f certs/ca.zip ]; then
+          echo "Creating CA";
+          bin/elasticsearch-certutil ca --silent --pem -out config/certs/ca.zip;
+          unzip config/certs/ca.zip -d config/certs;
+        fi;
+        if [ ! -f certs/certs.zip ]; then
+          echo "Creating certs";
+          echo -ne \
+          "instances:\n"\
+          "  - name: es-search\n"\
+          "    dns:\n"\
+          "      - es-search\n"\
+          "      - localhost\n"\
+          "    ip:\n"\
+          "      - 127.0.0.1\n"\
+          > config/certs/instances.yml;
+          bin/elasticsearch-certutil cert --silent --pem -out config/certs/certs.zip --in config/certs/instances.yml --ca-cert config/certs/ca/ca.crt --ca-key config/certs/ca/ca.key;
+          unzip config/certs/certs.zip -d config/certs;
+        fi;
+        echo "Setting file permissions"
+        chown -R root:root config/certs;
+        find . -type d -exec chmod 750 \{\} \;;
+        find . -type f -exec chmod 640 \{\} \;;
+        echo "Waiting for Elasticsearch availability";
+        until curl -s --cacert config/certs/ca/ca.crt https://es-search:9200 | grep -q "missing authentication credentials"; do sleep 30; done;
+        echo "Setting kibana_system password";
+        until curl -s -X POST --cacert config/certs/ca/ca.crt -u elastic:${ELASTIC_PASSWORD} -H "Content-Type: application/json" https://es-search:9200/_security/user/kibana_system/_password -d "{\"password\":\"${KIBANA_PASSWORD}\"}" | grep -q "^{}"; do sleep 10; done;
+        echo "All done!";
+      '
+    healthcheck:
+      test: ["CMD-SHELL", "[ -f config/certs/es-search/es-search.crt ]"]
+      interval: 1s
+      timeout: 5s
+      retries: 120
+
+  es-search:
+    depends_on:
+      - search-setup
+    image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
+    volumes:
+      - certs:/usr/share/elasticsearch/config/certs
+      - essearchdata01:/usr/share/elasticsearch/data
+    ports:
+      - ${ES_PORT}:9200
+    environment:
+      - node.name=es-search
+      - cluster.name=${CLUSTER_NAME}
+      - cluster.initial_master_nodes=es-search
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+      - bootstrap.memory_lock=true
+      - xpack.security.enabled=true
+      - xpack.security.http.ssl.enabled=true
+      - xpack.security.http.ssl.key=certs/es-search/es-search.key
+      - xpack.security.http.ssl.certificate=certs/es-search/es-search.crt
+      - xpack.security.http.ssl.certificate_authorities=certs/ca/ca.crt
+      - xpack.security.http.ssl.verification_mode=certificate
+      - xpack.security.transport.ssl.enabled=true
+      - xpack.security.transport.ssl.key=certs/es-search/es-search.key
+      - xpack.security.transport.ssl.certificate=certs/es-search/es-search.crt
+      - xpack.security.transport.ssl.certificate_authorities=certs/ca/ca.crt
+      - xpack.security.transport.ssl.verification_mode=certificate
+      - xpack.license.self_generated.type=${LICENSE}
+      - ES_JAVA_OPTS=-Xms1g -Xmx1g
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    healthcheck:
+      test:
+        [
+            "CMD-SHELL",
+            "curl -s --cacert config/certs/ca/ca.crt https://localhost:9200 | grep -q 'missing authentication credentials'",
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 120
+    networks:
+      local:
+        aliases:
+          - es-search
+          
+  kibana-search:
+    depends_on:
+      - es-search
+    image: docker.elastic.co/kibana/kibana:${STACK_VERSION}
+    volumes:
+      - certs:/usr/share/kibana/config/certs
+      - kibanadata:/usr/share/kibana/data
+    ports:
+      - ${KIBANA_PORT}:5601
+    environment:
+      - SERVERNAME=kibana-search
+      - ELASTICSEARCH_HOSTS=https://es-search:9200
+      - ELASTICSEARCH_USERNAME=kibana_system
+      - ELASTICSEARCH_PASSWORD=${KIBANA_PASSWORD}
+      - ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES=config/certs/ca/ca.crt
+      - ENTERPRISESEARCH_HOST=http://enterprisesearch:${ENTERPRISE_SEARCH_PORT}
+      - ES_JAVA_OPTS=-Xms1g -Xmx1g
+    healthcheck:
+      test:
+        [
+            "CMD-SHELL",
+            "curl -s -I http://localhost:5601 | grep -q 'HTTP/1.1 302 Found'",
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 120
+    networks:
+      local:
+        aliases:
+          - kibana-search
+          
+  enterprisesearch:
+    depends_on:
+      - es-search
+      - kibana-search
+    image: docker.elastic.co/enterprise-search/enterprise-search:${STACK_VERSION}
+    volumes:
+      - certs:/usr/share/enterprise-search/config/certs
+      - enterprisesearchdata:/usr/share/enterprise-search/config
+    ports:
+      - ${ENTERPRISE_SEARCH_PORT}:3002
+    environment:
+      - SERVERNAME=enterprisesearch
+      - secret_management.encryption_keys=[${ENCRYPTION_KEYS}]
+      - allow_es_settings_modification=true
+      - elasticsearch.host=https://es-search:9200
+      - elasticsearch.username=elastic
+      - elasticsearch.password=${ELASTIC_PASSWORD}
+      - elasticsearch.ssl.enabled=true
+      - elasticsearch.ssl.certificate_authority=/usr/share/enterprise-search/config/certs/ca/ca.crt
+      - kibana.external_url=http://kibana-search:5601
+      - ES_JAVA_OPTS=-Xms1g -Xmx1g
+    healthcheck:
+      test:
+        [
+            "CMD-SHELL",
+            "curl -s -I http://localhost:3002 | grep -q 'HTTP/1.1 302 Found'",
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 120
+    networks:
+      local:
+        aliases:
+          - enterprisesearch
+          
 volumes:
   esdata01:
     driver: local
@@ -256,6 +441,14 @@ volumes:
   esdata03:
     driver: local
   mariadbdata:
+  essearchdata01:
+    driver: local
+  certs:
+    driver: local
+  kibanadata:
+    driver: local
+  enterprisesearchdata:
+    driver: local  
 
 networks:
   local:
