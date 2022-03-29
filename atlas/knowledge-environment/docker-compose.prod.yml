@@ -273,6 +273,7 @@ services:
         max-file: "5"
 
   search-setup:
+    container_name: search-setup
     image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
     volumes:
       - certs:/usr/share/elasticsearch/config/certs
@@ -321,7 +322,8 @@ services:
       timeout: 5s
       retries: 120
 
-  es-search:
+  es-search: 
+    container_name: es-search
     depends_on:
       - search-setup
     image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
@@ -368,6 +370,7 @@ services:
           - es-search
           
   kibana-search:
+    container_name: kibana-search
     depends_on:
       - es-search
     image: docker.elastic.co/kibana/kibana:${STACK_VERSION}
@@ -399,6 +402,7 @@ services:
           - kibana-search
           
   enterprisesearch:
+    container_name: enterprisesearch
     depends_on:
       - es-search
       - kibana-search
