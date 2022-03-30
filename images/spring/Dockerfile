@@ -1,4 +1,4 @@
-FROM alpine
+FROM node:12-alpine3.15
 
 CMD ["gradle"]
 
@@ -14,32 +14,31 @@ RUN set -o errexit -o nounset \
 		ca-certificates \
 		openssl \
 		unzip \
-	\
-	&& echo "Installing Gradle" \
-	&& unzip gradle.zip \
+        && unzip gradle.zip \
 	&& rm gradle.zip \
 	&& mv "gradle-${GRADLE_VERSION}" "${GRADLE_HOME}/" \
-	&& ln -s "${GRADLE_HOME}/bin/gradle" /usr/bin/gradle \
-	\
-	&& apk del .build-deps \
+	&& ln -s "${GRADLE_HOME}/bin/gradle" /usr/bin/gradle 
+RUN apk del .build-deps \
 	\
 	&& echo "Adding gradle user and group" \
-	&& addgroup -S -g 1000 gradle \
-	&& adduser -D -S -G gradle -u 1000 -s /bin/ash gradle \
+	&& addgroup -S -g 1001 gradle \
+	&& adduser -D -S -G gradle -u 1001 -s /bin/ash gradle \
 	&& mkdir /home/gradle/.gradle \
 	&& chown -R gradle:gradle /home/gradle \
 	\
 	&& echo "Symlinking root Gradle cache to gradle Gradle cache" \
 	&& ln -s /home/gradle/.gradle /root/.gradle \
         && apk add --no-cache tzdata \
-	&& apk add --no-cache rsync
+	&& apk add --no-cache rsync 
 
 # Create Gradle volume
 VOLUME "/home/gradle/.gradle"
 WORKDIR /home/gradle
-RUN apk update && apk add bash && apk add libstdc++ && apk add curl && apk add --update npm && npm install mongodb@3.7.2 -g && npm install assert -g && npm install uuid -g && npm install md5-file -g
+
+RUN apk update && apk add bash && apk add libstdc++ && apk add curl && npm install mongodb@3.7.2 -g && npm install assert -g && npm install uuid -g && npm install md5-file -g 
+
 ENV LC_ALL=C
-ENV NODE_PATH=/usr/lib/node_modules
+ENV NODE_PATH=/usr/local/lib
 RUN cp /usr/share/zoneinfo/America/Detroit /etc/localtime
 RUN echo "America/Detroit" > /etc/timezone
 
