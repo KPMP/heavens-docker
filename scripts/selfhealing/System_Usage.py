@@ -56,10 +56,10 @@ class SystemUsage:
     
     def get_alert_message(self) -> str:
         message = f'''
-            System usage on {ENVIRONMENT} is abnormally high.
-            Diskspace usage - {self.diskspaceUsed}%
-            Memory usage - {self.memoryUsed}%
-            CPU usage - {self.cpuUsed}%'''
+System usage on {ENVIRONMENT} is abnormally high.
+Diskspace usage - {self.diskspaceUsed}%
+Memory usage - {self.memoryUsed}%
+CPU usage - {self.cpuUsed}%'''
         return message
 
 if __name__ == "__main__":
