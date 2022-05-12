@@ -25,7 +25,7 @@ class SystemUsage:
     def set_memory_used(self) -> None:
         self.memoryUsed = psutil.virtual_memory()[2]
 
-    def set_cpu_used(self, testDuration: int=0) -> None:
+    def set_cpu_used(self, testDuration: int=5) -> None:
         self.cpuUsed = psutil.cpu_percent(testDuration)
 
     def set_system_usage(self) -> None:
