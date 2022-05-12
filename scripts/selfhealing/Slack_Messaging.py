@@ -11,6 +11,6 @@ if SLACK_HOOK_PASSCODE is None:
     
 def send_slack_message(message):
     slackHookUrl = f'https://hooks.slack.com/services/{SLACK_HOOK_PASSCODE}'
-    requests.get(slackHookUrl,
+    requests.post(slackHookUrl,
                   headers={'Content-type': 'application/json', },
                   data='{"text":"' + message + '"}')
