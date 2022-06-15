@@ -10,7 +10,7 @@ do
   mount=$(echo $output | awk '{print $3}')
   data_drive=$2
   
-  if [ $used -ge 1 ] && ([ $mount == $data_drive ]); then
+  if [ $used -ge 80 ] && ([ $mount == $data_drive ]); then
     if [ $mount == $data_drive ]; then
       drive='Data Drive'
     fi
