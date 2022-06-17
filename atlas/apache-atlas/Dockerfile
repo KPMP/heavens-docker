@@ -18,7 +18,7 @@ RUN   yum -y update \
 #Script to start service, Added ssl default conf, Added shib module apache
 RUN ln -s /opt/bin/httpd-ssl-foreground  /usr/local/bin && ln -s /opt/etc/httpd/conf.d/ssl.conf /etc/httpd/conf.d/ssl.conf && ln -s /opt/etc/httpd/conf.d/virt.conf /etc/httpd/conf.d/virt.conf
 
-RUN echo "************** Built Apache WITH SSL **************"
+RUN echo "************** Built Apache WITHOUT SSL **************"
 
 
 EXPOSE 80 443

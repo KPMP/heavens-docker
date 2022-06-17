@@ -1,5 +1,6 @@
 #!/bin/bash
-[[ $# -lt 1 ]] && { echo "Usage: /bin/bash $0 slackHookKey"; exit 1; }
+[[ $# -lt 2 ]] && { echo "Usage: /bin/bash $0 slackHookKey data_drive"; exit 1; }
+
 
 df -Ph | grep -vE '^Filesystem|tmpfs|cdrom' | awk '{ print $5,$1,$6,$4 }' | while read output;
 do
@@ -7,7 +8,8 @@ do
   remaining=$(echo $output | awk '{print $4}')
   partition=$(echo $output | awk '{print $2}')
   mount=$(echo $output | awk '{print $3}')
-  data_drive='/data'
+  data_drive=$2
+  
   if [ $used -ge 80 ] && ([ $mount == $data_drive ]); then
     if [ $mount == $data_drive ]; then
       drive='Data Drive'
