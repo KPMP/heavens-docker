@@ -83,3 +83,10 @@ volumes:
 networks:
   dataLake:
     external: true
+  local:
+    name: DMD
+    ipam:
+      driver: default
+      config:
+        - 
+          subnet: 10.12.0.0/16
