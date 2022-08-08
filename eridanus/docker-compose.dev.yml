@@ -30,6 +30,43 @@ services:
       dataLake:
         aliases:
           - postfix
+  mariadb:
+    container_name: mariadb
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${ENV_MYSQL_PASSWORD}
+    volumes:
+      - mariadbdata:/var/lib/mysql
+    ports:
+      - 3306:3306
+    networks:
+      local:
+        aliases:
+          - mariadb
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+
+  adminer:
+    container_name: adminer
+    image: adminer
+    restart: always
+    environment:
+      TZ: "America/Detroit"
+    ports:
+      - 9090:8080 
+    networks:
+      local:
+        aliases:
+          - adminer
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
 
 volumes:
   esdata:
