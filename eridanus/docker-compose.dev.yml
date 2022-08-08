@@ -31,7 +31,7 @@ services:
         aliases:
           - postfix
   mariadb:
-    container_name: mariadb
+    container_name: eridanus-mariadb
     image: mariadb
     restart: always
     environment:
@@ -51,7 +51,7 @@ services:
         max-file: "5"
 
   adminer:
-    container_name: adminer
+    container_name: eridanus-adminer
     image: adminer
     restart: always
     environment:
