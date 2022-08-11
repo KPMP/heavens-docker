@@ -59,7 +59,7 @@ services:
     ports:
       - 9090:8080 
     networks:
-      local:
+      dataLake:
         aliases:
           - adminer
     logging:

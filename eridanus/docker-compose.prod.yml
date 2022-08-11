@@ -49,7 +49,7 @@ services:
     ports:
       - 3307:3306
     networks:
-      local:
+      dataLake:
         aliases:
           - mariadb
     logging:
@@ -67,7 +67,7 @@ services:
     ports:
       - 9090:8080 
     networks:
-      local:
+      dataLake:
         aliases:
           - adminer
     logging:
@@ -83,10 +83,3 @@ volumes:
 networks:
   dataLake:
     external: true
-  local:
-    name: DMD
-    ipam:
-      driver: default
-      config:
-        - 
-          subnet: 10.12.0.0/16
