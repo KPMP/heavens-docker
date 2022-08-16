@@ -29,10 +29,10 @@ services:
     expose:
       - 25
     environment:
-      SMTP_SERVER: smtp.gmail.com
-      SMTP_USERNAME: kpmpNotifications@gmail.com 
-      SMTP_PASSWORD: lcbzgrkijgtmaiqn 
-      SERVER_HOSTNAME: fqdn.example.com 
+      SMTP_SERVER: ${ENV_SMTP_SERVER}
+      SMTP_USERNAME: ${ENV_SMTP_USERNAME} 
+      SMTP_PASSWORD: ${ENV_SMTP_PASSWORD}
+      SERVER_HOSTNAME: ${ENV_SMTP_HOST}
     networks:
       dataLake:
         aliases:
