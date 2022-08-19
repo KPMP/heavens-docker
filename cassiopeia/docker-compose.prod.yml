@@ -36,6 +36,7 @@ services:
       local:
         aliases:
           - cassie-mongodb
+    
 
   spring:
     container_name: cassie-spring
@@ -53,6 +54,11 @@ services:
       local:
         aliases:
           - cassie-spring
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: "${ENV_FLUENTD_ADDRESS}"
+        tag: cassie-data
 
 volumes:
   mongodbdata:
