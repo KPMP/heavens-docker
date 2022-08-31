@@ -22,17 +22,55 @@ services:
     expose:
       - 25
     environment:
-      SMTP_SERVER: smtp.gmail.com
-      SMTP_USERNAME: kpmpNotifications@gmail.com 
-      SMTP_PASSWORD: lcbzgrkijgtmaiqn 
-      SERVER_HOSTNAME: fqdn.example.com 
+      SMTP_SERVER: ${ENV_SMTP_SERVER}
+      SMTP_USERNAME: ${ENV_SMTP_USERNAME}
+      SMTP_PASSWORD: ${ENV_SMTP_PASSWORD}
+      SERVER_HOSTNAME: ${ENV_SMTP_HOST}
     networks:
       dataLake:
         aliases:
           - postfix
+  mariadb:
+    container_name: eridanus-mariadb
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${ENV_MYSQL_PASSWORD}
+    volumes:
+      - mariadbdata:/var/lib/mysql
+    ports:
+      - 3307:3306
+    networks:
+      dataLake:
+        aliases:
+          - mariadb
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+
+  adminer:
+    container_name: eridanus-adminer
+    image: adminer
+    restart: always
+    environment:
+      TZ: "America/Detroit"
+    ports:
+      - 9090:8080 
+    networks:
+      dataLake:
+        aliases:
+          - adminer
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
 
 volumes:
   esdata:
+  mariadbdata:
 
 networks:
   dataLake:
