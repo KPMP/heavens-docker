@@ -1,4 +1,4 @@
-FROM centos:centos8.4.2105
+FROM oraclelinux:8.6
 
 # Add starters and installers
 ADD ./container_files /opt
