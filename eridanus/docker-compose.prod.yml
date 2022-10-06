@@ -3,7 +3,7 @@ services:
 
   spring:
     container_name: eridanus-spring
-    image: kingstonduo/kpmp-spring:2.0
+    image: kingstonduo/eridanus-data:1.1
     restart: unless-stopped    
     volumes:
       - "${ENV_SPRING_BOOT_APPDIR}:/home/gradle"
