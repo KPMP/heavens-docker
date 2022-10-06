@@ -5,8 +5,6 @@ services:
     container_name: eridanus-spring
     image: kingstonduo/eridanus-data:1.1
     restart: unless-stopped    
-    volumes:
-      - "${ENV_SPRING_BOOT_APPDIR}:/home/gradle"
     environment:
       SPRING_BOOT_ENVIRONMENT: ${ENV_DOCKER_ENVIRONMENT}
     ports:
