@@ -35,7 +35,7 @@ RUN apk del .build-deps \
 VOLUME "/home/gradle/.gradle"
 WORKDIR /home/gradle
 
-ENV NPM_CONFIG_PREFIX=/home/node/.npm-global
+ENV PATH=$PATH:/home/node/.npm-global/bin
 RUN apk update && apk add bash && apk add libstdc++ && apk add curl \
 	&& npm install mongodb@3.7.2 -g && npm install assert -g && npm install uuid -g \
 	&& npm install md5-file -g && npm install axios -g 
