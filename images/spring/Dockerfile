@@ -41,7 +41,6 @@ RUN apk update && apk add bash && apk add libstdc++ && apk add curl \
 	&& npm install md5-file -g && npm install axios -g 
 
 ENV LC_ALL=C
-ENV NODE_PATH=/usr/local/lib
 RUN cp /usr/share/zoneinfo/America/Detroit /etc/localtime
 RUN echo "America/Detroit" > /etc/timezone
 
