@@ -35,11 +35,9 @@ RUN apk del .build-deps \
 VOLUME "/home/gradle/.gradle"
 WORKDIR /home/gradle
 
-RUN npm --global config set user root && \
-    npm --global install exp
 RUN apk update && apk add bash && apk add libstdc++ && apk add curl \
-	&& npm install mongodb@3.7.2 -g && npm install assert -g && npm install uuid -g \
-	&& npm install md5-file -g && npm install axios -g 
+	&& npm install mongodb@3.7.2 -g --unsafe-perm && npm install assert -g --unsafe-perm && npm install uuid -g --unsafe-perm \
+	&& npm install md5-file -g --unsafe-perm && npm install axios -g --unsafe-perm
 
 ENV LC_ALL=C
 RUN cp /usr/share/zoneinfo/America/Detroit /etc/localtime
