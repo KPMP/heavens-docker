@@ -39,6 +39,8 @@ elif [ $environment == "prod" ] && [ "$2" == "down" ]; then
 	/usr/local/bin/docker-compose $cmd
 	cd ../metadataValidator
 	/usr/local/bin/docker-compose -f docker-compose.prod.yml $cmd
+	cd ../libra
+	/usr/local/bin/docker-compose -f docker-compose.prod.yml $cmd
 elif [ $environment == "prod" ] && [ "$2" == "up" ]; then
 	cd dataLakeProxyServer
 	/usr/local/bin/docker-compose $cmd
@@ -49,6 +51,8 @@ elif [ $environment == "prod" ] && [ "$2" == "up" ]; then
 	cd ../orion
 	docker-compose -f docker-compose.prod.yml $cmd
 	cd ../metadataValidator
+	/usr/local/bin/docker-compose -f docker-compose.prod.yml $cmd
+	cd ../libra
 	/usr/local/bin/docker-compose -f docker-compose.prod.yml $cmd
 else
 	echo $USAGE
