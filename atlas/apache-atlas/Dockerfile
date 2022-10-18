@@ -23,4 +23,4 @@ RUN echo "************** Built Apache WITHOUT SSL **************"
 
 EXPOSE 80 443
 
-ENTRYPOINT ["sh", "-c", "httpd-ssl-foreground $ENV_APACHE_SERVER_NAME"]
+ENTRYPOINT ["sh", "-c", "httpd-ssl-foreground $ENV_APACHE_SERVER_NAME $ENV_ES_HOST_IP"]
