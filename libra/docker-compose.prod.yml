@@ -7,7 +7,6 @@ services:
     expose:
       - 5000
     environment:
-      - ENV_APACHE_SERVER_NAME=${ENV_APACHE_SERVER_NAME}
       - mysql_user=${mysql_user}
       - mysql_pwd=${mysql_pwd}
       - mysql_host=${mysql_host}
