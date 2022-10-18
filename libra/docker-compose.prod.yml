@@ -3,7 +3,8 @@ services:
 
   data-manager-service:
     container_name: data-manager-service
-    image: ${ENV_DMD_SERVICE_CONTAINER} 
+    image: ${ENV_DMD_SERVICE_CONTAINER}
+    entrypoint: ["flask", "run"]
     expose:
       - 5000
     environment:
