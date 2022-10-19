@@ -1,0 +1,27 @@
+version: "3"
+services:
+
+  data-manager-service:
+    container_name: data-manager-service
+    image: ${ENV_DMD_SERVICE_CONTAINER}
+    entrypoint: ["flask", "run"]
+    expose:
+      - 5000
+    environment:
+      - mysql_user=${mysql_user}
+      - mysql_pwd=${mysql_pwd}
+      - mysql_host=${mysql_host}
+      - mysql_port=${mysql_port}
+      - mysql_db=${mysql_db}
+      - mongo_host=${mongo_host}
+      - mongo_db=${mongo_db}
+      - spectrack_token=${spectrack_token}
+      - spectrack_base_url=${spectrack_base_url}
+    networks:
+      dataLake:
+        aliases:
+          - data-manager-service
+
+networks:
+  dataLake:
+    external: true
