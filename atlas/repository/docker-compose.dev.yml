@@ -11,12 +11,16 @@ services:
       - "443:443"
     environment:
       - ENV_APACHE_SERVER_NAME=${ENV_APACHE_SERVER_NAME}
+      - ENV_ARRANGER_SERVER_ADDRESS=${ENV_ARRANGER_SERVER_ADDRESS}
+      - ENV_FILE_SERVER_ADDRESS=${ENV_FILE_SERVER_ADDRESS}
+      - ENV_EXPLORER_DATA_SERVER_ADDRESS=${ENV_EXPLORER_DATA_SERVER_ADDRESS}
+      - ENV_ES_HOST_IP=${ENV_ES_HOST_IP}
       - "TZ=America/Detroit"
     volumes:
       - ${ENV_REACT_APPDIR}/build:/var/www/html
       - ${ENV_REPOSITORY_APPDIR}/build:/var/www/html/repository
       - ${ENV_EXPLORER_REACT_APPDIR}/build:/var/www/html/explorer
-      - ${ENV_SPATIAL_APPDIR}/build:/var/www/html/vitessce
+      - ${ENV_SPATIAL_APPDIR}/build:/var/www/html/spatial-viewer
 
     networks:
       local:
