@@ -15,6 +15,7 @@ services:
       - ${ENV_CURATION_BASE_DIR}/build:/var/www/html/datamanager
       - ${ENV_SSL_CERT_DIR}:/certs
       - ${ENV_SHIB_CONF_DIR}/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
+      - ${ENV_DATALAKE_FILE_DIR}:/data
     networks:
       local:
         aliases:
