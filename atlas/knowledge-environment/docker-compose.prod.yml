@@ -231,7 +231,7 @@ services:
         tag: "atlas-file-service"
   
   metricbeat:
-    build: ../metricbeat/config/.
+    image: kingstonduo/metricbeat:1.0
     environment:
       ELASTICSEARCH_HOSTS: http://elasticsearch:9200
     volumes:
