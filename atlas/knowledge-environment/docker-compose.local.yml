@@ -192,6 +192,21 @@ services:
         aliases:
           - atlas-file-service   
 
+  metricbeat:
+    image: kingstonduo/metricbeat:1.0
+    environment:
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+    volumes:
+      - metricbeat-data01:/usr/share/metricbeat/data
+    networks:
+      local:
+        aliases:
+          - metricbeat
+    depends_on:
+      - es01
+      - es02
+      - es03
+
   minio-s3:
     image: minio/minio
     ports:
