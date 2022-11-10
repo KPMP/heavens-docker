@@ -237,7 +237,9 @@ services:
     volumes:
       - metricbeat-data01:/usr/share/metricbeat/data
     networks:
-      - elasticsearch
+      local:
+        aliases:
+          - metricbeat
     depends_on:
       - es01
       - es02
