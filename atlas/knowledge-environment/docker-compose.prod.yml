@@ -466,7 +466,7 @@ volumes:
     driver: local
   enterprisesearchdata:
     driver: local  
-  metricbeat:
+  metricbeat-data01:
     driver: local
 
 networks:
