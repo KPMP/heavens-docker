@@ -229,6 +229,19 @@ services:
       options:
         fluentd-address: "${ENV_FLUENTD_ADDRESS}"
         tag: "atlas-file-service"
+  
+  metricbeat:
+    image: docker.elastic.co/beats/metricbeat:7.11.1
+    environment:
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+    volumes:
+      - metricbeat-data01:/usr/share/metricbeat/data
+    networks:
+      - elasticsearch
+    depends_on:
+      - es01
+      - es02
+      - es03  
 
   minio-s3:
     container_name: minio
