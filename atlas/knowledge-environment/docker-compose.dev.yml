@@ -203,6 +203,21 @@ services:
         aliases:
           - kibana
 
+  metricbeat:
+    image: kingstonduo/metricbeat:1.0
+    environment:
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+    volumes:
+      - metricbeat-data01:/usr/share/metricbeat/data
+    networks:
+      local:
+        aliases:
+          - metricbeat
+    depends_on:
+      - es01
+      - es02
+      - es03
+
   arranger-server:
     image: overture/arranger-server:2.16.1 
     container_name: arranger-server.local
