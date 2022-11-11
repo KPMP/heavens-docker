@@ -204,8 +204,6 @@ services:
           - metricbeat
     depends_on:
       - es01
-      - es02
-      - es03
 
   minio-s3:
     image: minio/minio
