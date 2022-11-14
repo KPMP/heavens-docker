@@ -42,6 +42,7 @@ RUN export LD_LIBRARY_PATH
 RUN ln -s /opt/bin/httpd-shib-foreground  /usr/local/bin && ln -s /opt/etc/httpd/conf.d/ssl.conf /etc/httpd/conf.d/ssl.conf && ln -s /opt/etc/httpd/conf.d/virt.conf /etc/httpd/conf.d/virt.conf && ln -s /opt/etc/httpd/conf.modules.d/00-shib.conf /etc/httpd/conf.modules.d/00-shib.conf && ln -s /usr/lib64/shibboleth/mod_shib_24.so /etc/httpd/modules/mod_shib_24.so && ln -s /usr/share/zoneinfo/America/Detroit /etc/localtime
 
 # KPMP Specific Configuration - MAKE EDITS HERE
+COPY ./certs/inc-md-cert.pem /etc/pki/tls/certs/inc-md-cert.pem
 COPY ./container_files/etc/shibboleth/attribute-map.xml /etc/shibboleth/attribute-map.xml
 
 RUN echo "************** Built Apache WITH Shibboleth **************"
