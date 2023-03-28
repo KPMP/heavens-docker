@@ -175,7 +175,7 @@ services:
         max-file: "5"
           
   atlas-file-service:
-    image: kingstonduo/atlas-file-service:latest
+    image: kingstonduo/atlas-file-service:3.1
     ports:
       - "5000:5000"
     volumes:
@@ -191,6 +191,19 @@ services:
       local:
         aliases:
           - atlas-file-service   
+
+  metricbeat:
+    image: kingstonduo/metricbeat:1.0
+    environment:
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+    volumes:
+      - metricbeat-data01:/usr/share/metricbeat/data
+    networks:
+      local:
+        aliases:
+          - metricbeat
+    depends_on:
+      - es01
 
   minio-s3:
     image: minio/minio

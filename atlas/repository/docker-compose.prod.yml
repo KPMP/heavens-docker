@@ -19,6 +19,7 @@ services:
       - ${ENV_REACT_APPDIR}/build:/var/www/html
       - ${ENV_REPOSITORY_APPDIR}/build:/var/www/html/repository
       - ${ENV_EXPLORER_REACT_APPDIR}/build:/var/www/html/explorer
+      - ${ENV_REPOSITORY_REPLACEMENT_APPDIR}/build:/var/www/html/repository2
       - ${ENV_SPATIAL_APPDIR}/build:/var/www/html/spatial-viewer
       - ${ENV_SSL_CERT_DIR}:/certs
     networks:

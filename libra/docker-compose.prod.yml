@@ -14,9 +14,13 @@ services:
       - mysql_port=${mysql_port}
       - mysql_db=${mysql_db}
       - mongo_host=${mongo_host}
+      - mongo_port=${mongo_port}
       - mongo_db=${mongo_db}
       - spectrack_token=${spectrack_token}
       - spectrack_base_url=${spectrack_base_url}
+    volumes:
+      - "${ENV_DATALAKE_FILE_DIR}:/data"
+      - "${ENV_GLOBUS_FILE_MOUNT}:/globus"      
     networks:
       dataLake:
         aliases:
