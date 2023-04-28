@@ -38,7 +38,7 @@ services:
 
   mariadb:
     container_name: eridanus-mariadb
-    image: mariadb
+    image: mariadb:10.8.2
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${ENV_MYSQL_PASSWORD}
