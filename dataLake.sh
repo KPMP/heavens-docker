@@ -19,16 +19,12 @@ elif [ "$environment" == "dev" ] && [ "$2" == "down" ]; then
 	/usr/local/bin/docker-compose -f docker-compose.dev.yml $cmd
 	cd ../orion
 	/usr/local/bin/docker-compose -f docker-compose.dev.yml $cmd
-	cd ../metadataValidator
-	/usr/local/bin/docker-compose -f docker-compose.dev.yml $cmd
 elif [ "$environment" == "dev" ] && [ "$2" == "up" ]; then
 	cd orion
 	/usr/local/bin/docker-compose -f docker-compose.dev.yml $cmd
 	cd ../eridanus
 	/usr/local/bin/docker-compose -f docker-compose.dev.yml $cmd
 	cd ../stateManager
-	/usr/local/bin/docker-compose -f docker-compose.dev.yml $cmd
-	cd ../metadataValidator
 	/usr/local/bin/docker-compose -f docker-compose.dev.yml $cmd
 elif [ "$environment" == "dev" ] && [ "$2" == "restart" ]; then
 	cd orion
@@ -37,8 +33,6 @@ elif [ "$environment" == "dev" ] && [ "$2" == "restart" ]; then
 	/usr/local/bin/docker-compose -f docker-compose.dev.yml $down
 	cd ../stateManager
 	/usr/local/bin/docker-compose -f docker-compose.dev.yml $down
-	cd ../metadataValidator
-	/usr/local/bin/docker-compose -f docker-compose.dev.yml $down
 	sleep 5s
 
 	cd orion
@@ -46,8 +40,6 @@ elif [ "$environment" == "dev" ] && [ "$2" == "restart" ]; then
 	cd ../eridanus
 	/usr/local/bin/docker-compose -f docker-compose.dev.yml $up
 	cd ../stateManager
-	/usr/local/bin/docker-compose -f docker-compose.dev.yml $up
-	cd ../metadataValidator
 	/usr/local/bin/docker-compose -f docker-compose.dev.yml $up
 elif [ $environment == "prod" ] && [ "$2" == "down" ]; then
 	cd eridanus
@@ -58,8 +50,6 @@ elif [ $environment == "prod" ] && [ "$2" == "down" ]; then
 	/usr/local/bin/docker-compose -f docker-compose.prod.yml $cmd
 	cd ../dataLakeProxyServer
 	/usr/local/bin/docker-compose $cmd
-	cd ../metadataValidator
-	/usr/local/bin/docker-compose -f docker-compose.prod.yml $cmd
 	cd ../libra
 	/usr/local/bin/docker-compose -f docker-compose.prod.yml $cmd
 elif [ $environment == "prod" ] && [ "$2" == "up" ]; then
@@ -71,8 +61,6 @@ elif [ $environment == "prod" ] && [ "$2" == "up" ]; then
 	/usr/local/bin/docker-compose -f docker-compose.prod.yml $cmd
 	cd ../orion
 	docker-compose -f docker-compose.prod.yml $cmd
-	cd ../metadataValidator
-	/usr/local/bin/docker-compose -f docker-compose.prod.yml $cmd
 	cd ../libra
 	/usr/local/bin/docker-compose -f docker-compose.prod.yml $cmd
 elif [ $environment == "prod" ] && [ "$2" == "restart" ]; then
@@ -82,8 +70,6 @@ elif [ $environment == "prod" ] && [ "$2" == "restart" ]; then
 	/usr/local/bin/docker-compose -f docker-compose.prod.yml $down
 	cd ../stateManager
 	/usr/local/bin/docker-compose -f docker-compose.prod.yml $down
-	cd ../metadataValidator
-	/usr/local/bin/docker-compose -f docker-compose.dev.yml $down
 	sleep 5s
 
 	cd orion
@@ -91,8 +77,6 @@ elif [ $environment == "prod" ] && [ "$2" == "restart" ]; then
 	cd ../eridanus
 	/usr/local/bin/docker-compose -f docker-compose.prod.yml $up
 	cd ../stateManager
-	/usr/local/bin/docker-compose -f docker-compose.prod.yml $up
-	cd ../metadataValidator
 	/usr/local/bin/docker-compose -f docker-compose.prod.yml $up
 else
 	echo $USAGE
