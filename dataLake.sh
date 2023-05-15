@@ -28,7 +28,6 @@ elif [ "$environment" == "dev" ] && [ "$2" == "up" ]; then
 	/usr/local/bin/docker-compose -f docker-compose.dev.yml $cmd
 	cd ../metadataValidator
 	/usr/local/bin/docker-compose -f docker-compose.dev.yml $cmd
-
 elif [ "$environment" == "dev" ] && ["$2" == "restart"]; then
 	cd orion
 	/usr/local/bin/docker-compose -f "docker-compose.dev.yml down"
@@ -48,7 +47,6 @@ elif [ "$environment" == "dev" ] && ["$2" == "restart"]; then
 	/usr/local/bin/docker-compose -f "docker-compose.dev.yml up -d"
 	cd ../metadataValidator
 	/usr/local/bin/docker-compose -f "docker-compose.dev.yml up -d"
-
 elif [ $environment == "prod" ] && [ "$2" == "down" ]; then
 	cd eridanus
 	/usr/local/bin/docker-compose -f docker-compose.prod.yml $cmd
@@ -75,7 +73,6 @@ elif [ $environment == "prod" ] && [ "$2" == "up" ]; then
 	/usr/local/bin/docker-compose -f docker-compose.prod.yml $cmd
 	cd ../libra
 	/usr/local/bin/docker-compose -f docker-compose.prod.yml $cmd
-
 elif [ $environment == "prod" ] && [$2 == "restart"]; then
 	cd orion
 	/usr/local/bin/docker-compose -f "docker-compose.prod.yml down"
