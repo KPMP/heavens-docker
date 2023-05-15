@@ -76,25 +76,25 @@ elif [ $environment == "prod" ] && [ "$2" == "up" ]; then
 	cd ../libra
 	/usr/local/bin/docker-compose -f docker-compose.prod.yml $cmd
 
-elif [ "$environment" == "prod" ] && ["$2" == "restart"]; then
+elif [ $environment == "prod" ] && [$2 == "restart"]; then
 	cd orion
-	/usr/local/bin/docker-compose -f "docker-compose.dev.yml down"
+	/usr/local/bin/docker-compose -f "docker-compose.prod.yml down"
 	cd ../eridanus
-	/usr/local/bin/docker-compose -f "docker-compose.dev.yml down"
+	/usr/local/bin/docker-compose -f "docker-compose.prod.yml down"
 	cd ../stateManager
-	/usr/local/bin/docker-compose -f "docker-compose.dev.yml down"
+	/usr/local/bin/docker-compose -f "docker-compose.prod.yml down"
 	cd ../metadataValidator
 	/usr/local/bin/docker-compose -f "docker-compose.dev.yml down"
 	sleep 5s
 
 	cd orion
-	/usr/local/bin/docker-compose -f "docker-compose.dev.yml up -d"
+	/usr/local/bin/docker-compose -f "docker-compose.prod.yml up -d"
 	cd ../eridanus
-	/usr/local/bin/docker-compose -f "docker-compose.dev.yml up -d"
+	/usr/local/bin/docker-compose -f "docker-compose.prod.yml up -d"
 	cd ../stateManager
-	/usr/local/bin/docker-compose -f "docker-compose.dev.yml up -d"
+	/usr/local/bin/docker-compose -f "docker-compose.prod.yml up -d"
 	cd ../metadataValidator
-	/usr/local/bin/docker-compose -f "docker-compose.dev.yml up -d"
+	/usr/local/bin/docker-compose -f "docker-compose.prod.yml up -d"
 else
 	echo $USAGE
 fi
