@@ -31,13 +31,13 @@ elif [ "$environment" == "dev" ] && [ "$2" == "up" ]; then
 
 elif [ "$environment" == "dev" ] && ["$2" == "restart"]; then
 	cd orion
-	/usr/local/bin/docker-compose -f docker-compose.dev.yml down
+	/usr/local/bin/docker-compose -f "docker-compose.dev.yml down"
 	cd ../eridanus
-	/usr/local/bin/docker-compose -f docker-compose.dev.yml down
+	/usr/local/bin/docker-compose -f "docker-compose.dev.yml down"
 	cd ../stateManager
-	/usr/local/bin/docker-compose -f docker-compose.dev.yml down
+	/usr/local/bin/docker-compose -f "docker-compose.dev.yml down"
 	cd ../metadataValidator
-	/usr/local/bin/docker-compose -f docker-compose.dev.yml down
+	/usr/local/bin/docker-compose -f "docker-compose.dev.yml down"
 	sleep 5s
 
 	cd orion
@@ -78,13 +78,13 @@ elif [ $environment == "prod" ] && [ "$2" == "up" ]; then
 
 elif [ "$environment" == "prod" ] && ["$2" == "restart"]; then
 	cd orion
-	/usr/local/bin/docker-compose -f docker-compose.dev.yml down
+	/usr/local/bin/docker-compose -f "docker-compose.dev.yml down"
 	cd ../eridanus
-	/usr/local/bin/docker-compose -f docker-compose.dev.yml down
+	/usr/local/bin/docker-compose -f "docker-compose.dev.yml down"
 	cd ../stateManager
-	/usr/local/bin/docker-compose -f docker-compose.dev.yml down
+	/usr/local/bin/docker-compose -f "docker-compose.dev.yml down"
 	cd ../metadataValidator
-	/usr/local/bin/docker-compose -f docker-compose.dev.yml down
+	/usr/local/bin/docker-compose -f "docker-compose.dev.yml down"
 	sleep 5s
 
 	cd orion
