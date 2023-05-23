@@ -337,9 +337,12 @@ services:
       timeout: 5s
       retries: 120
 
+#comment out search-setup after building Elasticsearch containers for the first time. This will reduce the memory usage of the KE machines.
+#once commented out, bounce the containers and verify that everything is working.
+
   es-search: 
     container_name: es-search
-    depends_on:
+    depends_on: #comment out this line and the line below after building Elasticsearch containers for the first time.
       - search-setup
     image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
     volumes:

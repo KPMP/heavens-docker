@@ -5,17 +5,22 @@ This repository holds all of the docker-compose.yml files and Dockerfiles needed
 |  **Directory Name** | **Description**   |
 | ------------ | ------------ |
 | ara  | Ara is the log aggregator.  It is intended to be a central repository for logs from the various apps hosted at UMich.  See ara's README for security details  |
-| cassiopeia  | Cassiopeia is the code name for the Participant Whole Slide Image Viewer (mydata.kpmp.org)  |
-| circinus | Circinus is the code name for the KPMP Demo site (demo.kpmp.org) |
+| atlas | Atlas is the website at atlas.kpmp.org. Inside the atlas directory is a repository and a knowledge-environment directory. The repository directory is for the Apache web server. The knowledge-environment directory is to host all of the Knowledge Environment containers |
+| cassiopeia  | Cassiopeia is the code name for the Participant Portal (mydata.kpmp.org)  |
+| ~~circinus~~ | **DEFUNCT** ~~Circinus is the code name for the KPMP Demo site (demo.kpmp.org)~~ |
 | dataLakeProxyServer | Since we are running the datamanager tools and the DLU on the same machine, we needed a proxy server running to handle the requests.  This is that |
 | delphinus  |  Delphinus is the code name for the Digital Pathology Repository (or DPR) (currently at demo.kpmp.org/dpr)  |
 | eridanus  | Eridanus is the code name for the notification service. It is intended to notify individuals when particular events happen (no UI)  |
 | images | This directory stores common docker images that we share across projects.  When we build an image, we store it on DockerHub |
 | libra  | Libra is the code name for the datamanager tools (datamanager.kpmp.org)  |
+| ~~metadataValidator~~ | **DEFUNCT** ~~An early attempt at consuming the package metadata for Data Lake Uploader~~ |
 | microscopium  | Microscopium is the code name for the initial Atlas Demo (a cell-type centric view) (demo.kpmp.org/atlas)  |
 | orion  | Orion is the code name for the Data Lake Uploader (upload.kpmp.org)  |
+| participant-portal-registration | Intended to allow us to run the Participant Portal registration site...this may not work |
+| participant-portal | Intended to allow us to run the Participant Portal admin site...this may not work |
 | pictor  | Pictor is the code name for the second Atlas Demo (gene search and violin plots) (demo.kpmp.org/gene-search)  |
-| scutum  | Scutum is the code name for the Authentication Service   |
+| scripts | Directory to contain a number of scripts that are used for monitoring the health of the server and applications | 
+| stateManager  | Manages the state of packages inside of the data lake |
 
 
 Instructions on how to set up each project will be in individual README files under each directory.
