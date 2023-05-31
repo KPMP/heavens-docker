@@ -6,6 +6,8 @@ To use this docker container, pull the image from dockerhub `docker pull kingsto
 
 Copy `.env.example` and rename it to `.env` 
 
+Create a container_files directory inside this directory
+
 Provide file to be moved to s3 inside of the container_files directory
 
 AWS_KEY is the key for the user that has access to the bucket you want to upload to
