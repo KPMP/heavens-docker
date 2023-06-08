@@ -14,7 +14,7 @@ Build the image with the provided Dockerfile
 
 ## Using the container
 
-In the command line `docker run --env-file ./.env <image_name> -f <file_name> -d </home/name_of_file> -b <bucket_name>`
+In the command line `docker run --name pipeline-mover --env-file ./.env <image_name> -f <file_name> -d </home/name_of_file> -b <bucket_name>`
 
 If any one of the arguments are invaild the container will shutdown and return an exit code (code 148).
 
