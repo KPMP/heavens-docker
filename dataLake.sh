@@ -35,7 +35,7 @@ elif [ "$environment" == "dev" ] && [ "$2" == "restart" ]; then
 	/usr/local/bin/docker-compose -f docker-compose.dev.yml $down
 	sleep 5s
 
-	cd orion
+	cd ../orion
 	/usr/local/bin/docker-compose -f docker-compose.dev.yml $up
 	cd ../eridanus
 	/usr/local/bin/docker-compose -f docker-compose.dev.yml $up
@@ -72,7 +72,7 @@ elif [ $environment == "prod" ] && [ "$2" == "restart" ]; then
 	/usr/local/bin/docker-compose -f docker-compose.prod.yml $down
 	sleep 5s
 
-	cd orion
+	cd ../orion
 	/usr/local/bin/docker-compose -f docker-compose.prod.yml $up
 	cd ../eridanus
 	/usr/local/bin/docker-compose -f docker-compose.prod.yml $up
