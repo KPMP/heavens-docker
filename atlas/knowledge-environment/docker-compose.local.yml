@@ -47,7 +47,31 @@ services:
     networks:
       local:
         aliases:
-          - hubble-spring           
+          - hubble-spring      
+
+  hydra-spring:
+    container_name: hubble-spring
+    image: kingstonduo/hydra-data:1.0
+    depends_on: 
+      - mariadb
+    ports:
+      - "3050:3030"
+    environment:
+      SPRING_BOOT_ENVIRONMENT: ${ENV_DOCKER_ENVIRONMENT}
+      MYSQL_HOST: ${ENV_MYSQL_HOST}
+      MYSQL_USER: ${ENV_MYSQL_USER}
+      MYSQL_PASSWORD: ${ENV_MYSQL_PASSWORD}
+      TZ: "America/Detroit"
+    privileged: true
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+    networks:
+      local:
+        aliases:
+          - hydra-spring           
 
   mariadb:
     image: mariadb
