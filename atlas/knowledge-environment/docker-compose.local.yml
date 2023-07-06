@@ -50,7 +50,7 @@ services:
           - hubble-spring      
 
   hydra-spring:
-    container_name: hubble-spring
+    container_name: hydra-spring
     image: kingstonduo/hydra-data:1.0
     depends_on: 
       - mariadb
