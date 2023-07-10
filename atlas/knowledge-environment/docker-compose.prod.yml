@@ -48,7 +48,32 @@ services:
     networks:
       local:
         aliases:
-          - hubble-spring          
+          - hubble-spring 
+
+  hydra-spring:
+    container_name: hydra-spring
+    image: ${ENV_HYDRA_CONTAINER} 
+    depends_on: 
+      - mariadb
+    ports:
+      - "3050:3030"
+    environment:
+      SPRING_BOOT_ENVIRONMENT: ${ENV_DOCKER_ENVIRONMENT}
+      MYSQL_HOST: ${ENV_MYSQL_HOST}
+      MYSQL_USER: ${ENV_MYSQL_USER}
+      MYSQL_PASSWORD: ${ENV_MYSQL_PASSWORD}
+      ES_API_TOKEN: ${ENV_ES_API_TOKEN}
+      TZ: "America/Detroit"
+    privileged: true
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: "${ENV_FLUENTD_ADDRESS}"
+        tag: "hydra-data"
+    networks:
+      local:
+        aliases:
+          - hydra-spring          
 
   mariadb:
     container_name: mariadb
