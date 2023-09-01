@@ -13,7 +13,7 @@ services:
     volumes:
       - ${ENV_REACT_APPDIR}/build:/var/www/html
       - ${ENV_SSL_CERT_DIR}:/certs
-      - ${ENV_SHIB_CONF_DIR}/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
+      - ${ENV_SHIB_CONF_DIR}/:/etc/shibboleth/
     networks:
       local:
         aliases:
@@ -61,7 +61,7 @@ services:
 
   user-auth:
     container_name: user-auth
-    image: kingstonduo/user-auth
+    image: kingstonduo/user-auth:2.0
     environment:
       DEFAULT_CLIENT_ID: ${ENV_DEFAULT_CLIENT_ID}
       TZ: "America/Detroit"
