@@ -30,7 +30,6 @@ services:
       - 3030
     volumes:
       - "${ENV_SPRING_BOOT_APPDIR}:/home/gradle"
-      - "${ENV_DATALAKE_FILE_DIR}:/data"
       - "${ENV_WORKER_LOCATION}:/home/gradle/zipWorker"
       - "${ENV_GLOBUS_FILE_MOUNT}:/globus"      
     environment:
