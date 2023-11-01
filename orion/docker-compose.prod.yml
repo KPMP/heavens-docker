@@ -30,6 +30,7 @@ services:
       - 3030
     volumes:
       - "${ENV_GLOBUS_FILE_MOUNT}:/globus"      
+      - "${ENV_GLOBUS_TOKEN_LOCATION}:/globus_tokens"
     environment:
       GLOBUS_API_KEY: ${ENV_GLOBUS_API_KEY}
       GLOBUS_API_SECRET: ${ENV_GLOBUS_API_SECRET}      
