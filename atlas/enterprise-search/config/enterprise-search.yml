@@ -1,0 +1,13 @@
+allow_es_settings_modification: true
+elasticsearch.host: https://es-search:9200
+app_search.engine.total_facet_values_returned.limit: 500
+elasticsearch.password: y5EXgn5b
+elasticsearch.ssl.certificate_authority: /usr/share/enterprise-search/config/certs/ca/ca.crt
+elasticsearch.ssl.enabled: true
+elasticsearch.username: elastic
+ent_search.listen_host: 0.0.0.0
+filebeat_log_directory: /var/log/enterprise-search
+kibana.external_url: http://kibana-search:5601
+log_directory: /var/log/enterprise-search
+metricbeat_log_directory: /var/log/enterprise-search
+secret_management.encryption_keys: [2f983d978dfb257aaa0586ea2fae8f2c60feac14c34bb6cb3ef2af355dce1192]
