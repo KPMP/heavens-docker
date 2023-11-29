@@ -157,63 +157,65 @@ services:
         max-size: "10m"
         max-file: "5"
 
-  search-setup:
-    container_name: search-setup
-    image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
-    volumes:
-      - certs:/usr/share/elasticsearch/config/certs
-    user: "0"
-    command: >
-      bash -c '
-        if [ x${ELASTIC_PASSWORD} == x ]; then
-          echo "Set the ELASTIC_PASSWORD environment variable in the .env file";
-          exit 1;
-        elif [ x${KIBANA_PASSWORD} == x ]; then
-          echo "Set the KIBANA_PASSWORD environment variable in the .env file";
-          exit 1;
-        fi;
-        if [ ! -f certs/ca.zip ]; then
-          echo "Creating CA";
-          bin/elasticsearch-certutil ca --silent --pem -out config/certs/ca.zip;
-          unzip config/certs/ca.zip -d config/certs;
-        fi;
-        if [ ! -f certs/certs.zip ]; then
-          echo "Creating certs";
-          echo -ne \
-          "instances:\n"\
-          "  - name: es-search\n"\
-          "    dns:\n"\
-          "      - es-search\n"\
-          "      - localhost\n"\
-          "    ip:\n"\
-          "      - 127.0.0.1\n"\
-          > config/certs/instances.yml;
-          bin/elasticsearch-certutil cert --silent --pem -out config/certs/certs.zip --in config/certs/instances.yml --ca-cert config/certs/ca/ca.crt --ca-key config/certs/ca/ca.key;
-          unzip config/certs/certs.zip -d config/certs;
-        fi;
-        echo "Setting file permissions"
-        chown -R root:root config/certs;
-        find . -type d -exec chmod 750 \{\} \;;
-        find . -type f -exec chmod 640 \{\} \;;
-        echo "Waiting for Elasticsearch availability";
-        until curl -s --cacert config/certs/ca/ca.crt https://es-search:9200 | grep -q "missing authentication credentials"; do sleep 30; done;
-        echo "Setting kibana_system password";
-        until curl -s -X POST --cacert config/certs/ca/ca.crt -u elastic:${ELASTIC_PASSWORD} -H "Content-Type: application/json" https://es-search:9200/_security/user/kibana_system/_password -d "{\"password\":\"${KIBANA_PASSWORD}\"}" | grep -q "^{}"; do sleep 10; done;
-        echo "All done!";
-      '
-    healthcheck:
-      test: ["CMD-SHELL", "[ -f config/certs/es-search/es-search.crt ]"]
-      interval: 1s
-      timeout: 5s
-      retries: 120
+
+# Commenting this section out since it is only needed the first time we set up enterprise search
+#  search-setup:
+#    container_name: search-setup
+#    image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
+#    volumes:
+#      - certs:/usr/share/elasticsearch/config/certs
+#    user: "0"
+#    command: >
+#      bash -c '
+#        if [ x${ELASTIC_PASSWORD} == x ]; then
+#          echo "Set the ELASTIC_PASSWORD environment variable in the .env file";
+#          exit 1;
+#        elif [ x${KIBANA_PASSWORD} == x ]; then
+#          echo "Set the KIBANA_PASSWORD environment variable in the .env file";
+#          exit 1;
+#        fi;
+#        if [ ! -f certs/ca.zip ]; then
+#          echo "Creating CA";
+#          bin/elasticsearch-certutil ca --silent --pem -out config/certs/ca.zip;
+#          unzip config/certs/ca.zip -d config/certs;
+#        fi;
+#        if [ ! -f certs/certs.zip ]; then
+#          echo "Creating certs";
+#          echo -ne \
+#          "instances:\n"\
+#          "  - name: es-search\n"\
+#          "    dns:\n"\
+#          "      - es-search\n"\
+#          "      - localhost\n"\
+#          "    ip:\n"\
+#          "      - 127.0.0.1\n"\
+#          > config/certs/instances.yml;
+#          bin/elasticsearch-certutil cert --silent --pem -out config/certs/certs.zip --in config/certs/instances.yml --ca-cert config/certs/ca/ca.crt --ca-key config/certs/ca/ca.key;
+#          unzip config/certs/certs.zip -d config/certs;
+#        fi;
+#        echo "Setting file permissions"
+#        chown -R root:root config/certs;
+#        find . -type d -exec chmod 750 \{\} \;;
+#        find . -type f -exec chmod 640 \{\} \;;
+#        echo "Waiting for Elasticsearch availability";
+#        until curl -s --cacert config/certs/ca/ca.crt https://es-search:9200 | grep -q "missing authentication credentials"; do sleep 30; done;
+#        echo "Setting kibana_system password";
+#        until curl -s -X POST --cacert config/certs/ca/ca.crt -u elastic:${ELASTIC_PASSWORD} -H "Content-Type: application/json" https://es-search:9200/_security/user/kibana_system/_password -d "{\"password\":\"${KIBANA_PASSWORD}\"}" | grep -q "^{}"; do sleep 10; done;
+#        echo "All done!";
+#      '
+#    healthcheck:
+#      test: ["CMD-SHELL", "[ -f config/certs/es-search/es-search.crt ]"]
+#      interval: 1s
+#      timeout: 5s
+#      retries: 120
 
 #comment out search-setup after building Elasticsearch containers for the first time. This will reduce the memory usage of the KE machines.
 #once commented out, bounce the containers and verify that everything is working.
 
   es-search: 
     container_name: es-search
-    depends_on: #comment out this line and the line below after building Elasticsearch containers for the first time.
-      - search-setup
+#    depends_on: #comment out this line and the line below after building Elasticsearch containers for the first time.
+#      - search-setup
     image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
     volumes:
       - certs:/usr/share/elasticsearch/config/certs
@@ -298,18 +300,11 @@ services:
     volumes:
       - certs:/usr/share/enterprise-search/config/certs
       - enterprisesearchdata:/usr/share/enterprise-search/config
+      - ../enterprise-search/config/enterprise-search.yml:/usr/share/enterprise-search/config/enterprise-search.yml
     ports:
       - ${ENTERPRISE_SEARCH_PORT}:3002
     environment:
       - SERVERNAME=enterprisesearch
-      - secret_management.encryption_keys=[${ENCRYPTION_KEYS}]
-      - allow_es_settings_modification=true
-      - elasticsearch.host=https://es-search:9200
-      - elasticsearch.username=elastic
-      - elasticsearch.password=${ELASTIC_PASSWORD}
-      - elasticsearch.ssl.enabled=true
-      - elasticsearch.ssl.certificate_authority=/usr/share/enterprise-search/config/certs/ca/ca.crt
-      - kibana.external_url=http://kibana-search:5601
       - ES_JAVA_OPTS=-Xms1g -Xmx1g
     healthcheck:
       test:
