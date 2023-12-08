@@ -10,4 +10,5 @@ filebeat_log_directory: /var/log/enterprise-search
 kibana.external_url: http://kibana-search:5601
 log_directory: /var/log/enterprise-search
 metricbeat_log_directory: /var/log/enterprise-search
-secret_management.encryption_keys: <FILL IN VALUE...SEE .ENV IN ATLAS/KNOWLEDGE_ENVIRONMENT>
+# The setting below needs to be an array.
+secret_management.encryption_keys: [<FILL IN VALUES...SEE .ENV IN ATLAS/KNOWLEDGE_ENVIRONMENT>]
