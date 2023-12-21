@@ -3,7 +3,7 @@ services:
 
   state-spring:
     container_name: state-spring
-    image: kingstonduo/state-manager-service:latest
+    image: kingstonduo/state-manager-service:2.2
     volumes:
       - "${ENV_DATALAKE_FILE_DIR}:/data"    
     ports:

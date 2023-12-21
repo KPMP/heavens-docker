@@ -3,7 +3,7 @@ services:
 
   pegasus-spring:
     container_name: pegasus-spring
-    image: kingstonduo/pegasus-data
+    image: ${ENV_PEGASUS_CONTAINER}
     depends_on: 
       - mariadb
     ports:
@@ -27,7 +27,7 @@ services:
   
   hubble-spring:
     container_name: hubble-spring
-    image: kingstonduo/pegasus-data
+    image: ${ENV_HUBBLE_CONTAINER}
     depends_on: 
       - mariadb
     ports:
@@ -121,27 +121,6 @@ services:
       local:
         aliases:
           - minio-s3    
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "5"
-
-  index-creation-worker:
-    image: kingstonduo/atlas-index-creation-worker:latest
-    container_name: index-creation-worker
-    restart: always
-    ports:
-      - "5001:5000"
-    environment:
-      MYSQL_USER: root
-      MYSQL_ROOT_PASSWORD: ${ENV_MYSQL_PASSWORD}
-      MYSQL_HOST: ${ENV_MYSQL_HOST}
-      TZ: "America/Detroit"
-    networks:
-      local:
-        aliases:
-          - index-creator
     logging:
       driver: "json-file"
       options:
