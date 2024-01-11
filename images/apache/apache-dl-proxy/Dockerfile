@@ -19,22 +19,10 @@ LABEL Build docker build --rm --tag $maintainer/$imagename .
 # Add starters and installers
 ADD ./container_files /opt
 
-RUN echo $'[shibboleth]\n\
-name=Shibboleth (CentOS_7)\n\
-type=rpm-md\n\
-mirrorlist=https://shibboleth.net/cgi-bin/mirrorlist.cgi/CentOS_7\n\
-gpgcheck=1\n\
-gpgkey=https://shibboleth.net/downloads/service-provider/RPMS/repomd.xml.key\n\
-        https://shibboleth.net/downloads/service-provider/RPMS/cantor.repomd.xml.key\n\
-enabled=1' > /etc/yum.repos.d/shibboleth.repo
+RUN apt update && apt-get upgrade -y --no-install-recommends
+RUN apt install apache2 libapache2-mod-shib ntp --no-install-recommends
 
-RUN yum -y update \
-      && yum -y install \
-        mod_ssl \
-        shibboleth.x86_64 \
-        dos2unix \
-      && yum clean all \
-      && rm /etc/httpd/conf.d/autoindex.conf \
+RUN rm /etc/httpd/conf.d/autoindex.conf \
       && rm /etc/httpd/conf.d/ssl.conf \
       && rm /etc/httpd/conf.d/userdir.conf \
       && rm /etc/httpd/conf.d/welcome.conf \
