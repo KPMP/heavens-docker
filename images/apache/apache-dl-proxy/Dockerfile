@@ -7,13 +7,6 @@ ARG maintainer=tier
 ARG imagename=shibboleth_sp
 ARG version=2.6.1
 
-LABEL Maintainer=$maintainer
-LABEL Vendor="Internet2"
-LABEL ImageType="Base"
-LABEL ImageName=$imagename
-LABEL ImageOS=centos7
-LABEL Version=$version
-
 LABEL Build docker build --rm --tag $maintainer/$imagename .
 
 # Add starters and installers
@@ -22,11 +15,7 @@ ADD ./container_files /opt
 RUN apt update && apt-get upgrade -y --no-install-recommends
 RUN apt install -y apache2 libapache2-mod-shib ntp --no-install-recommends
 
-RUN rm /etc/httpd/conf.d/autoindex.conf \
-      && rm /etc/httpd/conf.d/ssl.conf \
-      && rm /etc/httpd/conf.d/userdir.conf \
-      && rm /etc/httpd/conf.d/welcome.conf \
-      && rm /etc/localtime \
+RUN rm /etc/localtime \
       && chmod +x /opt/bin/httpd-shib-foreground \
       && chmod +x /opt/bin/shibboleth_keygen.sh
       
@@ -38,7 +27,7 @@ RUN chown -R shibd:shibd /etc/shibboleth/
 RUN chown -R shibd:shibd /var/cache/shibboleth/
 
 #Script to start service, Added ssl default conf, Added shib module apache
-RUN ln -s /opt/bin/httpd-shib-foreground  /usr/local/bin && ln -s /opt/etc/httpd/conf.d/ssl.conf /etc/httpd/conf.d/ssl.conf && ln -s /opt/etc/httpd/conf.d/virt.conf /etc/httpd/conf.d/virt.conf && ln -s /opt/etc/httpd/conf.modules.d/00-shib.conf /etc/httpd/conf.modules.d/00-shib.conf && ln -s /usr/lib64/shibboleth/mod_shib_24.so /etc/httpd/modules/mod_shib_24.so && ln -s /usr/share/zoneinfo/America/Detroit /etc/localtime
+RUN ln -s /opt/bin/httpd-shib-foreground  /usr/local/bin && ln -s /opt/etc/httpd/conf.d/ssl.conf /usr/local/apache2/conf/ssl.conf && ln -s /opt/etc/httpd/conf.d/virt.conf /usr/local/apache2/conf/virt.conf && ln -s /opt/etc/httpd/conf.modules.d/00-shib.conf /usr/local/apache2/conf/00-shib.conf && ln -s /usr/share/zoneinfo/America/Detroit /etc/localtime
 
 # KPMP Specific Configuration - MAKE EDITS HERE
 RUN curl https://ds.incommon.org/certs/inc-md-cert.pem -o /etc/pki/tls/certs/inc-md-cert.pem
