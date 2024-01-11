@@ -20,7 +20,7 @@ LABEL Build docker build --rm --tag $maintainer/$imagename .
 ADD ./container_files /opt
 
 RUN apt update && apt-get upgrade -y --no-install-recommends
-RUN apt install apache2 libapache2-mod-shib ntp --no-install-recommends
+RUN apt install -y apache2 libapache2-mod-shib ntp --no-install-recommends
 
 RUN rm /etc/httpd/conf.d/autoindex.conf \
       && rm /etc/httpd/conf.d/ssl.conf \
