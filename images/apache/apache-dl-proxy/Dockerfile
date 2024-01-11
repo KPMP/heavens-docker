@@ -1,4 +1,4 @@
-FROM oraclelinux:8.5
+FROM httpd:2.4
 
 SHELL ["/bin/bash", "-c"]
 
@@ -30,7 +30,6 @@ enabled=1' > /etc/yum.repos.d/shibboleth.repo
 
 RUN yum -y update \
       && yum -y install \
-        httpd \
         mod_ssl \
         shibboleth.x86_64 \
         dos2unix \
