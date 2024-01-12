@@ -13,7 +13,7 @@ LABEL Build docker build --rm --tag $maintainer/$imagename .
 ADD ./container_files /opt
 
 RUN apt update && apt-get upgrade -y --no-install-recommends
-RUN apt install -y apache2 libapache2-mod-shib2 ntp --no-install-recommends
+RUN apt install -y libapache2-mod-shib2 --no-install-recommends
 RUN apt install -y curl
 
 RUN rm /etc/localtime \
