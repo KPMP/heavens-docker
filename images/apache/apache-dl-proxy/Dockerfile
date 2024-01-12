@@ -19,6 +19,7 @@ RUN apt install -y curl
 RUN rm /etc/localtime \
       && chmod +x /opt/bin/httpd-shib-foreground \
       && chmod +x /opt/bin/shibboleth_keygen.sh
+	  && rm /usr/local/apache2/conf/httpd.conf
       
 # Export this variable so that shibd can find its CURL library
 RUN LD_LIBRARY_PATH="/opt/shibboleth/lib64"
