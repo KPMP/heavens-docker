@@ -24,11 +24,15 @@ RUN rm /etc/localtime \
 RUN LD_LIBRARY_PATH="/opt/shibboleth/lib64"
 RUN export LD_LIBRARY_PATH
 
-#RUN chown -R shibd:shibd /etc/shibboleth/
-#RUN chown -R shibd:shibd /var/cache/shibboleth/
+RUN chown -R _shibd:_shibd /etc/shibboleth/
+RUN chown -R _shibd:_shibd /var/cache/shibboleth/
 
 #Script to start service, Added ssl default conf, Added shib module apache
 RUN ln -s /opt/bin/httpd-shib-foreground  /usr/local/bin && ln -s /opt/etc/httpd/conf.d/ssl.conf /usr/local/apache2/conf/ssl.conf && ln -s /opt/etc/httpd/conf.d/virt.conf /usr/local/apache2/conf/virt.conf && ln -s /opt/etc/httpd/conf.modules.d/00-shib.conf /usr/local/apache2/conf/00-shib.conf && ln -s /usr/share/zoneinfo/America/Detroit /etc/localtime
+
+RUN sed -i \
+		-e 's/^#\(Include conf/*.conf\)/\1/' \
+		conf/httpd.conf
 
 # KPMP Specific Configuration - MAKE EDITS HERE
 RUN curl https://ds.incommon.org/certs/inc-md-cert.pem -o /etc/ssl/certs/inc-md-cert.pem
