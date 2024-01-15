@@ -1,27 +1,24 @@
-FROM httpd:2.4
+FROM debian:buster-slim
 
 SHELL ["/bin/bash", "-c"]
 
-# Define args and set a default value
-ARG maintainer=tier
-ARG imagename=shibboleth_sp
-ARG version=2.6.1
-
-LABEL Build docker build --rm --tag $maintainer/$imagename .
+LABEL Build docker build --rm --tag kingstonduo/apache-dl-proxy/apache-upgrade .
 
 # Add starters and installers
 ADD ./container_files /opt
 
-RUN echo 'debian.mirror.garr.it' >> /etc/apt/sources.list
-RUN apt update && apt-get upgrade -y --no-install-recommends
-RUN apt install -y libapache2-mod-shib2 --no-install-recommends
-RUN apt install -y curl
+RUN apt-get -qq update && \
+    apt-get -qq -y --no-install-recommends install \
+        apache2 \
+        libapache2-mod-shib2 && \
+    rm -rf /var/lib/apt/lists/*
 
 RUN rm /etc/localtime \
       && chmod +x /opt/bin/httpd-shib-foreground \
       && chmod +x /opt/bin/shibboleth_keygen.sh \
       && rm /usr/local/apache2/conf/httpd.conf \
       && a2enmod shib2
+	  
 # Export this variable so that shibd can find its CURL library
 RUN LD_LIBRARY_PATH="/opt/shibboleth/lib64"
 RUN export LD_LIBRARY_PATH
