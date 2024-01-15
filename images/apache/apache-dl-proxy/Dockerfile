@@ -12,6 +12,7 @@ LABEL Build docker build --rm --tag $maintainer/$imagename .
 # Add starters and installers
 ADD ./container_files /opt
 
+RUN echo 'debian.mirror.garr.it' >> /etc/apt/sources.list
 RUN apt update && apt-get upgrade -y --no-install-recommends
 RUN apt install -y libapache2-mod-shib2 --no-install-recommends
 RUN apt install -y curl
