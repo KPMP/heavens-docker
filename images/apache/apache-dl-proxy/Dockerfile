@@ -27,7 +27,7 @@ RUN chown -R _shibd:_shibd /etc/shibboleth/
 RUN chown -R _shibd:_shibd /var/cache/shibboleth/
 
 #Script to start service, Added ssl default conf, Added shib module apache
-RUN ln -s /opt/bin/httpd-shib-foreground /usr/local/bin && ln -s /opt/etc/httpd/conf.d/ssl.conf /etc/apache2/conf-enabled/ssl.conf && ln -s /opt/etc/httpd/conf.d/virt.conf /etc/apache2/conf-enabled/virt.conf && ln -s /usr/share/zoneinfo/America/Detroit /etc/localtime && ln -s /opt/etc/httpd/conf.d/mods.conf /etc/apache2/conf-enabled/mods.conf
+RUN ln -s /opt/bin/httpd-shib-foreground /usr/local/bin && ln -s /opt/etc/httpd/conf.d/ssl.conf /etc/apache2/conf-enabled/ssl.conf && ln -s /opt/etc/httpd/conf.d/virt.conf /etc/apache2/conf-enabled/virt.conf && ln -s /usr/share/zoneinfo/America/Detroit /etc/localtime
 
 # KPMP Specific Configuration - MAKE EDITS HERE
 RUN curl -k https://ds.incommon.org/certs/inc-md-cert.pem -o /etc/ssl/certs/inc-md-cert.pem
