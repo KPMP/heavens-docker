@@ -4,4 +4,4 @@ set -e
 # Apache gets grumpy about PID files pre-existing
 rm -f /etc/httpd/logs/httpd.pid
 
-/etc/init.d/shibd start && exec apache2ctl -D FOREGROUND
+/etc/init.d/shibd start && apache2ctl -D FOREGROUND
