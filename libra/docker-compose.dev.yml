@@ -42,6 +42,24 @@ services:
         aliases:
           - data-manager-service
 
+  dlu-watcher-service:
+      container_name: dlu-watcher
+      image: ${ENV_DLU_WATCHER_CONTAINER}
+      environment:
+        - mysql_user=${mysql_user}
+        - mysql_pwd=${mysql_pwd}
+        - mysql_host=${mysql_host}
+        - mysql_port=${mysql_port}
+        - mysql_db=${mysql_db}
+        - mongo_host=${mongo_host}
+        - mongo_port=${mongo_port}
+        - mongo_db=${mongo_db}
+        - spectrack_token=${spectrack_token}
+        - spectrack_base_url=${spectrack_base_url}
+      networks:
+        dataLake:
+
+
 volumes:
   esdata:
 
