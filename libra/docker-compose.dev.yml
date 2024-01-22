@@ -54,6 +54,8 @@ services:
         - mongo_host=${mongo_host}
         - mongo_port=${mongo_port}
         - mongo_db=${mongo_db}
+        - globus_data_directory=${ENV_GLOBUS_FILE_MOUNT}
+        - dlu_data_directory=${ENV_DATALAKE_FILE_DIR}
         - spectrack_token=${spectrack_token}
         - spectrack_base_url=${spectrack_base_url}
       networks:
