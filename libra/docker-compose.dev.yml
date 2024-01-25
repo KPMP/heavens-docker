@@ -58,6 +58,9 @@ services:
         - dlu_data_directory=${ENV_DATALAKE_FILE_DIR}
         - spectrack_token=${spectrack_token}
         - spectrack_base_url=${spectrack_base_url}
+      volumes:
+        - "${ENV_GLOBUS_FILE_MOUNT}:/globus"
+        - "${ENV_DATALAKE_FILE_DIR}:/data"
       networks:
         dataLake:
 
