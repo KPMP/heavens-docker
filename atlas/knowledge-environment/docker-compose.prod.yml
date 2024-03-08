@@ -115,7 +115,7 @@ services:
 
   atlas-file-service:
     container_name: atlas-file-service
-    image: kingstonduo/atlas-file-service:3.2
+    image: kingstonduo/atlas-file-service:3.3
     ports:
       - "5000:5000"
     volumes:
@@ -125,6 +125,9 @@ services:
       - MINIO_ACCESS_KEY=${ENV_MINIO_ACCESS_KEY}
       - MINIO_SECRET_KEY=${ENV_MINIO_SECRET_KEY}
       - MINIO_URL=${ENV_MINIO_URL}
+      - MYSQL_HOST=${ENV_MYSQL_HOST}
+      - MYSQL_USER=${ENV_MYSQL_USER}
+      - MYSQL_PASSWORD=${ENV_MYSQL_PASSWORD}      
       - BUCKET_NAME=${ENV_BUCKET_NAME}
       - "TZ=America/Detroit"
     networks:
