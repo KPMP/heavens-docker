@@ -115,7 +115,7 @@ services:
 
   atlas-file-service:
     container_name: atlas-file-service
-    image: kingstonduo/atlas-file-service:3.2
+    image: kingstonduo/atlas-file-service:3.3
     ports:
       - "5000:5000"
     volumes:
