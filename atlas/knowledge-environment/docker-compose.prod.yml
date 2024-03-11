@@ -116,6 +116,8 @@ services:
   atlas-file-service:
     container_name: atlas-file-service
     image: kingstonduo/atlas-file-service:3.3
+    depends_on: 
+      - mariadb    
     ports:
       - "5000:5000"
     volumes:
