@@ -37,6 +37,7 @@ services:
       MYSQL_HOST: ${ENV_MYSQL_HOST}
       MYSQL_USER: ${ENV_MYSQL_USER}
       MYSQL_PASSWORD: ${ENV_MYSQL_PASSWORD}
+      RECENTLY_RELEASED_DATE: ${RECENTLY_RELEASED_DATE}
       TZ: "America/Detroit"
     privileged: true
     logging:
