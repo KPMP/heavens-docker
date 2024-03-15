@@ -38,6 +38,7 @@ services:
       MYSQL_USER: ${ENV_MYSQL_USER}
       MYSQL_PASSWORD: ${ENV_MYSQL_PASSWORD}
       ES_API_TOKEN: ${ENV_ES_API_TOKEN}
+      RECENTLY_RELEASED_DATE: ${RECENTLY_RELEASED_DATE}
       TZ: "America/Detroit"
     privileged: true
     logging:
@@ -63,6 +64,7 @@ services:
       MYSQL_USER: ${ENV_MYSQL_USER}
       MYSQL_PASSWORD: ${ENV_MYSQL_PASSWORD}
       ES_API_TOKEN: ${ENV_ES_API_TOKEN}
+      RECENTLY_RELEASED_DATE: ${RECENTLY_RELEASED_DATE}
       TZ: "America/Detroit"
     privileged: true
     logging:
