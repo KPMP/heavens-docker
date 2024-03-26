@@ -40,7 +40,7 @@ services:
 
   spring:
     container_name: cassie-spring
-    image: kingstonduo/cassiopeia-data:1.2
+    image: ${ENV_SPRING_BOOT_CONTAINER}
     environment:
       - "TZ=America/Detroit"
     ports:

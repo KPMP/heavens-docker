@@ -59,7 +59,7 @@ services:
 
   user-auth:
     container_name: user-auth
-    image: kingstonduo/user-auth:2.0
+    image: ${ENV_USER_AUTH_IMAGE}
     environment:
       DEFAULT_CLIENT_ID: ${ENV_DEFAULT_CLIENT_ID}
       TZ: "America/Detroit"

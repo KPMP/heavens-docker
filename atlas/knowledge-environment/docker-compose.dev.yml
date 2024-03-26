@@ -37,6 +37,7 @@ services:
       MYSQL_HOST: ${ENV_MYSQL_HOST}
       MYSQL_USER: ${ENV_MYSQL_USER}
       MYSQL_PASSWORD: ${ENV_MYSQL_PASSWORD}
+      RECENTLY_RELEASED_DATE: ${RECENTLY_RELEASED_DATE}
       TZ: "America/Detroit"
     privileged: true
     logging:
@@ -87,6 +88,8 @@ services:
           
   atlas-file-service:
     image: kingstonduo/atlas-file-service:3.3
+    depends_on: 
+      - mariadb    
     ports:
       - "5000:5000"
     volumes:
@@ -100,6 +103,9 @@ services:
       - MYSQL_USER=${ENV_MYSQL_USER}
       - MYSQL_PASSWORD=${ENV_MYSQL_PASSWORD}      
       - BUCKET_NAME=${ENV_BUCKET_NAME}
+      - MYSQL_HOST=${ENV_MYSQL_HOST}
+      - MYSQL_USER=${ENV_MYSQL_USER}
+      - MYSQL_PASSWORD=${ENV_MYSQL_PASSWORD}
       - TZ=America/Detroit
     networks:
       local:

@@ -1,9 +1,9 @@
 version: "3"
 services:
-   data-manager-service:
+  data-manager-service:
     container_name: data-manager-service
     image: ${ENV_DMD_SERVICE_CONTAINER}
-    entrypoint: ["flask", "run"]
+    entrypoint: [ "flask", "run" ]
     expose:
       - 5000
     environment:
@@ -19,14 +19,37 @@ services:
       - spectrack_base_url=${spectrack_base_url}
     volumes:
       - "${ENV_DATALAKE_FILE_DIR}:/data"
-      - "${ENV_GLOBUS_FILE_MOUNT}:/globus"      
+      - "${ENV_GLOBUS_FILE_MOUNT}:/globus"
     networks:
       dataLake:
         aliases:
           - data-manager-service
 
+  dlu-watcher-service:
+    container_name: dlu-watcher
+    image: ${ENV_DLU_WATCHER_CONTAINER}
+    environment:
+      - mysql_user=${mysql_user}
+      - mysql_pwd=${mysql_pwd}
+      - mysql_host=${mysql_host}
+      - mysql_port=${mysql_port}
+      - mysql_db=${mysql_db}
+      - mongo_host=${mongo_host}
+      - mongo_port=${mongo_port}
+      - mongo_db=${mongo_db}
+      - spectrack_token=${spectrack_token}
+      - spectrack_base_url=${spectrack_base_url}
+      - INSIDE_DOCKER=${INSIDE_DOCKER}
+    volumes:
+      - "${ENV_DATALAKE_FILE_DIR}:/data"
+      - "${ENV_GLOBUS_FILE_MOUNT}:/globus"
+    networks:
+      dataLake:
+
+
 volumes:
   esdata:
+
 
 networks:
   dataLake:
