@@ -36,8 +36,48 @@ services:
         aliases:
           - postfix
 
+  mariadb:
+    container_name: eridanus-mariadb
+    image: mariadb:10.8.2
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${ENV_MYSQL_PASSWORD}
+    volumes:
+      - mariadbdata:/var/lib/mysql
+    ports:
+      - 3307:3306
+    networks:
+      dataLake:
+        aliases:
+          - mariadb
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+
+  adminer:
+    container_name: eridanus-adminer
+    image: adminer
+    restart: always
+    environment:
+      TZ: "America/Detroit"
+    ports:
+      - 9090:8080 
+    networks:
+      dataLake:
+        aliases:
+          - adminer
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+
+
 volumes:
   esdata:
+  mariadbdata:
 
 networks:
   dataLake:
