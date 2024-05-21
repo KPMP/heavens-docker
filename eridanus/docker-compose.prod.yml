@@ -74,6 +74,7 @@ services:
         max-size: "10m"
         max-file: "5"
 
+
 volumes:
   esdata:
   mariadbdata:

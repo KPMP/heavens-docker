@@ -19,6 +19,7 @@ services:
       - mongo_db=${mongo_db}
       - spectrack_token=${spectrack_token}
       - spectrack_base_url=${spectrack_base_url}
+    mem_limit: 6g
     volumes:
       - "${ENV_DATALAKE_FILE_DIR}:/data"
       - "${ENV_GLOBUS_FILE_MOUNT}:/globus"      

@@ -24,7 +24,7 @@ RUN chown -R _shibd:_shibd /etc/shibboleth/
 RUN chown -R _shibd:_shibd /var/cache/shibboleth/
 
 RUN ln -s /opt/bin/httpd-shib-foreground /usr/local/bin && ln -s /opt/etc/httpd/conf.d/ssl.conf /etc/apache2/conf-enabled/ssl.conf && ln -s /opt/etc/httpd/conf.d/virt.conf /etc/apache2/conf-enabled/virt.conf && ln -s /usr/share/zoneinfo/America/Detroit /etc/localtime
-RUN cp /etc/apache2/mods-available/ssl.load /etc/apache2/mods-enabled && cp /etc/apache2/mods-available/socache_shmcb.load /etc/apache2/mods-enabled && cp /etc/apache2/mods-available/rewrite.load /etc/apache2/mods-enabled
+RUN cp /etc/apache2/mods-available/ssl.load /etc/apache2/mods-enabled && cp /etc/apache2/mods-available/socache_shmcb.load /etc/apache2/mods-enabled && cp /etc/apache2/mods-available/rewrite.load /etc/apache2/mods-enabled && cp /etc/apache2/mods-available/headers.load /etc/apache2/mods-enabled && cp /etc/apache2/mods-available/proxy.load /etc/apache2/mods-enabled && cp /etc/apache2/mods-available/proxy_http.load /etc/apache2/mods-enabled
 
 RUN curl -k https://ds.incommon.org/certs/inc-md-cert.pem -o /etc/ssl/certs/inc-md-cert.pem
 COPY ./container_files/etc/shibboleth/attribute-map.xml /etc/shibboleth/attribute-map.xml
