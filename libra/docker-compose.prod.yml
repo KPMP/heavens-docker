@@ -46,7 +46,9 @@ services:
         - INSIDE_DOCKER=${INSIDE_DOCKER}
       volumes:
         - "${ENV_DATALAKE_FILE_DIR}:/data"
-        - "${ENV_GLOBUS_FILE_MOUNT}:/globus"    
+        - "${ENV_GLOBUS_FILE_MOUNT}:/globus"   
+        - /etc/passwd:/etc/passwd:ro
+        - /etc/group:/etc/group:ro 
       networks:
         dataLake:
 
