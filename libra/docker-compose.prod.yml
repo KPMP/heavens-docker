@@ -44,6 +44,8 @@ services:
         - spectrack_token=${spectrack_token}
         - spectrack_base_url=${spectrack_base_url}
         - INSIDE_DOCKER=${INSIDE_DOCKER}
+        - dlu_user=${dlu_user}
+        - dlu_group=${dlu_group}
       volumes:
         - "${ENV_DATALAKE_FILE_DIR}:/data"
         - "${ENV_GLOBUS_FILE_MOUNT}:/globus"   
