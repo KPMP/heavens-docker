@@ -31,6 +31,7 @@ services:
   dlu-watcher-service:
       container_name: dlu-watcher
       image: ${ENV_DLU_WATCHER_CONTAINER}
+      user: ${dlu_user}:${dlu_group}
       environment:
         - mysql_user=${mysql_user}
         - mysql_pwd=${mysql_pwd}
@@ -43,9 +44,13 @@ services:
         - spectrack_token=${spectrack_token}
         - spectrack_base_url=${spectrack_base_url}
         - INSIDE_DOCKER=${INSIDE_DOCKER}
+        - dlu_user=${dlu_user}
+        - dlu_group=${dlu_group}
       volumes:
         - "${ENV_DATALAKE_FILE_DIR}:/data"
-        - "${ENV_GLOBUS_FILE_MOUNT}:/globus"    
+        - "${ENV_GLOBUS_FILE_MOUNT}:/globus"   
+        - /etc/passwd:/etc/passwd:ro
+        - /etc/group:/etc/group:ro 
       networks:
         dataLake:
 
