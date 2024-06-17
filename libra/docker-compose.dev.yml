@@ -46,6 +46,7 @@ services:
   dlu-watcher-service:
       container_name: dlu-watcher
       image: ${ENV_DLU_WATCHER_CONTAINER}
+      user: ${dlu_user}:${dlu_group}
       environment:
         - mysql_user=${mysql_user}
         - mysql_pwd=${mysql_pwd}
