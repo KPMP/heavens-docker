@@ -42,6 +42,8 @@ services:
         - mongo_db=${mongo_db}
         - spectrack_token=${spectrack_token}
         - spectrack_base_url=${spectrack_base_url}
+        - dlu_user=${dlu_user}
+        - dlu_group=${dlu_group}
         - INSIDE_DOCKER=${INSIDE_DOCKER}
       volumes:
         - "${ENV_DATALAKE_FILE_DIR}:/data"
