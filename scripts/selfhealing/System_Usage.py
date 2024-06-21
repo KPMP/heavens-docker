@@ -14,7 +14,7 @@ if ENVIRONMENT is None:
     
 class SystemUsage:
     def __init__(self):
-        self.diskSpaceAlertingThreshold = 80
+        self.diskSpaceAlertingThreshold = 85
         self.memoryUsedAlertingThreshold = 80
         self.cpuUsedAlertingThreshold = 80
         self.diskspaceUsed = None
