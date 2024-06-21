@@ -16,7 +16,7 @@ class SystemUsage:
     def __init__(self):
         self.diskSpaceAlertingThreshold = 85
         self.memoryUsedAlertingThreshold = 80
-        self.cpuUsedAlertingThreshold = 85
+        self.cpuUsedAlertingThreshold = 80
         self.diskspaceUsed = None
         self.memoryUsed = None
         self.cpuUsed = None
