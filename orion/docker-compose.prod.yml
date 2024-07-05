@@ -68,7 +68,6 @@ services:
 
 volumes:
   esdata:
-  mongodbdata:
 
 networks:
   dataLake:
