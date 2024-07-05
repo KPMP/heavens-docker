@@ -10,7 +10,7 @@ services:
        - MONGO_LOG_DIR=/dev/null
        - "TZ=America/Detroit"
     volumes:
-       - "{$ENV_MONGO_DATA_MOUNT}:/data/db"
+       - "${ENV_MONGO_DATA_MOUNT}:/data/db"
        - "${ENV_DATALAKE_FILE_DIR}:/data"
     ports:
       - "127.0.0.1:${ENV_MONGO_PORT:-27017}:27017"
