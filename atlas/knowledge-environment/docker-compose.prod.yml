@@ -117,7 +117,7 @@ services:
 
   atlas-file-service:
     container_name: atlas-file-service
-    image: kingstonduo/${ENV_FILE_SERVICE}
+    image: ${ENV_FILE_SERVICE}
     depends_on: 
       - mariadb    
     ports:
