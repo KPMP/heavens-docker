@@ -122,8 +122,6 @@ services:
       - mariadb    
     ports:
       - "5000:5000"
-    volumes:
-      - ${ENV_FLASK_HOME}:/code
     environment:
       - FLASK_ENV=production
       - MINIO_ACCESS_KEY=${ENV_MINIO_ACCESS_KEY}
