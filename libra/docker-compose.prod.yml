@@ -4,7 +4,6 @@ services:
   data-manager-service:
     container_name: data-manager-service
     image: ${ENV_DMD_SERVICE_CONTAINER}
-    entrypoint: ["flask", "run"]
     restart: unless-stopped
     expose:
       - 5000

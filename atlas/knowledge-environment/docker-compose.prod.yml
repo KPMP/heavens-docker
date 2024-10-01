@@ -117,13 +117,11 @@ services:
 
   atlas-file-service:
     container_name: atlas-file-service
-    image: kingstonduo/atlas-file-service:3.3
+    image: ${ENV_FILE_SERVICE}
     depends_on: 
       - mariadb    
     ports:
       - "5000:5000"
-    volumes:
-      - ${ENV_FLASK_HOME}:/code
     environment:
       - FLASK_ENV=production
       - MINIO_ACCESS_KEY=${ENV_MINIO_ACCESS_KEY}
@@ -133,6 +131,8 @@ services:
       - MYSQL_USER=${ENV_MYSQL_USER}
       - MYSQL_PASSWORD=${ENV_MYSQL_PASSWORD}      
       - BUCKET_NAME=${ENV_BUCKET_NAME}
+      - GA4_ID=${ENV_FLASK_GA4_ID}
+      - API_SECRET=${ENV_FLASK_API_SECRET}
       - "TZ=America/Detroit"
     networks:
       local:
