@@ -10,11 +10,12 @@ echo $ENV_ARRANGER_SERVER_ADDRESS
 echo $ENV_FILE_SERVER_ADDRESS
 
 # Apache gets grumpy about PID files pre-existing
-rm -f /etc/httpd/logs/httpd.pid
+rm -f /etc/apache2/logs/apache2.pid
 
-sed -i "s/ENV_APACHE_SERVER_NAME/$ENV_APACHE_SERVER_NAME/g" /opt/etc/httpd/conf.d/virt.conf
-sed -i "s/ENV_ARRANGER_SERVER_ADDRESS/$ENV_ARRANGER_SERVER_ADDRESS/g" /opt/etc/httpd/conf.d/virt.conf
-sed -i "s/ENV_FILE_SERVER_ADDRESS/$ENV_FILE_SERVER_ADDRESS/g" /opt/etc/httpd/conf.d/virt.conf
-sed -i "s/ENV_EXPLORER_DATA_SERVER_ADDRESS/$ENV_EXPLORER_DATA_SERVER_ADDRESS/g" /opt/etc/httpd/conf.d/virt.conf
+sed -i "s/ENV_APACHE_SERVER_NAME/$ENV_APACHE_SERVER_NAME/g" /etc/apache2/conf-enabled/virt.conf
+sed -i "s/ENV_ARRANGER_SERVER_ADDRESS/$ENV_ARRANGER_SERVER_ADDRESS/g" /etc/apache2/conf-enabled/virt.conf
+sed -i "s/ENV_FILE_SERVER_ADDRESS/$ENV_FILE_SERVER_ADDRESS/g" /etc/apache2/conf-enabled/virt.conf
+sed -i "s/ENV_EXPLORER_DATA_SERVER_ADDRESS/$ENV_EXPLORER_DATA_SERVER_ADDRESS/g" /etc/apache2/conf-enabled/virt.conf
 
-httpd -DFOREGROUND
+apache2ctl -D FOREGROUND
+
