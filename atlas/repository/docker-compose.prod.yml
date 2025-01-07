@@ -21,6 +21,7 @@ services:
       - ${ENV_EXPLORER_REACT_APPDIR}/build:/var/www/html/explorer
       - ${ENV_SPATIAL_APPDIR}/build:/var/www/html/spatial-viewer
       - ${ENV_SSL_CERT_DIR}:/certs
+      - ./evasive.conf:/etc/apache2/mods-enabled/evasive.conf
     networks:
       local:
         aliases:
