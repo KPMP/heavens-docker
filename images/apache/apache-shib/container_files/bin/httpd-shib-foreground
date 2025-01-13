@@ -9,4 +9,4 @@ rm -f /etc/httpd/logs/httpd.pid
 
 sed -i "s/ENV_APACHE_SERVER_NAME/$ENV_APACHE_SERVER_NAME/g" /opt/etc/httpd/conf.d/virt.conf
 
-(/usr/sbin/shibd) & httpd -DFOREGROUND
+/etc/init.d/shibd start & exec apache2ctl -D FOREGROUND
