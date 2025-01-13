@@ -19,7 +19,11 @@ RUN   apt-get -y update \
       && a2enmod proxy_http \ 
       && a2enmod rewrite \
       && a2enmod headers \
-      && a2enmod evasive
+      && a2enmod evasive \
+      && a2enmod proxy_balancer \
+      && a2enmod lbmethod_bybusyness \
+      && a2enmod status 
+
 
 #Script to start service, Added ssl default conf, Added shib module apache
 RUN ln -s /opt/bin/apache2-ssl-foreground /usr/local/bin \

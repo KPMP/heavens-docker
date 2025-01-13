@@ -22,15 +22,16 @@ services:
       - ${ENV_SPATIAL_APPDIR}/build:/var/www/html/spatial-viewer
       - ${ENV_SSL_CERT_DIR}:/certs
       - ./evasive.conf:/etc/apache2/mods-enabled/evasive.conf
+    entrypoint: ["tail", "-f", "/dev/null"]
     networks:
       local:
         aliases:
           - apache
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "5"
+            #logging:
+            #driver: "json-file"
+            #options:
+            #max-size: "10m"
+            #max-file: "5"
 
 networks:
   local:
