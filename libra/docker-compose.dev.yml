@@ -63,6 +63,7 @@ services:
         - INSIDE_DOCKER=${INSIDE_DOCKER}
         - dlu_user=${dlu_user}
         - dlu_group=${dlu-group}
+        - dlu_hostname_with_underscores=${DLU_HOSTNAME_WITH_UNDERSCORES}
       volumes:
         - "${ENV_GLOBUS_FILE_MOUNT}:/globus"
         - "${ENV_DATALAKE_FILE_DIR}:/data"

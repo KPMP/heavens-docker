@@ -9,3 +9,4 @@ images/**/.env
 **/docker/*
 __pycache__/
 *.py[cod]
+.java-version
