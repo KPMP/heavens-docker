@@ -26,11 +26,11 @@ services:
       local:
         aliases:
           - apache
-    logging:
-      driver: "json-file"
-      options:
-       max-size: "10m"
-       max-file: "5"
+            #logging:
+            #driver: "json-file"
+            #options:
+            #max-size: "10m"
+            #max-file: "5"
 
 networks:
   local:
