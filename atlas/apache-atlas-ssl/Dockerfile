@@ -1,26 +1,38 @@
-FROM oraclelinux:9
+FROM ubuntu:20.04
 
 # Add starters and installers
 ADD ./container_files /opt
+ENV DEBIAN_FRONTEND=noninteractive
 
-RUN   yum -y update \
-      && yum -y install \
-        httpd \
-        mod_ssl \
+RUN   apt-get -y update \
+      && apt-get -y install --no-install-recommends \
+        ca-certificates \
+        apache2 \
+        apache2-utils \
+        openssl \
         dos2unix \
-      && yum clean all \
-      && rm /etc/httpd/conf.d/autoindex.conf \
-      && rm /etc/httpd/conf.d/ssl.conf \
-      && rm /etc/httpd/conf.d/userdir.conf \
-      && rm /etc/httpd/conf.d/welcome.conf
+        libapache2-mod-evasive \
+      && rm /etc/apache2/mods-available/*.conf \
+      && rm /etc/apache2/conf-enabled/*.conf \
+      && a2enmod ssl \
+      && a2enmod proxy \
+      && a2enmod proxy_http \ 
+      && a2enmod rewrite \
+      && a2enmod headers \
+      && a2enmod evasive \
+      && a2enmod proxy_balancer \
+      && a2enmod lbmethod_bybusyness \
+      && a2enmod status 
 
 
 #Script to start service, Added ssl default conf, Added shib module apache
-RUN ln -s /opt/bin/httpd-ssl-foreground  /usr/local/bin && ln -s /opt/etc/httpd/conf.d/ssl.conf /etc/httpd/conf.d/ssl.conf && ln -s /opt/etc/httpd/conf.d/virt.conf /etc/httpd/conf.d/virt.conf
+RUN ln -s /opt/bin/apache2-ssl-foreground /usr/local/bin \
+    && ln -s /opt/etc/apache2/conf-enabled/ssl.conf /etc/apache2/conf-enabled/ssl.conf \
+    && ln -s /opt/etc/apache2/conf-enabled/virt.conf /etc/apache2/conf-enabled/virt.conf \
+    && ln -s /etc/mime.types /etc/apache2/mime.types
 
 RUN echo "************** Built Apache WITH SSL **************"
 
-
 EXPOSE 80 443
 
-ENTRYPOINT ["sh", "-c", "httpd-ssl-foreground $ENV_APACHE_SERVER_NAME $ENV_ARRANGER_SERVER_ADDRESS $ENV_FILE_SERVER_ADDRESS $ENV_EXPLORER_DATA_SERVER_ADDRESS"]
+ENTRYPOINT ["sh", "-c", "/opt/bin/httpd-ssl-foreground $ENV_APACHE_SERVER_NAME $ENV_ARRANGER_SERVER_ADDRESS $ENV_FILE_SERVER_ADDRESS $ENV_EXPLORER_DATA_SERVER_ADDRESS"]
