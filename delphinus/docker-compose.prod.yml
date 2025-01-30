@@ -26,7 +26,7 @@ services:
       - ${ENV_SHIB_CONF_DIR}/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
       - ${ENV_WSI_FILES_DIR}:/data/deepZoomImages
       - ${ENV_WSI_ORIG_FILES_DIR}:/data/knowledgeEnvironment/deepZoom
-      - ${ENV_APACHE_CONF_DIR}/delphinus.conf:/etc/apache2/conf-available/delphinus.conf        
+      - ${ENV_APACHE_CONF_DIR}/delphinus.conf:/etc/apache2/conf-enabled/delphinus.conf        
     networks:
       local:
         aliases:
