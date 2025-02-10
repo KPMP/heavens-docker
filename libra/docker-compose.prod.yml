@@ -18,6 +18,7 @@ services:
       - mongo_db=${mongo_db}
       - spectrack_token=${spectrack_token}
       - spectrack_base_url=${spectrack_base_url}
+      - dlu_hostname_with_underscores=${DLU_HOSTNAME_WITH_UNDERSCORES}
     mem_limit: 6g
     volumes:
       - "${ENV_DATALAKE_FILE_DIR}:/data"
@@ -45,6 +46,7 @@ services:
         - INSIDE_DOCKER=${INSIDE_DOCKER}
         - dlu_user=${dlu_user}
         - dlu_group=${dlu_group}
+        - dlu_hostname_with_underscores=${DLU_HOSTNAME_WITH_UNDERSCORES}
       volumes:
         - "${ENV_DATALAKE_FILE_DIR}:/data"
         - "${ENV_GLOBUS_FILE_MOUNT}:/globus"   
