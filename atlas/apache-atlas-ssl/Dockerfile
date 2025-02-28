@@ -12,6 +12,7 @@ RUN   apt-get -y update \
         openssl \
         dos2unix \
         libapache2-mod-evasive \
+        libapache2-mod-qos \
       && rm /etc/apache2/mods-available/*.conf \
       && rm /etc/apache2/conf-enabled/*.conf \
       && a2enmod ssl \
@@ -22,9 +23,8 @@ RUN   apt-get -y update \
       && a2enmod evasive \
       && a2enmod proxy_balancer \
       && a2enmod lbmethod_bybusyness \
-      && a2enmod status 
-
-
+      && a2enmod status \
+      && a2enmod qos 
 #Script to start service, Added ssl default conf, Added shib module apache
 RUN ln -s /opt/bin/apache2-ssl-foreground /usr/local/bin \
     && ln -s /opt/etc/apache2/conf-enabled/ssl.conf /etc/apache2/conf-enabled/ssl.conf \
