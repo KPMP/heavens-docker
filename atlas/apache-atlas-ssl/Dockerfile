@@ -31,6 +31,9 @@ RUN ln -s /opt/bin/apache2-ssl-foreground /usr/local/bin \
     && ln -s /opt/etc/apache2/conf-enabled/virt.conf /etc/apache2/conf-enabled/virt.conf \
     && ln -s /etc/mime.types /etc/apache2/mime.types
 
+RUN ln -sf /proc/self/fd/1 /var/log/apache2/access.log && \
+    ln -sf /proc/self/fd/1 /var/log/apache2/error.log
+
 RUN echo "************** Built Apache WITH SSL **************"
 
 EXPOSE 80 443
