@@ -11,7 +11,6 @@ RUN   apt-get -y update \
         apache2-utils \
         openssl \
         dos2unix \
-        libapache2-mod-evasive \
         libapache2-mod-qos \
       && rm /etc/apache2/mods-available/*.conf \
       && rm /etc/apache2/conf-enabled/*.conf \
@@ -20,7 +19,6 @@ RUN   apt-get -y update \
       && a2enmod proxy_http \ 
       && a2enmod rewrite \
       && a2enmod headers \
-      && a2enmod evasive \
       && a2enmod proxy_balancer \
       && a2enmod lbmethod_bybusyness \
       && a2enmod status \
