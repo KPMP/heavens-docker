@@ -23,6 +23,7 @@ services:
       - ${ENV_SSL_CERT_DIR}:/certs
       - ./evasive.conf:/etc/apache2/mods-enabled/evasive.conf
       - ./qos.conf:/etc/apache2/mods-enabled/qos.conf
+      - ./whitelist.txt:/etc/apache2/whitelist.txt
     networks:
       local:
         aliases:
