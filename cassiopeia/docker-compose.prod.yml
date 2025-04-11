@@ -22,7 +22,7 @@ services:
           - cassie-apache
 
   mongodb:
-    container_name: cassie-mongodb
+    container_name: delphinus-mongodb
     image: mongo:4.0
     environment:
        - MONGO_DATA_DIR=/data/db
@@ -35,7 +35,6 @@ services:
     networks:
       local:
         aliases:
-          - cassie-mongodb
           - delphinus-mongodb
     
 
