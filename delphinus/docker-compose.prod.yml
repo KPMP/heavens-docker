@@ -18,8 +18,6 @@ services:
     ports:
       - "80:80"
       - "443:443"
-    environment:
-      - ENV_APACHE_SERVER_NAME=${ENV_APACHE_SERVER_NAME}
     volumes:
       - ${ENV_DPR_REACT_APPDIR}/build:/var/www/html/dpr
       - ${ENV_PP_REACT_APPDIR}/build:/var/www/html/pp
