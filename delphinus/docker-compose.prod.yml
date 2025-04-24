@@ -18,10 +18,9 @@ services:
     ports:
       - "80:80"
       - "443:443"
-    environment:
-      - ENV_APACHE_SERVER_NAME=${ENV_APACHE_SERVER_NAME}
     volumes:
-      - ${ENV_REACT_APPDIR}/build:/var/www/html
+      - ${ENV_DPR_REACT_APPDIR}/build:/var/www/html/dpr
+      - ${ENV_PP_REACT_APPDIR}/build:/var/www/html/pp
       - ${ENV_SSL_CERT_DIR}:/certs
       - ${ENV_SHIB_CONF_DIR}/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
       - ${ENV_WSI_FILES_DIR}:/data/deepZoomImages
@@ -50,11 +49,9 @@ services:
 
   spring:
     container_name: delphinus-spring
-    image: ${ENV_IMAGE}
+    image: ${ENV_DPR_IMAGE}
     ports:
       - "${ENV_APACHE_TOMCAT_PORT:-3030}:3030"
-    volumes:
-      - "${ENV_SPRING_BOOT_APPDIR}:/home/gradle"
     environment:
       SPRING_BOOT_ENVIRONMENT: ${ENV_DOCKER_ENVIRONMENT}
       CLIENT_ID: ${ENV_CLIENT_ID}
@@ -68,6 +65,28 @@ services:
       local:
         aliases:
           - delphinus-spring
+
+
+  cassie-spring:
+    container_name: cassie-spring
+    image: ${ENV_PP_IMAGE}
+    environment:
+      - "TZ=America/Detroit"
+    ports:
+      - "${ENV_PP_PORT:-3060}:3060"
+    environment:
+      SPRING_BOOT_ENVIRONMENT: ${ENV_DOCKER_ENVIRONMENT}
+    privileged: true
+    networks:
+      local:
+        aliases:
+          - cassie-spring
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: "${ENV_FLUENTD_ADDRESS}"
+        tag: cassie-data
+
 
 volumes:
   mongodbdata:
