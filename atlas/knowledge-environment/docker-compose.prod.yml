@@ -202,6 +202,35 @@ services:
         fluentd-address: "${ENV_FLUENTD_ADDRESS}"
         tag: "atlas-file-service-3"
 
+  atlas-file-service-4:
+    container_name: atlas-file-service-4
+    image: ${ENV_FILE_SERVICE}
+    depends_on: 
+      - mariadb    
+    ports:
+      - "5003:5000"
+    environment:
+      - FLASK_ENV=production
+      - MINIO_ACCESS_KEY=${ENV_MINIO_ACCESS_KEY}
+      - MINIO_SECRET_KEY=${ENV_MINIO_SECRET_KEY}
+      - MINIO_URL=${ENV_MINIO_URL}
+      - MYSQL_HOST=${ENV_MYSQL_HOST}
+      - MYSQL_USER=${ENV_MYSQL_USER}
+      - MYSQL_PASSWORD=${ENV_MYSQL_PASSWORD}      
+      - BUCKET_NAME=${ENV_BUCKET_NAME}
+      - GA4_ID=${ENV_FLASK_GA4_ID}
+      - API_SECRET=${ENV_FLASK_API_SECRET}
+      - "TZ=America/Detroit"
+    networks:
+      local:
+        aliases:
+          - atlas-file-service-4   
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: "${ENV_FLUENTD_ADDRESS}"
+        tag: "atlas-file-service-4"      
+
   minio-s3:
     container_name: minio
     image: minio/minio
