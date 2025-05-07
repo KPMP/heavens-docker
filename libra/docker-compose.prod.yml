@@ -47,6 +47,7 @@ services:
         - dlu_user=${dlu_user}
         - dlu_group=${dlu_group}
         - dlu_hostname_with_underscores=${DLU_HOSTNAME_WITH_UNDERSCORES}
+        - slack_passcode=${slack_passcode}
       volumes:
         - "${ENV_DATALAKE_FILE_DIR}:/data"
         - "${ENV_GLOBUS_FILE_MOUNT}:/globus"   
