@@ -73,7 +73,7 @@ services:
     environment:
       - "TZ=America/Detroit"
     ports:
-      - "${ENV_PP_PORT:-3060}:3060"
+      - "${ENV_PP_PORT:-3060}:3030"
     environment:
       SPRING_BOOT_ENVIRONMENT: ${ENV_DOCKER_ENVIRONMENT}
     privileged: true
