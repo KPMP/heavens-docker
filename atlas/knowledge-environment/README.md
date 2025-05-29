@@ -12,7 +12,7 @@ If this message is seen `Unable to retrieve version information from Elasticsear
 1. Connect to the machine that is having the issue (If you are not already). `ssh <MACHINE>`
 2. Back up es-search's certs `docker cp es-search:/usr/share/elasticsearch/config/certs ./`
 3. Tunnel into the es-search container `docker exec -it es-search sh`
-4. Remove the es-search certs `rm -rf /usr/share/elasticsearch/config/certs`
+4. Remove the es-search certs `rm -rf /usr/share/elasticsearch/config/certs` (it probably won't work, thus the following steps)
 5. Exit the container
 6. Stop the containers `docker compose -f docker-compose.prod.yml down`
 7. Remove the certs volume `docker volume rm knowledge-environment_certs`
