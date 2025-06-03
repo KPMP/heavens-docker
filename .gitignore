@@ -10,3 +10,4 @@ images/**/.env
 __pycache__/
 *.py[cod]
 .java-version
+enterprise-search.yml
