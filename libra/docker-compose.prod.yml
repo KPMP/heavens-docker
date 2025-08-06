@@ -19,6 +19,10 @@ services:
       - spectrack_token=${spectrack_token}
       - spectrack_base_url=${spectrack_base_url}
       - dlu_hostname_with_underscores=${DLU_HOSTNAME_WITH_UNDERSCORES}
+      - INSIDE_DOCKER=${INSIDE_DOCKER}
+      - dlu_user=${dlu_user}
+      - dlu_group=${dlu_group}
+      - slack_passcode=${slack_passcode}
     mem_limit: 6g
     volumes:
       - "${ENV_DATALAKE_FILE_DIR}:/data"
