@@ -1,13 +1,14 @@
-FROM debian:buster-slim
+FROM debian:bookworm-slim
 
 SHELL ["/bin/bash", "-c"]
 
 ADD ./container_files /opt
+COPY custom-mpm-prefork.conf /etc/apache2/conf-available/custom-mpm-prefork.conf
 
 RUN apt -qq update && \
     apt -qq -y --no-install-recommends install \
         apache2 \
-        libapache2-mod-shib2 \
+        libapache2-mod-shib \
         curl \
         openssl \ 
         && rm -rf /var/lib/apt/lists/*
@@ -23,10 +24,17 @@ RUN export LD_LIBRARY_PATH
 RUN chown -R _shibd:_shibd /etc/shibboleth/
 RUN chown -R _shibd:_shibd /var/cache/shibboleth/
 
+RUN a2dismod mpm_event && a2enmod mpm_prefork
+
+
 RUN ln -s /opt/bin/httpd-shib-foreground /usr/local/bin && ln -s /opt/etc/httpd/conf.d/ssl.conf /etc/apache2/conf-enabled/ssl.conf && ln -s /opt/etc/httpd/conf.d/virt.conf /etc/apache2/conf-enabled/virt.conf && ln -s /usr/share/zoneinfo/America/Detroit /etc/localtime
 RUN cp /etc/apache2/mods-available/ssl.load /etc/apache2/mods-enabled && cp /etc/apache2/mods-available/socache_shmcb.load /etc/apache2/mods-enabled && cp /etc/apache2/mods-available/rewrite.load /etc/apache2/mods-enabled && cp /etc/apache2/mods-available/headers.load /etc/apache2/mods-enabled && cp /etc/apache2/mods-available/proxy.load /etc/apache2/mods-enabled && cp /etc/apache2/mods-available/proxy_http.load /etc/apache2/mods-enabled
 
-RUN curl -k https://ds.incommon.org/certs/inc-md-cert.pem -o /etc/ssl/certs/inc-md-cert.pem
+RUN a2enconf custom-mpm-prefork
+
+RUN mkdir -p /etc/pki/tls/certs
+
+RUN curl -k https://ds.incommon.org/certs/inc-md-cert.pem -o /etc/pki/tls/certs/inc-md-cert.pem
 COPY ./container_files/etc/shibboleth/attribute-map.xml /etc/shibboleth/attribute-map.xml
 
 RUN echo "************** Built Apache WITH Shibboleth **************"
