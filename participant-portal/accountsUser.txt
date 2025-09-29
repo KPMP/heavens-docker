@@ -1,1 +1,0 @@
-{"shibId":"rlreamy@umich.edu","email":"rlreamy@umich.edu","firstName":"Rebecca","lastName":"Reamy","isAccessAllowed":true,"isAdmin":true,"dataAccessGroup":"testGroup"}

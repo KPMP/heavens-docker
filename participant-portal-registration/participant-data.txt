@@ -1,1 +1,0 @@
-{"studyId":"1","firstName":"Test","lastName":"Participant","dateOfBirth":"1970-01-01","emailAddress":"test@kpmp.org","emailWho":"1","emailOwner":"","dataAccessGroup":"testGroup"}

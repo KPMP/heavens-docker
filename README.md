@@ -13,8 +13,6 @@ This repository holds all of the docker-compose.yml files and Dockerfiles needed
 | images | This directory stores common docker images that we share across projects.  When we build an image, we store it on DockerHub |
 | libra  | Libra is the code name for the datamanager tools (datamanager.kpmp.org)  |
 | orion  | Orion is the code name for the Data Lake Uploader (upload.kpmp.org)  |
-| participant-portal-registration | Intended to allow us to run the Participant Portal registration site...this may not work |
-| participant-portal | Intended to allow us to run the Participant Portal admin site...this may not work |
 | scripts | Directory to contain a number of scripts that are used for monitoring the health of the server and applications | 
 | stateManager  | Manages the state of packages inside of the data lake |
 
