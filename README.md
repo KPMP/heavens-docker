@@ -13,7 +13,6 @@ This repository holds all of the docker-compose.yml files and Dockerfiles needed
 | eridanus  | Eridanus is the code name for the notification service. It is intended to notify individuals when particular events happen (no UI)  |
 | images | This directory stores common docker images that we share across projects.  When we build an image, we store it on DockerHub |
 | libra  | Libra is the code name for the datamanager tools (datamanager.kpmp.org)  |
-| ~~metadataValidator~~ | **DEFUNCT** ~~An early attempt at consuming the package metadata for Data Lake Uploader~~ |
 | ~~microscopium~~  | **DEFUNCT** ~~Microscopium is the code name for the initial Atlas Demo (a cell-type centric view) (demo.kpmp.org/atlas)~~  |
 | orion  | Orion is the code name for the Data Lake Uploader (upload.kpmp.org)  |
 | participant-portal-registration | Intended to allow us to run the Participant Portal registration site...this may not work |
