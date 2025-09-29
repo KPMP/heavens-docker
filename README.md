@@ -5,11 +5,11 @@ This repository holds all of the docker-compose.yml files and Dockerfiles needed
 |  **Directory Name** | **Description**   |
 | ------------ | ------------ |
 | ara  | Ara is the log aggregator.  It is intended to be a central repository for logs from the various apps hosted at UMich.  See ara's README for security details  |
-| atlas | Atlas is the website at atlas.kpmp.org. Inside the atlas directory is a repository and a knowledge-environment directory. The repository directory is for the Apache web server. The knowledge-environment directory is to host all of the Knowledge Environment containers |
+| atlas | Atlas is the website at atlas.kpmp.org. Inside the atlas directory is a repository and a knowledge-environment directory. The repository directory is for the Apache web server. The knowledge-environment directory is to host all of the Knowledge Environment containers (atlas.kpmp.org) |
 | cassiopeia  | Cassiopeia is the code name for the Participant Portal (mydata.kpmp.org)  |
 | ~~circinus~~ | **DEFUNCT** ~~Circinus is the code name for the KPMP Demo site (demo.kpmp.org)~~ |
 | dataLakeProxyServer | Since we are running the datamanager tools and the DLU on the same machine, we needed a proxy server running to handle the requests.  This is that |
-| delphinus  |  Delphinus is the code name for the Digital Pathology Repository (or DPR) (currently at demo.kpmp.org/dpr)  |
+| delphinus  |  Delphinus is the code name for the Digital Pathology Repository (or DPR) (dpr.kpmp.org)  |
 | eridanus  | Eridanus is the code name for the notification service. It is intended to notify individuals when particular events happen (no UI)  |
 | images | This directory stores common docker images that we share across projects.  When we build an image, we store it on DockerHub |
 | libra  | Libra is the code name for the datamanager tools (datamanager.kpmp.org)  |
