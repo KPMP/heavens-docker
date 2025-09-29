@@ -14,11 +14,11 @@ This repository holds all of the docker-compose.yml files and Dockerfiles needed
 | images | This directory stores common docker images that we share across projects.  When we build an image, we store it on DockerHub |
 | libra  | Libra is the code name for the datamanager tools (datamanager.kpmp.org)  |
 | ~~metadataValidator~~ | **DEFUNCT** ~~An early attempt at consuming the package metadata for Data Lake Uploader~~ |
-| microscopium  | Microscopium is the code name for the initial Atlas Demo (a cell-type centric view) (demo.kpmp.org/atlas)  |
+| ~~microscopium~~  | **DEFUNCT** ~~Microscopium is the code name for the initial Atlas Demo (a cell-type centric view) (demo.kpmp.org/atlas)~~  |
 | orion  | Orion is the code name for the Data Lake Uploader (upload.kpmp.org)  |
 | participant-portal-registration | Intended to allow us to run the Participant Portal registration site...this may not work |
 | participant-portal | Intended to allow us to run the Participant Portal admin site...this may not work |
-| pictor  | Pictor is the code name for the second Atlas Demo (gene search and violin plots) (demo.kpmp.org/gene-search)  |
+| ~~pictor~~ | **DEFUNCT** ~~Pictor is the code name for the second Atlas Demo (gene search and violin plots) (demo.kpmp.org/gene-search)~~ |
 | scripts | Directory to contain a number of scripts that are used for monitoring the health of the server and applications | 
 | stateManager  | Manages the state of packages inside of the data lake |
 
