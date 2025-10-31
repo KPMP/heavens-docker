@@ -33,7 +33,7 @@ services:
 
   mongodb:
     container_name: delphinus-mongodb
-    image: mongo:4.0
+    image: mongo:8.0
     environment:
        - MONGO_DATA_DIR=/data/db
        - MONGO_LOG_DIR=/dev/null

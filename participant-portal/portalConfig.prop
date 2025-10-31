@@ -1,4 +1,0 @@
-DATA_FROM_FILES=true
-ACCOUNTS_USER_FILENAME=/usr/local/tomcat/accounts.txt
-PARTICIPANT_FILENAME=/usr/local/tomcat/participant-data.txt
-IS_DEVELOPMENT_INSTANCE=true
