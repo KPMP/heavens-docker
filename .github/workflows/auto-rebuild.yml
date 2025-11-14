@@ -39,7 +39,7 @@ jobs:
       - name: Update Dockerfile if needed
         if: steps.check.outputs.changed == 'true'
         run: |
-          sed -i "s|sha256:[a-f0-9]\+|${{ steps.digest.outputs.digest }}|" Dockerfile
+          sed -i "s|sha256:[a-f0-9]\+|${{ steps.digest.outputs.digest }}|" images/apache/apache-dl-proxy/Dockerfile
           git config user.name github-actions
           git config user.email github-actions@github.com
           git commit -am "Update base image digest"
