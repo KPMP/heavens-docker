@@ -27,7 +27,7 @@ jobs:
       - name: Check if digest changed
         id: check
         run: |
-          CURRENT=$(grep -o 'sha256:[a-f0-9]\+' Dockerfile)
+          CURRENT=$(grep -o 'sha256:[a-f0-9]\+' heavens-docker/images/apache/apache-dl-proxy/Dockerfile)
           if [[ "$CURRENT" != "${{ steps.digest.outputs.digest }}" ]]; then
             echo "Base image changed"
             echo "changed=true" >> $GITHUB_OUTPUT
