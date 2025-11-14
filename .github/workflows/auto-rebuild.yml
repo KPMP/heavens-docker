@@ -67,4 +67,4 @@ jobs:
           context: ./images/apache/apache-dl-proxy
           file: ./images/apache/apache-dl-proxy/Dockerfile
           push: true
-          tags: kingstondou/apache-dl-proxy:github-build
+          tags: kingstonduo/apache-dl-proxy:github-build
