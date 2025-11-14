@@ -1,4 +1,4 @@
-FROM debian:bookworm-slim@sha256:f522a3167fb670cc4a4518fab6d8c4227fe4bc458f4c7294832383bf284d5e78
+FROM debian:bookworm-slim@sha256:936abff852736f951dab72d91a1b6337cf04217b2a77a5eaadc7c0f2f1ec1758
 
 SHELL ["/bin/bash", "-c"]
 
