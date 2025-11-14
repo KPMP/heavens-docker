@@ -48,9 +48,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     needs: check-base-image
+    
     if: needs.check-base-image.outputs.changed == 'true'
 
     steps:
+        
       - uses: actions/checkout@v4
 
       - name: Log in to Docker Hub
@@ -62,5 +64,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
+          context: ./images/apache/apache-dl-proxy
+          file: ./images/apache/apache-dl-proxy/Dockerfile
           push: true
           tags: kingstondou/apache-dl-proxy:github-build
