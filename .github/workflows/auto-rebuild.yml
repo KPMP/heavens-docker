@@ -1,0 +1,63 @@
+name: Auto Rebuild on Base Image Update
+
+on:
+  schedule:
+    - cron: '* * * * *'  # Run every minute
+  workflow_dispatch:
+
+jobs:
+  check-base-image:
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.check.outputs.changed }}
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Get latest digest for Debian bookworm-slim
+        id: digest
+        run: |
+          DIGEST=$(docker buildx imagetools inspect debian:bookworm-slim --format '{{json .Manifest.Digest}}')
+          echo "digest=$DIGEST" >> $GITHUB_OUTPUT
+
+      - name: Check if digest changed
+        id: check
+        run: |
+          CURRENT=$(grep -o 'sha256:[a-f0-9]\+' Dockerfile)
+          if [[ "$CURRENT" != "${{ steps.digest.outputs.digest }}" ]]; then
+            echo "Base image changed"
+            echo "changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "No change"
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Update Dockerfile if needed
+        if: steps.check.outputs.changed == 'true'
+        run: |
+          sed -i "s|sha256:[a-f0-9]\+|${{ steps.digest.outputs.digest }}|" Dockerfile
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git commit -am "Update base image digest"
+          git push
+
+  build:
+    runs-on: ubuntu-latest
+    needs: check-base-image
+    if: needs.check-base-image.outputs.changed == 'true'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.ENV_DOCKER_USER }}
+          password: ${{ secrets.ENV_DOCKER_PASS }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          tags: kingstondou/apache-dl-proxy:github-build
