@@ -44,6 +44,9 @@ jobs:
           git config user.email github-actions@github.com
           git commit -am "Update base image digest"
           git push
+          curl -X POST -H "Content-Type: application/json" \
+            -d '{"text":"kingstonduo/apache-dl-proxy:latest has been updated!"}' \
+            "https://hooks.slack.com/services/"${{ secrets.ENV_SLACK_PASSCODE }}
 
   build:
     runs-on: ubuntu-latest
@@ -68,20 +71,3 @@ jobs:
           file: ./images/apache/apache-dl-proxy/Dockerfile
           push: true
           tags: kingstonduo/apache-dl-proxy:latest
-        
-      - name: Notify Slack
-        uses: 8398a7/action-slack@v3
-        with:
-            status: custom
-            fields: job
-            custom_payload: |
-              {
-                attachments: [{
-                  color: '${{ job.status }}' === 'success' ? 'good' : '${{ job.status }}' === 'failure' ? 'danger' : 'warning',
-                  text: `${process.env.AS_WORKFLOW}\n${process.env.AS_JOB} (${process.env.AS_COMMIT}) of ${process.env.AS_REPO}@${process.env.AS_REF} by ${process.env.AS_AUTHOR} ${{ job.status }} in ${process.env.AS_TOOK}`,
-                }]
-              }
-        env:
-            SLACK_WEBHOOK_URL: ${{ secrets.ENV_SLACK_PASSCODE }}
-        if: always()
-
