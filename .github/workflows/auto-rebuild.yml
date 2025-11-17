@@ -1,6 +1,9 @@
 name: Auto Rebuild on Base Image Update
 
 on:
+  push:
+    branches:
+        - IP-675_notify-slack
   schedule:
     - cron: '0 2 * * *' # Run day at 2am
   workflow_dispatch:
@@ -41,6 +44,9 @@ jobs:
           git config user.email github-actions@github.com
           git commit -am "Update base image digest"
           git push
+          curl -X POST -H "Content-Type: application/json" \
+            -d '{"text":""}' \
+            "https://hooks.slack.com/services/"${{ secrets.ENV_SLACK_PASSCODE }}
 
   build:
     runs-on: ubuntu-latest
@@ -64,4 +70,4 @@ jobs:
           context: ./images/apache/apache-dl-proxy
           file: ./images/apache/apache-dl-proxy/Dockerfile
           push: true
-          tags: kingstonduo/apache-dl-proxy:github-build
+          tags: kingstonduo/apache-dl-proxy:latest
