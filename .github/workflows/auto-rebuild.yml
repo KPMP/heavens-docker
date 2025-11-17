@@ -45,7 +45,7 @@ jobs:
           git commit -am "Update base image digest"
           git push
           curl -X POST -H "Content-Type: application/json" \
-            -d '{"text":""}' \
+            -d '{"text":"kingstonduo/apache-dl-proxy has been updated!"}' \
             "https://hooks.slack.com/services/"${{ secrets.ENV_SLACK_PASSCODE }}
 
   build:
