@@ -44,9 +44,7 @@ jobs:
           git config user.email github-actions@github.com
           git commit -am "Update base image digest"
           git push
-          curl -X POST -H "Content-Type: application/json" \
-            -d '{"text":"kingstonduo/apache-dl-proxy:latest has been updated!"}' \
-            "https://hooks.slack.com/services/"${{ secrets.ENV_SLACK_PASSCODE }}
+          
 
   build:
     runs-on: ubuntu-latest
@@ -71,3 +69,9 @@ jobs:
           file: ./images/apache/apache-dl-proxy/Dockerfile
           push: true
           tags: kingstonduo/apache-dl-proxy:latest
+            
+      - name: Notify Slack
+        run: |
+          curl -X POST -H "Content-Type: application/json" \
+              -d '{"text":"kingstonduo/apache-dl-proxy:latest has been updated!"}' \
+              "https://hooks.slack.com/services/"${{ secrets.ENV_SLACK_PASSCODE }}
