@@ -39,30 +39,25 @@ jobs:
             echo "No change"
             echo "changed=false" >> $GITHUB_OUTPUT
           fi
+      - name: Create branch
+        uses: peterjgrainger/action-create-branch@v2.2.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BASE_BRANCH: develop
+        with:
+            branch: 'update-base-image-$(date +%s)'
 
-      - name: Update Dockerfile, push branch and create PR
+      - name: Commit Dockerfile update to branch
         if: steps.check.outputs.changed == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BASE_BRANCH: develop
         run: |
-          set -e
-          BRANCH="update-base-image-$(date +%s)"
-          git fetch origin develop
-          git checkout -b "$BRANCH" origin/develop
           sed -i "s|sha256:[a-f0-9]\+|${{ steps.digest.outputs.digest }}|" images/apache/apache-dl-proxy/Dockerfile
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git add images/apache/apache-dl-proxy/Dockerfile
-          git commit -m "Update base image digest"
-          git push -u origin "$BRANCH"
-          # Create PR and capture the response
-          PR_RESPONSE=$(curl -s -X POST -H "Authorization: token $GITHUB_TOKEN" -H "Content-Type: application/json" \
-            -d "{\"title\":\"Update base image digest\",\"head\":\"$BRANCH\",\"base\":\"$BASE_BRANCH\",\"body\":\"Automated update of base image digest\"}" \
-            "https://api.github.com/repos/${{ github.repository }}/pulls")
-          # Extract html_url from the JSON response and expose as a step output
-          PR_URL=$(echo "$PR_RESPONSE" | python3 -c "import sys, json; j=json.load(sys.stdin); print(j.get('html_url',''))")
-          echo "pr_url=$PR_URL" >> $GITHUB_OUTPUT
+          git commit -am "Update base image digest"
+          git push
 
   build:
     runs-on: ubuntu-latest
@@ -87,10 +82,22 @@ jobs:
           file: ./images/apache/apache-dl-proxy/Dockerfile
           push: true
           tags: kingstonduo/apache-dl-proxy:latest
+
+      - name: Create Pull Request
+        id: create_pr
+        uses: peter-evans/create-pull-request@v7
+        with:
+            commit-message: update apache-dl-proxy base image digest
+            title: Update apache-dl-proxy base image digest
+            body: This PR updates the base image digest for apache-dl-proxy.
+            branch: 
+
             
-      - name: Notify Slack
+      - name: Notify Slack with PR link
+        if: ${{ steps.create_pr.outputs.pull-request-url && steps.create_pr.outputs.pull-request-operation != 'none' }}
+
         run: |
-          PR_URL="${{ needs.check-base-image.outputs.pr_url }}"
+          PR_URL="${{ steps.create_pr.outputs.pull-request-url }}"
           if [ -n "$PR_URL" ]; then
             MESSAGE="kingstonduo/apache-dl-proxy:latest has been updated! PR: $PR_URL"
           else
