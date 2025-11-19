@@ -90,7 +90,7 @@ jobs:
             commit-message: update apache-dl-proxy base image digest
             title: Update apache-dl-proxy base image digest
             body: This PR updates the base image digest for apache-dl-proxy.
-            branch: 
+            branch: update-base-image
 
             
       - name: Notify Slack with PR link
