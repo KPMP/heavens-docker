@@ -23,20 +23,22 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Get latest digest for debian:bookworm-slim
+      - name: Get latest digest for Debian bookworm-slim
         id: digest
         run: |
           DIGEST=$(docker buildx imagetools inspect debian:bookworm-slim --format '{{ .Manifest.Digest }}')
           echo "digest=$DIGEST" >> $GITHUB_OUTPUT
 
-      - name: Check if digest changed in Dockerfile
+      - name: Check if digest changed
         id: check
         run: |
           CURRENT=$(grep -o 'sha256:[a-f0-9]\+' images/apache/apache-dl-proxy/Dockerfile)
 
           if [[ "$CURRENT" != "${{ steps.digest.outputs.digest }}" ]]; then
+            echo "Base image changed"
             echo "changed=true" >> $GITHUB_OUTPUT
           else
+            echo "No change"
             echo "changed=false" >> $GITHUB_OUTPUT
           fi
 
@@ -52,24 +54,28 @@ jobs:
           ref: develop
           fetch-depth: 0
 
-      - name: Create or reset update-base-image branch
+      - name: Create or reset branch
         run: |
-          # Create or reset the branch
           git checkout -B update-base-image
 
-      - name: Update Dockerfile with new digest
+      # 🚨 MOVED HERE — runs *after* resetting the branch
+      - name: Update Dockerfile digest
         run: |
-          NEW_DIGEST="${{ needs.check-base-image.outputs.digest }}"
+          DIGEST="${{ needs.check-base-image.outputs.digest }}"
+          FILE="images/apache/apache-dl-proxy/Dockerfile"
 
-          # Replace any existing sha256 value with the new digest
-          sed -i "s|sha256:[a-f0-9]\+|$NEW_DIGEST|" images/apache/apache-dl-proxy/Dockerfile
+          if grep -q "debian:bookworm-slim@sha256:" "$FILE"; then
+            sed -i "s|debian:bookworm-slim@sha256:[a-f0-9]\+|debian:bookworm-slim@$DIGEST|" "$FILE"
+          else
+            sed -i "s|debian:bookworm-slim|debian:bookworm-slim@$DIGEST|" "$FILE"
+          fi
 
-      - name: Commit and push changes
+      - name: Commit changes
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git add images/apache/apache-dl-proxy/Dockerfile
-          git commit -m "Update base image digest to ${{ needs.check-base-image.outputs.digest }}" || echo "No changes to commit"
+          git commit -m "Update base image digest" || echo "No changes to commit"
           git push origin update-base-image --force
 
   build:
@@ -87,7 +93,7 @@ jobs:
           username: ${{ secrets.ENV_DOCKER_USER }}
           password: ${{ secrets.ENV_DOCKER_PASS }}
 
-      - name: Build and push docker image
+      - name: Build and push
         uses: docker/build-push-action@v6
         with:
           context: ./images/apache/apache-dl-proxy
@@ -101,10 +107,7 @@ jobs:
         with:
           commit-message: Update apache-dl-proxy base image digest
           title: Update apache-dl-proxy base image digest
-          body: |
-            This PR updates the base image digest for apache-dl-proxy.
-
-            New digest: `${{ needs.check-base-image.outputs.digest }}`
+          body: This PR updates the base image digest for apache-dl-proxy.
           branch: update-base-image
           base: develop
 
@@ -112,6 +115,7 @@ jobs:
         if: ${{ steps.create_pr.outputs.pull-request-url }}
         run: |
           PR_URL="${{ steps.create_pr.outputs.pull-request-url }}"
+          
           MESSAGE="kingstonduo/apache-dl-proxy:latest has been updated! PR: $PR_URL"
 
           curl -X POST -H "Content-Type: application/json" \
