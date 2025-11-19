@@ -51,7 +51,7 @@ jobs:
         if: steps.check.outputs.changed == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BASE_BRANCH: develop
+          BASE_BRANCH: update-base-image
         run: |
           sed -i "s|sha256:[a-f0-9]\+|${{ steps.digest.outputs.digest }}|" images/apache/apache-dl-proxy/Dockerfile
           git config user.name github-actions
