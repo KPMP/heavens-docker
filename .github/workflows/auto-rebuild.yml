@@ -56,9 +56,13 @@ jobs:
           git add images/apache/apache-dl-proxy/Dockerfile
           git commit -m "Update base image digest"
           git push -u origin "$BRANCH"
-          curl -s -X POST -H "Authorization: token $GITHUB_TOKEN" -H "Content-Type: application/json" \
+          # Create PR and capture the response
+          PR_RESPONSE=$(curl -s -X POST -H "Authorization: token $GITHUB_TOKEN" -H "Content-Type: application/json" \
             -d "{\"title\":\"Update base image digest\",\"head\":\"$BRANCH\",\"base\":\"$BASE_BRANCH\",\"body\":\"Automated update of base image digest\"}" \
-            https://api.github.com/repos/${{ github.repository }}/pulls
+            "https://api.github.com/repos/${{ github.repository }}/pulls")
+          # Extract html_url from the JSON response and expose as a step output
+          PR_URL=$(echo "$PR_RESPONSE" | python3 -c "import sys, json; j=json.load(sys.stdin); print(j.get('html_url',''))")
+          echo "pr_url=$PR_URL" >> $GITHUB_OUTPUT
 
   build:
     runs-on: ubuntu-latest
@@ -86,6 +90,12 @@ jobs:
             
       - name: Notify Slack
         run: |
+          PR_URL="${{ needs.check-base-image.outputs.pr_url }}"
+          if [ -n "$PR_URL" ]; then
+            MESSAGE="kingstonduo/apache-dl-proxy:latest has been updated! PR: $PR_URL"
+          else
+            MESSAGE="kingstonduo/apache-dl-proxy:latest has been updated!"
+          fi
           curl -X POST -H "Content-Type: application/json" \
-              -d '{"text":"kingstonduo/apache-dl-proxy:latest has been updated!"}' \
+              -d "{\"text\":\"${MESSAGE//\"/\\\"}\"}" \
               "https://hooks.slack.com/services/"${{ secrets.ENV_SLACK_PASSCODE }}
