@@ -26,7 +26,8 @@ jobs:
       - name: Get latest digest for Debian bookworm-slim
         id: digest
         run: |
-          DIGEST=$(docker buildx imagetools inspect debian:bookworm-slim --format '{{ .Manifest.Digest }}')
+          DIGEST=$(docker buildx imagetools inspect debian:bookworm-slim --format '{{json .Manifest.Digest}}')
+          DIGEST=${DIGEST//\"/}
           echo "digest=$DIGEST" >> $GITHUB_OUTPUT
 
       - name: Check if digest changed
@@ -46,27 +47,27 @@ jobs:
     runs-on: ubuntu-latest
     needs: check-base-image
     if: needs.check-base-image.outputs.changed == 'true'
-
     steps:
-      - name: Checkout develop
+      - name: Checkout repo
         uses: actions/checkout@v4
         with:
           ref: develop
           fetch-depth: 0
 
-      - name: Create or reset branch
+      - name: Create/update branch
         run: |
           git checkout -B update-base-image
 
-      # 🚨 MOVED HERE — runs *after* resetting the branch
       - name: Update Dockerfile digest
         run: |
           DIGEST="${{ needs.check-base-image.outputs.digest }}"
           FILE="images/apache/apache-dl-proxy/Dockerfile"
 
+          # If the Dockerfile already contains a digest, replace it
           if grep -q "debian:bookworm-slim@sha256:" "$FILE"; then
             sed -i "s|debian:bookworm-slim@sha256:[a-f0-9]\+|debian:bookworm-slim@$DIGEST|" "$FILE"
           else
+            # Otherwise add the digest cleanly
             sed -i "s|debian:bookworm-slim|debian:bookworm-slim@$DIGEST|" "$FILE"
           fi
 
@@ -81,7 +82,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     needs: update-branch
-
     steps:
       - uses: actions/checkout@v4
         with:
