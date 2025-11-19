@@ -56,8 +56,9 @@ jobs:
           sed -i "s|sha256:[a-f0-9]\+|${{ steps.digest.outputs.digest }}|" images/apache/apache-dl-proxy/Dockerfile
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git commit -am "Update base image digest"
-          git push
+          git add images/apache/apache-dl-proxy/Dockerfile
+          git commit -m "Update base image digest"
+          git push origin update-base-image
 
   build:
     runs-on: ubuntu-latest
