@@ -5,6 +5,10 @@ on:
     - cron: '0 2 * * *' # Run every day at 2am
   workflow_dispatch:
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   check-base-image:
     runs-on: ubuntu-latest
@@ -33,15 +37,25 @@ jobs:
             echo "changed=false" >> $GITHUB_OUTPUT
           fi
 
-      - name: Update Dockerfile if needed
+      - name: Update Dockerfile, push branch and create PR
         if: steps.check.outputs.changed == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BASE_BRANCH: develop
         run: |
+          set -e
+          BRANCH="update-base-image-$(date +%s)"
+          git fetch origin develop
+          git checkout -b "$BRANCH" origin/develop
           sed -i "s|sha256:[a-f0-9]\+|${{ steps.digest.outputs.digest }}|" images/apache/apache-dl-proxy/Dockerfile
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git commit -am "Update base image digest"
-          git push
-          
+          git add images/apache/apache-dl-proxy/Dockerfile
+          git commit -m "Update base image digest"
+          git push -u origin "$BRANCH"
+          curl -s -X POST -H "Authorization: token $GITHUB_TOKEN" -H "Content-Type: application/json" \
+            -d "{\"title\":\"Update base image digest\",\"head\":\"$BRANCH\",\"base\":\"$BASE_BRANCH\",\"body\":\"Automated update of base image digest\"}" \
+            https://api.github.com/repos/${{ github.repository }}/pulls
 
   build:
     runs-on: ubuntu-latest
