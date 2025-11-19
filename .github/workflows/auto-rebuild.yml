@@ -3,9 +3,9 @@ name: Auto Rebuild on Base Image Update
 on:
   push:
     branches:
-        - IP-675_GhA-create-PR
+      - IP-675_GhA-create-PR
   schedule:
-    - cron: '0 2 * * *' # Run every day at 2am
+    - cron: '0 2 * * *'
   workflow_dispatch:
 
 permissions:
@@ -25,13 +25,16 @@ jobs:
       - name: Get latest digest for Debian bookworm-slim
         id: digest
         run: |
-          DIGEST=$(docker buildx imagetools inspect debian:bookworm-slim --format '{{json .Manifest.Digest}}')
+          DIGEST=$(docker buildx imagetools inspect debian:bookworm-slim --format '{{ .Manifest.Digest }}')
+          # Remove quotes if present
+          DIGEST=${DIGEST//\"/}
           echo "digest=$DIGEST" >> $GITHUB_OUTPUT
 
       - name: Check if digest changed
         id: check
         run: |
           CURRENT=$(grep -o 'sha256:[a-f0-9]\+' images/apache/apache-dl-proxy/Dockerfile)
+
           if [[ "$CURRENT" != "${{ steps.digest.outputs.digest }}" ]]; then
             echo "Base image changed"
             echo "changed=true" >> $GITHUB_OUTPUT
@@ -39,36 +42,41 @@ jobs:
             echo "No change"
             echo "changed=false" >> $GITHUB_OUTPUT
           fi
-      - name: Create branch
-        uses: peterjgrainger/action-create-branch@v2.2.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BASE_BRANCH: develop
-        with:
-            branch: 'update-base-image'
 
-      - name: Commit Dockerfile update to branch
-        if: steps.check.outputs.changed == 'true'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BASE_BRANCH: update-base-image
+  update-branch:
+    runs-on: ubuntu-latest
+    needs: check-base-image
+    if: needs.check-base-image.outputs.changed == 'true'
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          ref: develop
+          fetch-depth: 0
+
+      - name: Create/update branch
         run: |
-          sed -i "s|sha256:[a-f0-9]\+|${{ steps.digest.outputs.digest }}|" images/apache/apache-dl-proxy/Dockerfile
-          git config user.name github-actions
-          git config user.email github-actions@github.com
+          git checkout -B update-base-image
+
+      - name: Update Dockerfile digest
+        run: |
+          sed -i "s|sha256:[a-f0-9]\+|${{ needs.check-base-image.outputs.digest }}|" images/apache/apache-dl-proxy/Dockerfile
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
           git add images/apache/apache-dl-proxy/Dockerfile
-          git commit -m "Update base image digest"
-          git push origin update-base-image
+          git commit -m "Update base image digest" || echo "No changes to commit"
+          git push origin update-base-image --force
 
   build:
     runs-on: ubuntu-latest
-    needs: check-base-image
-    
-    if: needs.check-base-image.outputs.changed == 'true'
-
+    needs: update-branch
     steps:
-        
       - uses: actions/checkout@v4
+        with:
+          ref: update-base-image
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
@@ -88,23 +96,19 @@ jobs:
         id: create_pr
         uses: peter-evans/create-pull-request@v7
         with:
-            commit-message: update apache-dl-proxy base image digest
-            title: Update apache-dl-proxy base image digest
-            body: This PR updates the base image digest for apache-dl-proxy.
-            branch: update-base-image
-            base: develop
+          commit-message: Update apache-dl-proxy base image digest
+          title: Update apache-dl-proxy base image digest
+          body: This PR updates the base image digest for apache-dl-proxy.
+          branch: update-base-image
+          base: develop
 
-            
       - name: Notify Slack with PR link
-        if: ${{ steps.create_pr.outputs.pull-request-url && steps.create_pr.outputs.pull-request-operation != 'none' }}
-
+        if: ${{ steps.create_pr.outputs.pull-request-url }}
         run: |
           PR_URL="${{ steps.create_pr.outputs.pull-request-url }}"
-          if [ -n "$PR_URL" ]; then
-            MESSAGE="kingstonduo/apache-dl-proxy:latest has been updated! PR: $PR_URL"
-          else
-            MESSAGE="kingstonduo/apache-dl-proxy:latest has been updated!"
-          fi
+          
+          MESSAGE="kingstonduo/apache-dl-proxy:latest has been updated! PR: $PR_URL"
+
           curl -X POST -H "Content-Type: application/json" \
-              -d "{\"text\":\"${MESSAGE//\"/\\\"}\"}" \
-              "https://hooks.slack.com/services/"${{ secrets.ENV_SLACK_PASSCODE }}
+            -d "{\"text\":\"${MESSAGE//\"/\\\"}\"}" \
+            "https://hooks.slack.com/services/${{ secrets.ENV_SLACK_PASSCODE }}"
