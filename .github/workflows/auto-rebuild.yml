@@ -45,7 +45,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BASE_BRANCH: develop
         with:
-            branch: 'update-base-image-$(date +%s)'
+            branch: 'update-base-image'
 
       - name: Commit Dockerfile update to branch
         if: steps.check.outputs.changed == 'true'
