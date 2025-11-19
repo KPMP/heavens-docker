@@ -91,6 +91,7 @@ jobs:
             title: Update apache-dl-proxy base image digest
             body: This PR updates the base image digest for apache-dl-proxy.
             branch: update-base-image
+            base: develop
 
             
       - name: Notify Slack with PR link
