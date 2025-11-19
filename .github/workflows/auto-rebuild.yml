@@ -17,6 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       changed: ${{ steps.check.outputs.changed }}
+      digest: ${{ steps.digest.outputs.digest }}
 
     steps:
       - name: Checkout repo
@@ -25,7 +26,6 @@ jobs:
       - name: Get latest digest for Debian bookworm-slim
         id: digest
         run: |
-          # Extract only the digest value
           DIGEST=$(docker buildx imagetools inspect debian:bookworm-slim --format '{{json .Manifest.Digest}}')
           DIGEST=${DIGEST//\"/}
           echo "digest=$DIGEST" >> $GITHUB_OUTPUT
@@ -63,7 +63,7 @@ jobs:
           DIGEST="${{ needs.check-base-image.outputs.digest }}"
           FILE="images/apache/apache-dl-proxy/Dockerfile"
 
-          # If a digest already exists, replace only the digest portion
+          # If the Dockerfile already contains a digest, replace it
           if grep -q "debian:bookworm-slim@sha256:" "$FILE"; then
             sed -i "s|debian:bookworm-slim@sha256:[a-f0-9]\+|debian:bookworm-slim@$DIGEST|" "$FILE"
           else
