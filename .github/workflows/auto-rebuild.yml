@@ -73,8 +73,8 @@ jobs:
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git add images/apache/apache-dl-proxy/Dockerfile
-          git commit -m "Update base image digest" || echo "No changes to commit"
-          git push origin update-base-image --force
+          git commit -m "Update base image digest to ${{ steps.check-base-image.outputs.digest }}" || echo "No changes to commit"
+          git push origin update-base-image-${{ steps.date.outputs.date }} --force
 
   build:
     runs-on: ubuntu-latest
