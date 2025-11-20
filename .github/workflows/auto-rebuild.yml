@@ -1,9 +1,6 @@
 name: Auto Rebuild on Base Image Update
 
 on:
-  push:
-    branches:
-      - IP-675_GhA-create-PR
   schedule:
     - cron: '0 2 * * *'
   workflow_dispatch:
