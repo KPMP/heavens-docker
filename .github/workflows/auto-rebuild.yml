@@ -105,16 +105,9 @@ jobs:
 
       - name: Create Pull Request
         id: create_pr
-        uses: peter-evans/create-pull-request@v7
-        with:
-          base: develop
-          title: "Merge update-base-image into develop"
-          body: "created by GitHub Actions"
-          commit-message: "Update base image digest to ${{ needs.check-base-image.outputs.digest }}"
-          branch: update-base-image-${{ needs.update-branch.outputs.date }}
-          delete-branch: false
-
-        # run: |
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
             # gh pr create -B develop -H update-base-image-${{ needs.update-branch.outputs.date }} --title "Merge update-base-image into develop" --body "created by GitHub Actions"
 
 
