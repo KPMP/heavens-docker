@@ -88,7 +88,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: update-base-image-${{ needs.update-branch.outputs.date }}
-          
+
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
@@ -105,8 +105,17 @@ jobs:
 
       - name: Create Pull Request
         id: create_pr
-        run: |
-            gh pr create -B develop -H ${{ needs.update-branch.outputs.date }} --title "Merge update-base-image into develop" --body "created by GitHub Actions"
+        uses: peter-evans/create-pull-request@v7
+        with:
+          base: develop
+          title: "Merge update-base-image into develop"
+          body: "created by GitHub Actions"
+          commit-message: "Update base image digest to ${{ needs.check-base-image.outputs.digest }}"
+          branch: update-base-image-${{ needs.update-branch.outputs.date }}
+          delete-branch: false
+
+        # run: |
+            # gh pr create -B develop -H update-base-image-${{ needs.update-branch.outputs.date }} --title "Merge update-base-image into develop" --body "created by GitHub Actions"
 
 
       - name: Notify Slack with PR link
