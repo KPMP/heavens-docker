@@ -108,7 +108,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-            # gh pr create -B develop -H update-base-image-${{ needs.update-branch.outputs.date }} --title "Merge update-base-image into develop" --body "created by GitHub Actions"
+            gh pr create -B develop -H update-base-image-${{ needs.update-branch.outputs.date }} --title "Merge update-base-image into develop" --body "created by GitHub Actions"
 
 
       - name: Notify Slack with PR link
