@@ -108,17 +108,80 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-            PR_URL=$(gh pr create -B develop -H update-base-image-${{ needs.update-branch.outputs.date }} --title "Merge update-base-image into develop" --body "created by GitHub Actions")
+            PR_URL=$(gh pr create -B develop -H update-base-image-${{ needs.update-branch.outputs.date }} --title "Merge update-base-image-${{ needs.update-branch.outputs.date }} into develop" --body "created by GitHub Actions")
             echo "pull-request-url=$PR_URL" >> $GITHUB_OUTPUT
-
 
       - name: Notify Slack with PR link
         if: ${{ steps.create_pr.outputs.pull-request-url }}
         run: |
-          PR_URL="${{ steps.create_pr.outputs.pull-request-url }}"
-          
-          MESSAGE="kingstonduo/apache-dl-proxy:latest has been updated! PR: $PR_URL"
+            PR_URL="${{ steps.create_pr.outputs.pull-request-url }}"
+            SRC_BRANCH="update-base-image-${{ needs.update-branch.outputs.date }}"
+            TARGET_BRANCH="develop"
+            REPO="KPMP/heavens-docker"
+            TITLE="Merge $SRC_BRANCH into $TARGET_BRANCH"
 
-          curl -X POST -H "Content-Type: application/json" \
-            -d "{\"text\":\"${MESSAGE//\"/\\\"}\"}" \
+            curl -X POST -H "Content-Type: application/json" \
+            -d "{
+                \"blocks\": [
+                {
+                    \"type\": \"section\",
+                    \"text\": {
+                    \"type\": \"mrkdwn\",
+                    \"text\": \"*:github: New Pull Request Created*\n*<$PR_URL|$TITLE>*\"
+                    }
+                },
+                {
+                    \"type\": \"context\",
+                    \"elements\": [
+                    {
+                        \"type\": \"mrkdwn\",
+                        \"text\": \"Repository: *$REPO*\"
+                    }
+                    ]
+                },
+                {
+                    \"type\": \"section\",
+                    \"fields\": [
+                    {
+                        \"type\": \"mrkdwn\",
+                        \"text\": \"*Status:*\n\`\`\`OPEN\`\`\`\"
+                    },
+                    {
+                        \"type\": \"mrkdwn\",
+                        \"text\": \"*Branches:*\n\`$SRC_BRANCH → $TARGET_BRANCH\`\"
+                    }
+                    ]
+                },
+                {
+                    \"type\": \"actions\",
+                    \"elements\": [
+                    {
+                        \"type\": \"button\",
+                        \"text\": {
+                        \"type\": \"plain_text\",
+                        \"text\": \"View Pull Request\"
+                        },
+                        \"url\": \"$PR_URL\",
+                        \"style\": \"primary\"
+                    }
+                    ]
+                }
+                ],
+                \"attachments\": [
+                {
+                    \"color\": \"#2cbe4e\"  // GitHub green (same as OPEN state)
+                }
+                ]
+            }" \
             "https://hooks.slack.com/services/${{ secrets.ENV_SLACK_PASSCODE }}"
+
+    #   - name: Notify Slack with PR link
+    #     if: ${{ steps.create_pr.outputs.pull-request-url }}
+    #     run: |
+    #       PR_URL="${{ steps.create_pr.outputs.pull-request-url }}"
+          
+    #       MESSAGE="kingstonduo/apache-dl-proxy:latest has been updated! PR: $PR_URL"
+
+    #       curl -X POST -H "Content-Type: application/json" \
+    #         -d "{\"text\":\"${MESSAGE//\"/\\\"}\"}" \
+    #         "https://hooks.slack.com/services/${{ secrets.ENV_SLACK_PASSCODE }}"
