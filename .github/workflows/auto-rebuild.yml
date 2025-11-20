@@ -63,13 +63,7 @@ jobs:
           DIGEST="${{ needs.check-base-image.outputs.digest }}"
           FILE="images/apache/apache-dl-proxy/Dockerfile"
 
-          # If the Dockerfile already contains a digest, replace it
-          if grep -q "debian:bookworm-slim@sha256:" "$FILE"; then
-            sed -i "s|debian:bookworm-slim@sha256:[a-f0-9]\+|debian:bookworm-slim@$DIGEST|" "$FILE"
-          else
-            # Otherwise add the digest cleanly
-            sed -i "s|debian:bookworm-slim|debian:bookworm-slim@$DIGEST|" "$FILE"
-          fi
+          sed -i "s|sha256:[a-f0-9]\+|$DIGEST|" "$FILE"
 
       - name: Commit changes
         run: |
