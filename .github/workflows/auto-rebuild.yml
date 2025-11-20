@@ -50,6 +50,12 @@ jobs:
         date: ${{ steps.date.outputs.date }}
     if: needs.check-base-image.outputs.changed == 'true'
     steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          ref: develop
+          fetch-depth: 0
+
       - name: Create/update branch
         id: date
         run: |
