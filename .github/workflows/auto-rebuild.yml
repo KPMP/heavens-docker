@@ -46,6 +46,8 @@ jobs:
   update-branch:
     runs-on: ubuntu-latest
     needs: check-base-image
+    outputs:
+        date: ${{ steps.date.outputs.digest }}
     if: needs.check-base-image.outputs.changed == 'true'
     steps:
       - name: Checkout repo
@@ -56,7 +58,8 @@ jobs:
 
       - name: Create/update branch
         run: |
-          git checkout -B update-base-image
+          echo date=$(date +%Y%m%d%H%M%S) >> $GITHUB_OUTPUT
+          git checkout -B update-base-image-${{ steps.date.outputs.date }}
 
       - name: Update Dockerfile digest
         run: |
@@ -97,13 +100,8 @@ jobs:
 
       - name: Create Pull Request
         id: create_pr
-        uses: peter-evans/create-pull-request@v7
-        with:
-          commit-message: Update apache-dl-proxy base image digest
-          title: Update apache-dl-proxy base image digest
-          body: This PR updates the base image digest for apache-dl-proxy.
-          branch: update-base-image
-          base: develop
+        run: |
+            gh pr create -B develop -H ${{ steps.update-branch.outputs.date }} --title "Merge update-base-image into develop" --body "created by GitHub Actions"
 
       - name: Notify Slack with PR link
         if: ${{ steps.create_pr.outputs.pull-request-url }}
