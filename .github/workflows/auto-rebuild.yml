@@ -1,6 +1,9 @@
 name: Auto Rebuild on Base Image Update
 
 on:
+  push:
+    branches:
+      - IP-675_test
   schedule:
     - cron: '0 2 * * *'
   workflow_dispatch:
