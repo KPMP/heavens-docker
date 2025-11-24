@@ -26,14 +26,20 @@ jobs:
       - name: Get latest digest for Debian bookworm-slim
         id: digest
         run: |
-          DIGEST=$(docker buildx imagetools inspect debian:bookworm-slim --format '{{json .Manifest.Digest}}')
-          DIGEST=${DIGEST//\"/}
+          RAW=$(docker buildx imagetools inspect debian:bookworm-slim --format '{{json (index .Manifest.Manifests 0).Digest}}')
+          DIGEST=${RAW//\"/}
+
+          echo "Latest digest: $DIGEST"
           echo "digest=$DIGEST" >> $GITHUB_OUTPUT
 
       - name: Check if digest changed
         id: check
         run: |
-          CURRENT=$(grep -o 'sha256:[a-f0-9]\+' images/apache/apache-dl-proxy/Dockerfile)
+          FILE="images/apache/apache-dl-proxy/Dockerfile"
+          CURRENT=$(grep '^FROM ' "$FILE" | grep -o 'sha256:[a-f0-9]\+')
+
+          echo "Dockerfile digest: $CURRENT"
+          echo "Latest digest: ${{ steps.digest.outputs.digest }}"
 
           if [[ "$CURRENT" != "${{ steps.digest.outputs.digest }}" ]]; then
             echo "Base image changed"
