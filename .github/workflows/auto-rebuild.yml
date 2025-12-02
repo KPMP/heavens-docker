@@ -3,7 +3,7 @@ name: Auto Rebuild on Base Image Update
 on:
   push:
     branches:
-      - test-workflow
+      - test_675
   schedule:
     - cron: '0 2 * * *'
   workflow_dispatch:
