@@ -1,9 +1,6 @@
 name: Check docker image
 
 on:
-  push:
-      branches:
-          - IP-675_fix-nightly-build
   schedule:
     - cron: '0 2 * * *'
 
