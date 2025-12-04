@@ -1,99 +1,26 @@
-name: Auto Rebuild on Base Image Update
+name: Check docker image
 
 on:
   push:
-    branches:
-      - test-workflow
+      branches:
+          - IP-676_fix-nightly-build
   schedule:
     - cron: '0 2 * * *'
-  workflow_dispatch:
-
-permissions:
-  contents: write
-  pull-requests: write
 
 jobs:
-  check-base-image:
+  docker:
     runs-on: ubuntu-latest
-    outputs:
-      changed: ${{ steps.check.outputs.changed }}
-      digest: ${{ steps.digest.outputs.digest }}
-
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v6.0.0
 
-      - name: Get latest digest for Debian bookworm-slim
-        id: digest
-        run: |
-          RAW=$(docker buildx imagetools inspect debian:bookworm-slim --format '{{json (index .Manifest.Manifests 0).Digest}}')
-          DIGEST=${RAW//\"/}
-
-          echo "Latest digest: $DIGEST"
-          echo "digest=$DIGEST" >> $GITHUB_OUTPUT
-
-      - name: Check if digest changed
+      - name: Check if update available
         id: check
-        run: |
-          FILE="images/apache/apache-dl-proxy/Dockerfile"
-          CURRENT=$(grep '^FROM ' "$FILE" | grep -o 'sha256:[a-f0-9]\+')
-
-          echo "Dockerfile digest: $CURRENT"
-          echo "Latest digest: ${{ steps.digest.outputs.digest }}"
-
-          if [[ "$CURRENT" != "${{ steps.digest.outputs.digest }}" ]]; then
-            echo "Base image changed"
-            echo "changed=true" >> $GITHUB_OUTPUT
-          else
-            echo "No change"
-            echo "changed=false" >> $GITHUB_OUTPUT
-          fi
-
-  update-branch:
-    runs-on: ubuntu-latest
-    needs: check-base-image
-    outputs:
-        date: ${{ steps.date.outputs.date }}
-    if: needs.check-base-image.outputs.changed == 'true'
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: lucacome/docker-image-update-checker@v3.0.1
         with:
-          ref: develop
-          fetch-depth: 0
-
-      - name: Create/update branch
-        id: date
-        run: |
-          DATE=$(date +%Y%m%d%H%M%S)
-          echo "date=$DATE" >> $GITHUB_OUTPUT
-
-      - name: Create branch
-        run: |
-          git checkout -B update-base-image-${{ steps.date.outputs.date }}
-
-      - name: Update Dockerfile digest
-        run: |
-          DIGEST="${{ needs.check-base-image.outputs.digest }}"
-          FILE="images/apache/apache-dl-proxy/Dockerfile"
-
-          sed -i "s|sha256:[a-f0-9]\+|$DIGEST|" "$FILE"
-
-      - name: Commit changes
-        run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git add images/apache/apache-dl-proxy/Dockerfile
-          git commit -m "Update base image digest to ${{ needs.check-base-image.outputs.digest }}" || echo "No changes to commit"
-          git push origin update-base-image-${{ steps.date.outputs.date }} --force
-
-  build:
-    runs-on: ubuntu-latest
-    needs: update-branch
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: update-base-image-${{ needs.update-branch.outputs.date }}
+          base-image: debian:bookworm-slim
+          image: kingstonduo/apache-dl-proxy:latest
+          platforms: linux/amd64
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
@@ -102,28 +29,18 @@ jobs:
           password: ${{ secrets.ENV_DOCKER_PASS }}
 
       - name: Build and push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v6.18.0
+        id: push
         with:
-          context: ./images/apache/apache-dl-proxy
-          file: ./images/apache/apache-dl-proxy/Dockerfile
+          context: images/apache-dl-proxy
+          file: ./images/apache-dl-proxy/Dockerfile
           push: true
           tags: kingstonduo/apache-dl-proxy:latest
 
-      - name: Create Pull Request
-        id: create_pr
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-            PR_URL=$(gh pr create -B develop -H update-base-image-${{ needs.update-branch.outputs.date }} --title "Merge update-base-image-${{ needs.update-branch.outputs.date }} into develop" --body "created by GitHub Actions")
-            echo "pull-request-url=$PR_URL" >> $GITHUB_OUTPUT
-
-      - name: Notify Slack with PR link
-        if: ${{ steps.create_pr.outputs.pull-request-url }}
-        run: |
-          PR_URL="${{ steps.create_pr.outputs.pull-request-url }}"
-          
-          MESSAGE="kingstonduo/apache-dl-proxy:latest has been updated! PR: $PR_URL"
-
+      - name: Notify Slack
+        if: steps.push.outcome == 'success'
+        run: | 
+          MESSAGE="kingstonduo/apache-dl-proxy:latest has been updated!"
           curl -X POST -H "Content-Type: application/json" \
             -d "{\"text\":\"${MESSAGE//\"/\\\"}\"}" \
             "https://hooks.slack.com/services/${{ secrets.ENV_SLACK_PASSCODE }}"
