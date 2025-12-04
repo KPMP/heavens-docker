@@ -32,8 +32,8 @@ jobs:
         uses: docker/build-push-action@v6.18.0
         id: push
         with:
-          context: images/apache-dl-proxy
-          file: ./images/apache-dl-proxy/Dockerfile
+          context: images/apache/apache-dl-proxy
+          file: ./images/apache/apache-dl-proxy/Dockerfile
           push: true
           tags: kingstonduo/apache-dl-proxy:latest
 
