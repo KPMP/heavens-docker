@@ -3,7 +3,7 @@ name: Check docker image
 on:
   push:
       branches:
-          - IP-676_fix-nightly-build
+          - IP-675_fix-nightly-build
   schedule:
     - cron: '0 2 * * *'
 
