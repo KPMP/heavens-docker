@@ -3,6 +3,9 @@ name: Check docker image
 on:
   schedule:
     - cron: '0 2 * * *'
+  push: 
+    branches: 
+      - test_675_v2
 
 jobs:
   docker:
@@ -16,7 +19,7 @@ jobs:
         uses: lucacome/docker-image-update-checker@v3.0.1
         with:
           base-image: debian:bookworm-slim
-          image: kingstonduo/apache-dl-proxy:latest
+          image: kingstonduo/apache-dl-proxy:6.0
           platforms: linux/amd64
 
       - name: Log in to Docker Hub
