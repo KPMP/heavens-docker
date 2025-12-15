@@ -1,0 +1,43 @@
+name: Check docker image
+
+on:
+  schedule:
+    - cron: '0 2 * * *'
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6.0.0
+
+      - name: Check if update available
+        id: check
+        uses: lucacome/docker-image-update-checker@v3.0.1
+        with:
+          base-image: debian:bookworm-slim
+          image: kingstonduo/apache-dl-proxy:latest
+          platforms: linux/amd64
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.ENV_DOCKER_USER }}
+          password: ${{ secrets.ENV_DOCKER_PASS }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v6.18.0
+        id: push
+        with:
+          context: images/apache/apache-dl-proxy
+          file: ./images/apache/apache-dl-proxy/Dockerfile
+          push: true
+          tags: kingstonduo/apache-dl-proxy:latest
+
+      - name: Notify Slack
+        if: steps.push.outcome == 'success'
+        run: | 
+          MESSAGE="kingstonduo/apache-dl-proxy:latest has been updated!"
+          curl -X POST -H "Content-Type: application/json" \
+            -d "{\"text\":\"${MESSAGE//\"/\\\"}\"}" \
+            "https://hooks.slack.com/services/${{ secrets.ENV_SLACK_PASSCODE }}"
