@@ -3,7 +3,7 @@ services:
 
   user-auth:
     container_name: user-auth
-    image: ${ENV_AUTH_IMAGE} 
+    image: ${ENV_AUTH_IMAGE}
     environment:
       DEFAULT_CLIENT_ID: ${ENV_DEFAULT_CLIENT_ID}
     privileged: true
@@ -14,7 +14,7 @@ services:
 
   apache:
     container_name: delphinus-apache
-    image: ${ENV_APACHE_CONTAINER} 
+    image: ${ENV_APACHE_CONTAINER}
     ports:
       - "80:80"
       - "443:443"
@@ -25,7 +25,7 @@ services:
       - ${ENV_SHIB_CONF_DIR}/shibboleth2.xml:/etc/shibboleth/shibboleth2.xml
       - ${ENV_WSI_FILES_DIR}:/data/deepZoomImages
       - ${ENV_WSI_ORIG_FILES_DIR}:/data/knowledgeEnvironment/deepZoom
-      - ${ENV_APACHE_CONF_DIR}/delphinus.conf:/etc/apache2/conf-enabled/delphinus.conf        
+      - ${ENV_APACHE_CONF_DIR}/delphinus.conf:/etc/apache2/conf-enabled/delphinus.conf
     networks:
       local:
         aliases:
@@ -38,10 +38,10 @@ services:
        - MONGO_DATA_DIR=/data/db
        - MONGO_LOG_DIR=/dev/null
     volumes:
-       - mongodbdata:/data/db 
+       - mongodbdata:/data/db
     ports:
       - "127.0.0.1:${ENV_MONGO_PORT:-27017}:27017"
-    command: mongod 
+    command: mongod
     networks:
       local:
         aliases:
@@ -57,10 +57,10 @@ services:
       CLIENT_ID: ${ENV_CLIENT_ID}
     privileged: true
     logging:
-      driver: "fluentd"
+      driver: "json-file"
       options:
-        fluentd-address: "${ENV_FLUENTD_ADDRESS}"
-        tag: "delphinus-data"    
+        max-size: "10m"
+        max-file: "5"
     networks:
       local:
         aliases:
@@ -82,10 +82,10 @@ services:
         aliases:
           - cassie-spring
     logging:
-      driver: "fluentd"
+      driver: "json-file"
       options:
-        fluentd-address: "${ENV_FLUENTD_ADDRESS}"
-        tag: cassie-data
+        max-size: "10m"
+        max-file: "5"
 
 
 volumes:
@@ -97,5 +97,5 @@ networks:
     ipam:
       driver: default
       config:
-        - 
+        -
           subnet: 10.3.0.0/16

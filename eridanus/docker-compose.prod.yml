@@ -4,17 +4,17 @@ services:
   spring:
     container_name: eridanus-spring
     image: ${ENV_SPRING_IMAGE}:${ENV_SPRING_IMAGE_VERSION}
-    restart: unless-stopped    
+    restart: unless-stopped
     environment:
       SPRING_BOOT_ENVIRONMENT: ${ENV_DOCKER_ENVIRONMENT}
     ports:
       - "${ENV_APACHE_TOMCAT_PORT:-3040}:3040"
     privileged: true
     logging:
-      driver: "fluentd"
+      driver: "json-file"
       options:
-        fluentd-address: "${ENV_FLUENTD_ADDRESS}"
-        tag: "eridanus-data"
+        max-size: "10m"
+        max-file: "5"
     networks:
       dataLake:
         aliases:
@@ -28,7 +28,7 @@ services:
       - 25
     environment:
       SMTP_SERVER: ${ENV_SMTP_SERVER}
-      SMTP_USERNAME: ${ENV_SMTP_USERNAME} 
+      SMTP_USERNAME: ${ENV_SMTP_USERNAME}
       SMTP_PASSWORD: ${ENV_SMTP_PASSWORD}
       SERVER_HOSTNAME: ${ENV_SMTP_HOST}
     networks:
@@ -63,7 +63,7 @@ services:
     environment:
       TZ: "America/Detroit"
     ports:
-      - 9090:8080 
+      - 9090:8080
     networks:
       dataLake:
         aliases:

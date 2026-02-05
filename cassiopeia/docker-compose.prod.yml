@@ -3,7 +3,7 @@ services:
 
   apache:
     container_name: cassie-apache
-    image: ${ENV_APACHE_CONTAINER} 
+    image: ${ENV_APACHE_CONTAINER}
     ports:
       - "80:80"
       - "443:443"
@@ -28,15 +28,15 @@ services:
        - MONGO_DATA_DIR=/data/db
        - MONGO_LOG_DIR=/dev/null
     volumes:
-       - mongodbdata:/data/db 
+       - mongodbdata:/data/db
     ports:
       - "127.0.0.1:${ENV_MONGO_PORT:-27017}:27017"
-    command: mongod 
+    command: mongod
     networks:
       local:
         aliases:
           - delphinus-mongodb
-    
+
 
   spring:
     container_name: cassie-spring
@@ -55,10 +55,10 @@ services:
         aliases:
           - cassie-spring
     logging:
-      driver: "fluentd"
+      driver: "json-file"
       options:
-        fluentd-address: "${ENV_FLUENTD_ADDRESS}"
-        tag: cassie-data
+        max-size: "10m"
+        max-file: "5"
 
 volumes:
   mongodbdata:
@@ -69,5 +69,5 @@ networks:
     ipam:
       driver: default
       config:
-        - 
+        -
           subnet: 10.2.0.0/16
