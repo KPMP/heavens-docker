@@ -71,11 +71,10 @@ services:
     container_name: cassie-spring
     image: ${ENV_PP_IMAGE}
     environment:
-      - "TZ=America/Detroit"
+      TZ: "America/Detroit"
+      SPRING_BOOT_ENVIRONMENT: ${ENV_DOCKER_ENVIRONMENT}
     ports:
       - "${ENV_PP_PORT:-3060}:3030"
-    environment:
-      SPRING_BOOT_ENVIRONMENT: ${ENV_DOCKER_ENVIRONMENT}
     privileged: true
     networks:
       local:
