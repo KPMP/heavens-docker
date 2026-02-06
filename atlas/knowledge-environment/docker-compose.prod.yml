@@ -3,8 +3,8 @@ services:
 
   pegasus-spring:
     container_name: pegasus-spring
-    image: ${ENV_PEGASUS_CONTAINER} 
-    depends_on: 
+    image: ${ENV_PEGASUS_CONTAINER}
+    depends_on:
       - mariadb
     ports:
       - "${ENV_APACHE_TOMCAT_PORT:-3030}:3030"
@@ -16,19 +16,19 @@ services:
       TZ: "America/Detroit"
     privileged: true
     logging:
-      driver: "fluentd"
+      driver: "json-file"
       options:
-        fluentd-address: "${ENV_FLUENTD_ADDRESS}"
-        tag: "pegasus-data"
+        max-size: "10m"
+        max-file: "5"
     networks:
       local:
         aliases:
           - pegasus-spring
-          
+
   hubble-spring:
     container_name: hubble-spring
-    image: ${ENV_HUBBLE_CONTAINER} 
-    depends_on: 
+    image: ${ENV_HUBBLE_CONTAINER}
+    depends_on:
       - mariadb
     ports:
       - "3040:3030"
@@ -42,19 +42,19 @@ services:
       TZ: "America/Detroit"
     privileged: true
     logging:
-      driver: "fluentd"
+      driver: "json-file"
       options:
-        fluentd-address: "${ENV_FLUENTD_ADDRESS}"
-        tag: "hubble-data"
+        max-size: "10m"
+        max-file: "5"
     networks:
       local:
         aliases:
-          - hubble-spring 
+          - hubble-spring
 
   hydra-spring:
     container_name: hydra-spring
-    image: ${ENV_HYDRA_CONTAINER} 
-    depends_on: 
+    image: ${ENV_HYDRA_CONTAINER}
+    depends_on:
       - mariadb
     ports:
       - "3050:3030"
@@ -68,14 +68,14 @@ services:
       TZ: "America/Detroit"
     privileged: true
     logging:
-      driver: "fluentd"
+      driver: "json-file"
       options:
-        fluentd-address: "${ENV_FLUENTD_ADDRESS}"
-        tag: "hydra-data"
+        max-size: "10m"
+        max-file: "5"
     networks:
       local:
         aliases:
-          - hydra-spring          
+          - hydra-spring
 
   mariadb:
     container_name: mariadb
@@ -104,7 +104,7 @@ services:
     environment:
       TZ: "America/Detroit"
     ports:
-      - 9090:8080 
+      - 9090:8080
     networks:
       local:
         aliases:
@@ -118,8 +118,8 @@ services:
   atlas-file-service:
     container_name: atlas-file-service
     image: ${ENV_FILE_SERVICE}
-    depends_on: 
-      - mariadb    
+    depends_on:
+      - mariadb
     ports:
       - "5000:5000"
     environment:
@@ -129,7 +129,7 @@ services:
       - MINIO_URL=${ENV_MINIO_URL}
       - MYSQL_HOST=${ENV_MYSQL_HOST}
       - MYSQL_USER=${ENV_MYSQL_USER}
-      - MYSQL_PASSWORD=${ENV_MYSQL_PASSWORD}      
+      - MYSQL_PASSWORD=${ENV_MYSQL_PASSWORD}
       - BUCKET_NAME=${ENV_BUCKET_NAME}
       - GA4_ID=${ENV_FLASK_GA4_ID}
       - API_SECRET=${ENV_FLASK_API_SECRET}
@@ -137,18 +137,18 @@ services:
     networks:
       local:
         aliases:
-          - atlas-file-service   
+          - atlas-file-service
     logging:
-      driver: "fluentd"
+      driver: "json-file"
       options:
-        fluentd-address: "${ENV_FLUENTD_ADDRESS}"
-        tag: "atlas-file-service"
+        max-size: "10m"
+        max-file: "5"
 
   atlas-file-service-2:
     container_name: atlas-file-service-2
     image: ${ENV_FILE_SERVICE}
-    depends_on: 
-      - mariadb    
+    depends_on:
+      - mariadb
     ports:
       - "5001:5000"
     environment:
@@ -158,7 +158,7 @@ services:
       - MINIO_URL=${ENV_MINIO_URL}
       - MYSQL_HOST=${ENV_MYSQL_HOST}
       - MYSQL_USER=${ENV_MYSQL_USER}
-      - MYSQL_PASSWORD=${ENV_MYSQL_PASSWORD}      
+      - MYSQL_PASSWORD=${ENV_MYSQL_PASSWORD}
       - BUCKET_NAME=${ENV_BUCKET_NAME}
       - GA4_ID=${ENV_FLASK_GA4_ID}
       - API_SECRET=${ENV_FLASK_API_SECRET}
@@ -166,18 +166,18 @@ services:
     networks:
       local:
         aliases:
-          - atlas-file-service-2   
+          - atlas-file-service-2
     logging:
-      driver: "fluentd"
+      driver: "json-file"
       options:
-        fluentd-address: "${ENV_FLUENTD_ADDRESS}"
-        tag: "atlas-file-service-2"
+        max-size: "10m"
+        max-file: "5"
 
   atlas-file-service-3:
     container_name: atlas-file-service-3
     image: ${ENV_FILE_SERVICE}
-    depends_on: 
-      - mariadb    
+    depends_on:
+      - mariadb
     ports:
       - "5002:5000"
     environment:
@@ -187,7 +187,7 @@ services:
       - MINIO_URL=${ENV_MINIO_URL}
       - MYSQL_HOST=${ENV_MYSQL_HOST}
       - MYSQL_USER=${ENV_MYSQL_USER}
-      - MYSQL_PASSWORD=${ENV_MYSQL_PASSWORD}      
+      - MYSQL_PASSWORD=${ENV_MYSQL_PASSWORD}
       - BUCKET_NAME=${ENV_BUCKET_NAME}
       - GA4_ID=${ENV_FLASK_GA4_ID}
       - API_SECRET=${ENV_FLASK_API_SECRET}
@@ -195,18 +195,18 @@ services:
     networks:
       local:
         aliases:
-          - atlas-file-service-3   
+          - atlas-file-service-3
     logging:
-      driver: "fluentd"
+      driver: "json-file"
       options:
-        fluentd-address: "${ENV_FLUENTD_ADDRESS}"
-        tag: "atlas-file-service-3"
+        max-size: "10m"
+        max-file: "5"
 
   atlas-file-service-4:
     container_name: atlas-file-service-4
     image: ${ENV_FILE_SERVICE}
-    depends_on: 
-      - mariadb    
+    depends_on:
+      - mariadb
     ports:
       - "5003:5000"
     environment:
@@ -216,7 +216,7 @@ services:
       - MINIO_URL=${ENV_MINIO_URL}
       - MYSQL_HOST=${ENV_MYSQL_HOST}
       - MYSQL_USER=${ENV_MYSQL_USER}
-      - MYSQL_PASSWORD=${ENV_MYSQL_PASSWORD}      
+      - MYSQL_PASSWORD=${ENV_MYSQL_PASSWORD}
       - BUCKET_NAME=${ENV_BUCKET_NAME}
       - GA4_ID=${ENV_FLASK_GA4_ID}
       - API_SECRET=${ENV_FLASK_API_SECRET}
@@ -224,12 +224,12 @@ services:
     networks:
       local:
         aliases:
-          - atlas-file-service-4   
+          - atlas-file-service-4
     logging:
-      driver: "fluentd"
+      driver: "json-file"
       options:
-        fluentd-address: "${ENV_FLUENTD_ADDRESS}"
-        tag: "atlas-file-service-4"      
+        max-size: "10m"
+        max-file: "5"
 
   minio-s3:
     container_name: minio
@@ -306,7 +306,7 @@ services:
 #comment out search-setup after building Elasticsearch containers for the first time. This will reduce the memory usage of the KE machines.
 #once commented out, bounce the containers and verify that everything is working.
 
-  es-search: 
+  es-search:
     container_name: es-search
 #    depends_on: #comment out this line and the line below after building Elasticsearch containers for the first time.
 #      - search-setup
@@ -352,7 +352,7 @@ services:
       local:
         aliases:
           - es-search
-          
+
   kibana-search:
     container_name: kibana-search
     depends_on:
@@ -387,7 +387,7 @@ services:
       local:
         aliases:
           - kibana-search
-          
+
   enterprisesearch:
     container_name: enterprisesearch
     depends_on:
@@ -416,7 +416,7 @@ services:
       local:
         aliases:
           - enterprisesearch
-          
+
 volumes:
   esdata01:
     driver: local
@@ -432,7 +432,7 @@ volumes:
   kibanadata:
     driver: local
   enterprisesearchdata:
-    driver: local  
+    driver: local
   metricbeat-data01:
     driver: local
 
@@ -442,5 +442,5 @@ networks:
     ipam:
       driver: default
       config:
-        - 
+        -
           subnet: 10.12.0.0/16
