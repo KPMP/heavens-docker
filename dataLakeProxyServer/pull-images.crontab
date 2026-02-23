@@ -1,0 +1,1 @@
+0 1 * * * /usr/bin/docker pull kingstonduo/apache-dl-proxy:latest && /usr/bin/docker compose -f /home/kpmp-appuser/heavens-docker/dataLakeProxyServer/docker-compose.yml up -d
