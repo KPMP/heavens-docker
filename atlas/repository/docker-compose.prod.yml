@@ -20,6 +20,7 @@ services:
       - ${ENV_REPOSITORY_APPDIR}/build:/var/www/html/repository
       - ${ENV_EXPLORER_REACT_APPDIR}/build:/var/www/html/explorer
       - ${ENV_SPATIAL_APPDIR}/build:/var/www/html/spatial-viewer
+      - ${ENV_COMPARATOR_APPDIR}/build:/var/www/html/comparator
       - ${ENV_SSL_CERT_DIR}:/certs
       - ./evasive.conf:/etc/apache2/mods-enabled/evasive.conf
     networks:

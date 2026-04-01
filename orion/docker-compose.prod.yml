@@ -3,14 +3,14 @@ services:
 
   mongodb:
     container_name: orion-mongodb
-    image: mongo:5.0.6
+    image: mongo:8.2.4
     restart: unless-stopped
     environment:
        - MONGO_DATA_DIR=/data/db
        - MONGO_LOG_DIR=/dev/null
        - "TZ=America/Detroit"
     volumes:
-       - mongodbdata:/data/db 
+       - mongodbdata:/data/db
        - "${ENV_DATALAKE_FILE_DIR}:/data"
     ports:
       - "127.0.0.1:${ENV_MONGO_PORT:-27017}:27017"
@@ -18,31 +18,32 @@ services:
     networks:
       dataLake:
         aliases:
-          - mongodb    
+          - mongodb
 
   spring:
     container_name: orion-spring
     image:  ${ENV_SPRING_IMAGE}
     restart: unless-stopped
-    depends_on: 
+    depends_on:
       - mongodb
     ports:
       - 3030
     volumes:
-      - "${ENV_GLOBUS_FILE_MOUNT}:/globus"      
+      - "${ENV_GLOBUS_FILE_MOUNT}:/globus"
       - "${ENV_GLOBUS_TOKEN_LOCATION}:/globus_tokens"
     environment:
       GLOBUS_API_KEY: ${ENV_GLOBUS_API_KEY}
-      GLOBUS_API_SECRET: ${ENV_GLOBUS_API_SECRET}      
+      GLOBUS_API_SECRET: ${ENV_GLOBUS_API_SECRET}
       CLIENT_ID: ${ENV_CLIENT_ID}
       GLOBUS_DIR: ${ENV_GLOBUS_DIR}
+      GLOBUS_ENDPOINT_ID: ${ENV_GLOBUS_ENDPOINT_ID}
       TZ: "America/Detroit"
     privileged: true
     logging:
-      driver: "fluentd"
+      driver: "json-file"
       options:
-        fluentd-address: "${ENV_FLUENTD_ADDRESS}"
-        tag: "orion-data"
+        max-size: "10m"
+        max-file: "5"
     networks:
       dataLake:
         aliases:
@@ -57,10 +58,10 @@ services:
       TZ: "America/Detroit"
     privileged: true
     logging:
-      driver: "fluentd"
+      driver: "json-file"
       options:
-        fluentd-address: "${ENV_FLUENTD_ADDRESS}"
-        tag: "orion-data"
+        max-size: "10m"
+        max-file: "5"
     networks:
       dataLake:
         aliases:
