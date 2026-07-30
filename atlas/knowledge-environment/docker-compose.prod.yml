@@ -118,6 +118,7 @@ services:
   atlas-file-service:
     container_name: atlas-file-service
     image: ${ENV_FILE_SERVICE}
+    restart: always
     depends_on:
       - mariadb
     ports:
@@ -147,6 +148,7 @@ services:
   atlas-file-service-2:
     container_name: atlas-file-service-2
     image: ${ENV_FILE_SERVICE}
+    restart: always
     depends_on:
       - mariadb
     ports:
@@ -176,6 +178,7 @@ services:
   atlas-file-service-3:
     container_name: atlas-file-service-3
     image: ${ENV_FILE_SERVICE}
+    restart: always
     depends_on:
       - mariadb
     ports:
@@ -205,6 +208,7 @@ services:
   atlas-file-service-4:
     container_name: atlas-file-service-4
     image: ${ENV_FILE_SERVICE}
+    restart: always
     depends_on:
       - mariadb
     ports:
