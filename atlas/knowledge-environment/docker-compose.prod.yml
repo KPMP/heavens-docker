@@ -4,6 +4,7 @@ services:
   pegasus-spring:
     container_name: pegasus-spring
     image: ${ENV_PEGASUS_CONTAINER}
+    restart: always
     depends_on:
       - mariadb
     ports:
@@ -28,6 +29,7 @@ services:
   hubble-spring:
     container_name: hubble-spring
     image: ${ENV_HUBBLE_CONTAINER}
+    restart: always
     depends_on:
       - mariadb
     ports:
@@ -315,6 +317,7 @@ services:
 #    depends_on: #comment out this line and the line below after building Elasticsearch containers for the first time.
 #      - search-setup
     image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
+    restart: always
     volumes:
       - certs:/usr/share/elasticsearch/config/certs
       - essearchdata01:/usr/share/elasticsearch/data
@@ -362,6 +365,7 @@ services:
     depends_on:
       - es-search
     image: docker.elastic.co/kibana/kibana:${STACK_VERSION}
+    restart: always
     volumes:
       - certs:/usr/share/kibana/config/certs
       - kibanadata:/usr/share/kibana/data
@@ -398,6 +402,7 @@ services:
       - es-search
       - kibana-search
     image: docker.elastic.co/enterprise-search/enterprise-search:${STACK_VERSION}
+    restart: always
     volumes:
       - certs:/usr/share/enterprise-search/config/certs
       - enterprisesearchdata:/usr/share/enterprise-search/config
