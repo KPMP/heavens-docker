@@ -56,6 +56,7 @@ services:
   hydra-spring:
     container_name: hydra-spring
     image: ${ENV_HYDRA_CONTAINER}
+    restart: always
     depends_on:
       - mariadb
     ports:
@@ -240,6 +241,7 @@ services:
   minio-s3:
     container_name: minio
     image: minio/minio
+    restart: always
     ports:
       - "9000:9000"
     environment:
