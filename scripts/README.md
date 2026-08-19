@@ -1,4 +1,5 @@
 # DEPRECATED
+These are no longer used as we have replaced these with `restart: always/unless-stopped` inside of our `docker-compose.prod.yml` files
 
 # KPMP Docker Container Scripts 
 This folder contains scripts for managing and monitoring the KPMP Docker containers.
