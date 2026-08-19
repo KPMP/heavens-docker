@@ -1,3 +1,5 @@
+# DEPRECATED
+
 # KPMP Docker Container Scripts 
 This folder contains scripts for managing and monitoring the KPMP Docker containers.
 
