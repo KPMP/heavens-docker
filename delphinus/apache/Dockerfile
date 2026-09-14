@@ -34,7 +34,6 @@ RUN a2enconf custom-mpm-prefork
 
 RUN mkdir -p /etc/pki/tls/certs
 
-RUN curl -k https://ds.incommon.org/certs/inc-md-cert.pem -o /etc/pki/tls/certs/inc-md-cert.pem
 COPY ./container_files/etc/shibboleth/attribute-map.xml /etc/shibboleth/attribute-map.xml
 
 RUN echo "************** Built Apache WITH Shibboleth **************"
