@@ -27,10 +27,23 @@ services:
       - ${ENV_WSI_FILES_DIR}:/data/deepZoomImages
       - ${ENV_WSI_ORIG_FILES_DIR}:/data/knowledgeEnvironment/deepZoom
       - ${ENV_APACHE_CONF_DIR}/delphinus.conf:/etc/apache2/conf-enabled/delphinus.conf
+      - certbot-certs:/etc/letsencrypt
     networks:
       local:
         aliases:
           - delphinus-apache
+
+  certbot:
+    image: certbot/certbot
+    container_name: certbot-service
+    volumes:
+      - certbot-certs:/etc/letsencrypt                           # shared with apache
+      - certbot-www:/var/www/certbot                        # shared with apache
+      - ./cli.ini:/etc/letsencrypt/cli.ini:ro
+    entrypoint: /bin/sh
+    command: ["-c", "trap exit TERM; while :; do certbot renew --webroot -w /var/www/certbot --quiet; sleep 12h & wait $!; done"]
+    networks:
+      local:
 
   mongodb:
     container_name: delphinus-mongodb
@@ -93,6 +106,8 @@ services:
 
 volumes:
   mongodbdata:
+  certbot-certs:
+  certbot-www:
 
 networks:
   local:
