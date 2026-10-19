@@ -15,6 +15,7 @@ services:
   apache:
     container_name: delphinus-apache
     image: ${ENV_APACHE_CONTAINER}
+    restart: always
     ports:
       - "80:80"
       - "443:443"
@@ -26,14 +27,28 @@ services:
       - ${ENV_WSI_FILES_DIR}:/data/deepZoomImages
       - ${ENV_WSI_ORIG_FILES_DIR}:/data/knowledgeEnvironment/deepZoom
       - ${ENV_APACHE_CONF_DIR}/delphinus.conf:/etc/apache2/conf-enabled/delphinus.conf
+      - certbot-certs:/etc/letsencrypt
     networks:
       local:
         aliases:
           - delphinus-apache
 
+  certbot:
+    image: certbot/certbot
+    container_name: certbot-service
+    volumes:
+      - certbot-certs:/etc/letsencrypt                           # shared with apache
+      - certbot-www:/var/www/certbot                        # shared with apache
+      - ./cli.ini:/etc/letsencrypt/cli.ini:ro
+    entrypoint: /bin/sh
+    command: ["-c", "trap exit TERM; while :; do certbot renew --webroot -w /var/www/certbot --quiet; sleep 12h & wait $!; done"]
+    networks:
+      local:
+
   mongodb:
     container_name: delphinus-mongodb
     image: mongo:8.0
+    restart: always
     environment:
        - MONGO_DATA_DIR=/data/db
        - MONGO_LOG_DIR=/dev/null
@@ -50,6 +65,7 @@ services:
   spring:
     container_name: delphinus-spring
     image: ${ENV_DPR_IMAGE}
+    restart: always
     ports:
       - "${ENV_APACHE_TOMCAT_PORT:-3030}:3030"
     environment:
@@ -69,6 +85,7 @@ services:
 
   cassie-spring:
     container_name: cassie-spring
+    restart: always
     image: ${ENV_PP_IMAGE}
     environment:
       TZ: "America/Detroit"
@@ -89,6 +106,8 @@ services:
 
 volumes:
   mongodbdata:
+  certbot-certs:
+  certbot-www:
 
 networks:
   local:

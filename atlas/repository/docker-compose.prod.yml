@@ -6,6 +6,7 @@ services:
   apache:
     container_name: repository-apache
     image: ${ENV_APACHE_CONTAINER} 
+    restart: always
     ports:
       - "80:80"
       - "443:443"
