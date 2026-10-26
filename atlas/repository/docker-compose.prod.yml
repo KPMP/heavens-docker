@@ -24,6 +24,8 @@ services:
       - ${ENV_COMPARATOR_APPDIR}/build:/var/www/html/comparator
       - ${ENV_SSL_CERT_DIR}:/certs
       - ./evasive.conf:/etc/apache2/mods-enabled/evasive.conf
+      - certbot-certs:/etc/letsencrypt
+      - certbot-www:/var/www/certbot
     networks:
       local:
         aliases:
@@ -34,6 +36,18 @@ services:
         max-size: "10m"
         max-file: "5"
 
+  certbot:
+    image: certbot/certbot
+    container_name: certbot-service
+    volumes:
+      - certbot-certs:/etc/letsencrypt                      	# shared with apache
+      - certbot-www:/var/www/certbot                        # shared with apache
+      - ./cli.ini:/etc/letsencrypt/cli.ini:ro
+    entrypoint: /bin/sh
+    command: ["-c", "trap exit TERM; while :; do certbot renew --webroot -w /var/www/certbot --quiet; sleep 12h & wait $!; done"]
+    networks:
+      local:
+
 networks:
   local:
     name: dataPortal
@@ -42,3 +56,6 @@ networks:
       config:
         - 
           subnet: 10.12.0.0/16
+volumes:
+  certbot-certs:
+  certbot-www:
